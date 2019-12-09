@@ -178,14 +178,14 @@
                   <img
                     style="border-radius: 50px"
                     width="40"
-                    :src="patient.url"
+                    :src="patient.photourl"
                     alt="Patient Image"
                   />
                 </td>
                 <td>
-                  <a href="#">
+                  <router-link :to="patient.url">
                     {{ patient.firstname }} {{ patient.lastname }}
-                  </a>
+                  </router-link>
                 </td>
                 <td>{{ patient.birthday | moment('DD/MM/YYYY') }}</td>
                 <td>{{ patient.birthday | moment('from', 'now', true) }}</td>
@@ -247,7 +247,7 @@ export default {
   data() {
     return {
       patients: [],
-      patientsUrl: '/patient',
+      patientsUrl: '/patient/',
       imageurl: 'http://localhost:3000/static/uploads/'
     }
   },
@@ -268,7 +268,10 @@ export default {
           this.patients = response.data.data
           let patients = this.patients
           for (let i = 0; i < patients.length; i++) {
-            patients[i].url = this.imageurl + patients[i].photo
+            patients[i].photourl = this.imageurl + patients[i].photo
+          }
+          for (let i = 0; i < patients.length; i++) {
+            patients[i].url = this.patientsUrl + patients[i]._id
           }
         })
         .catch(error => {

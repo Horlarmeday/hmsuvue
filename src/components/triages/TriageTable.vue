@@ -176,9 +176,9 @@
                   {{ index + 1 }}
                 </td>
                 <td>
-                  <a href="#">
+                  <router-link :to="triage.url">
                     {{ triage.patient.firstname }} {{ triage.patient.lastname }}
-                  </a>
+                  </router-link>
                 </td>
                 <td>{{ triage.weight }}</td>
                 <td>
@@ -258,6 +258,10 @@ export default {
         .get(this.triagesUrl)
         .then(response => {
           this.triages = response.data.data
+          let triages = this.triages
+          for (let i = 0; i < triages.length; i++) {
+            triages[i].url = '/patient/' + triages[i].patient._id
+          }
           //   let triages = this.triages
           //   for (let i = 0; i < patients.length; i++) {
           //     triages[i].url = this.imageurl + patients[i].photo

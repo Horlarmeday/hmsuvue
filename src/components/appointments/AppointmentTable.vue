@@ -176,10 +176,10 @@
                 </td>
                 <td>{{ appointment.uniqueid }}</td>
                 <td>
-                  <a href="#">
+                  <router-link :to="appointment.url">
                     {{ appointment.patient.firstname }}
                     {{ appointment.patient.lastname }}
-                  </a>
+                  </router-link>
                 </td>
                 <td>
                   <a href="#">
@@ -256,6 +256,10 @@ export default {
         .get(this.appointmenturl)
         .then(response => {
           this.appointments = response.data.data
+          let appointment = this.appointments
+          for (let i = 0; i < appointment.length; i++) {
+            appointment[i].url = '/patient/' + appointment[i].patient._id
+          }
         })
         .catch(error => {
           this.handleError(error)

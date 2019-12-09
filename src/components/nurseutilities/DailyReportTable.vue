@@ -8,7 +8,7 @@
             <i class="kt-font-brand flaticon2-line-chart"></i>
           </span>
           <h3 class="kt-portlet__head-title">
-            {{ title }}
+            {{ title }} Table
             <small>This is the {{ title }} table</small>
           </h3>
         </div>
@@ -152,76 +152,62 @@
             <thead>
               <tr>
                 <th>S/N</th>
-                <th>Patient ID</th>
                 <th>Patient Name</th>
-                <th>Birthday</th>
-                <th>Sex</th>
                 <th>Ward</th>
-                <th>Status</th>
-                <th>Observation</th>
-                <th>Ward Round</th>
-                <th>IO Chart</th>
-                <th>Actions</th>
+                <th>Comments</th>
+                <th>Observations</th>
+                <th>Date Created</th>
+                <th>Created By</th>
+                <th>Triage</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(patient, index) in patients" :key="patient._id">
+              <tr v-if="reports.length == 0">
+                <td colspan="9" align="center">No Daily Reports</td>
+              </tr>
+              <tr v-for="(report, index) in reports" :key="report._id">
                 <td>
                   {{ index + 1 }}
                 </td>
                 <td>
-                  {{ patient.patientId }}
+                  <a href="#">
+                    {{ report.patient.firstname }} {{ report.patient.lastname }}
+                  </a>
+                </td>
+                <td>{{ report.ward }}</td>
+                <td>{{ report.comment }}</td>
+                <td>{{ report.observation }}</td>
+                <td>{{ report.createdAt | moment('DD/MM/YYYY') }}</td>
+                <td>
+                  <a href="#">
+                    {{ report.creator.firstname }} {{ report.creator.lastname }}
+                  </a>
                 </td>
                 <td>
-                  <router-link :to="patient.url">
-                    {{ patient.firstname }} {{ patient.lastname }}
-                  </router-link>
-                </td>
-                <td>
-                  {{ patient.birthday | moment('DD/MM/YYYY') }}
-                </td>
-                <td>
-                  <label
-                    v-if="patient.gender == 'Female'"
-                    class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill"
-                    >Female</label
+                  <a
+                    href="#"
+                    class="btn btn-brand btn-elevate kt-login__btn-primary"
+                    >Triage</a
                   >
-                  <label
+                </td>
+                <td>
+                  <button
+                    v-if="!deletedata"
+                    @click="deleteReport(report)"
+                    class="btn btn-danger btn-elevate kt-login__btn-primary"
+                  >
+                    Delete
+                  </button>
+                  <button
                     v-else
-                    class="kt-badge kt-badge--primary kt-badge--inline kt-badge--pill"
-                    >Male</label
+                    class="btn btn-danger kt-spinner kt-spinner--right 
+                      kt-spinner--sm kt-spinner--light btn-elevate float-right"
+                    disabled
                   >
+                    Deleting...
+                  </button>
                 </td>
-                <td>{{ patient.gender }} Ward</td>
-                <td>
-                  <label
-                    v-if="patient.admissionStatus == 'Addmitted'"
-                    class="kt-badge kt-badge--danger kt-badge--inline kt-badge--pill"
-                    >{{ patient.admissionStatus }}</label
-                  >
-                  <label
-                    v-if="patient.admissionStatus == 'Discharged'"
-                    class="kt-badge kt-badge--dark kt-badge--inline kt-badge--pill"
-                    >{{ patient.admissionStatus }}</label
-                  >
-                  <label
-                    v-if="patient.admissionStatus == 'Normal'"
-                    class="kt-badge kt-badge--info kt-badge--inline kt-badge--pill"
-                    >{{ patient.admissionStatus }}</label
-                  >
-                </td>
-                <td>
-                  <a href="#" class="btn btn-success btn-elevate"
-                    >Observation</a
-                  >
-                </td>
-                <td>
-                  <a href="#" class="btn btn-brand btn-elevate">Ward Round</a>
-                </td>
-                <td>
-                  <a href="#" class="btn btn-dark btn-elevate">IO Chart</a>
-                </td>
-                <td></td>
               </tr>
             </tbody>
           </table>
@@ -237,7 +223,7 @@
 <script>
 import axios from '../../axios'
 export default {
-  name: 'patientStatusTable',
+  name: 'dailyreportTable',
   props: {
     title: {
       type: String
@@ -245,12 +231,13 @@ export default {
   },
   data() {
     return {
-      patients: [],
-      patientsUrl: '/patient/addmitted'
+      reports: [],
+      reportsUrl: '/nurse',
+      deletedata: false
     }
   },
   mounted() {
-    this.getPatients()
+    this.getReports()
   },
   methods: {
     handleError(error) {
@@ -259,15 +246,34 @@ export default {
         message: error.response.data
       })
     },
-    getPatients() {
+    getReports() {
       axios
-        .get(this.patientsUrl)
+        .get(this.reportsUrl)
         .then(response => {
-          this.patients = response.data.data
-          let patients = this.patients
-          for (let i = 0; i < patients.length; i++) {
-            patients[i].url = '/patient/' + patients[i]._id
-          }
+          this.reports = response.data.data
+          //   let reports = this.reports
+          //   for (let i = 0; i < patients.length; i++) {
+          //     patients[i].url = this.imageurl + patients[i].photo
+          //   }
+        })
+        .catch(error => {
+          this.handleError(error)
+        })
+    },
+
+    deleteReport(report) {
+      axios
+        .delete(this.reportsUrl, {data: {reportId: report._id}})
+        .then(response => {
+          this.reports = response.data.data
+          this.$iziToast.success({
+            title: 'Error!',
+            message: response.data.message
+          })
+          //   let reports = this.reports
+          //   for (let i = 0; i < patients.length; i++) {
+          //     patients[i].url = this.imageurl + patients[i].photo
+          //   }
         })
         .catch(error => {
           this.handleError(error)

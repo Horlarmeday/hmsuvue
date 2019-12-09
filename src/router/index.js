@@ -104,13 +104,8 @@ const routes = [
   {
     path: '/create-appointment',
     name: 'createappointment',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(
-        /* webpackChunkName: "about" */ '../views/app/appointments/CreateAppointment.vue'
-      ),
+
+    component: () => import('../views/app/appointments/CreateAppointment.vue'),
     meta: {
       requiresAuth: true
     }
@@ -118,13 +113,8 @@ const routes = [
   {
     path: '/appointments',
     name: 'appointments',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(
-        /* webpackChunkName: "about" */ '../views/app/appointments/Appointments.vue'
-      ),
+
+    component: () => import('../views/app/appointments/Appointments.vue'),
     meta: {
       requiresAuth: true
     }
@@ -132,13 +122,7 @@ const routes = [
   {
     path: '/create-triage',
     name: 'createtriage',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(
-        /* webpackChunkName: "about" */ '../views/app/triages/CreateTriage.vue'
-      ),
+    component: () => import('../views/app/triages/CreateTriage.vue'),
     meta: {
       requiresAuth: true
     }
@@ -146,13 +130,32 @@ const routes = [
   {
     path: '/triages',
     name: 'triages',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+    component: () => import('../views/app/triages/Triages.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/create-daily-report',
+    name: 'createdailyreport',
     component: () =>
-      import(
-        /* webpackChunkName: "about" */ '../views/app/triages/Triages.vue'
-      ),
+      import('../views/app/nurseutilities/CreateDailyReport.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/daily-reports',
+    name: 'dailyreport',
+    component: () => import('../views/app/nurseutilities/DailyReport.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/patient/:id',
+    name: 'patientprofile',
+    component: () => import('../views/app/patients/PatientProfile.vue'),
     meta: {
       requiresAuth: true
     }

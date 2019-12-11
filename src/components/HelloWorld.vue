@@ -26,6 +26,9 @@
           >eslint</a
         >
       </li>
+      <li>
+        <a href="/login">Login</a>
+      </li>
     </ul>
     <h3>Essential Links</h3>
     <ul>

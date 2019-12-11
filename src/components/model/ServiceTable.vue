@@ -64,10 +64,13 @@
                 </div>
               </div>
               &nbsp;
-              <a href="#" class="btn btn-brand btn-elevate btn-icon-sm">
+              <router-link
+                to="/create-service"
+                class="btn btn-brand btn-elevate btn-icon-sm"
+              >
                 <i class="la la-plus"></i>
                 New Record
-              </a>
+              </router-link>
             </div>
           </div>
         </div>
@@ -152,62 +155,60 @@
             <thead>
               <tr>
                 <th>S/N</th>
-                <th>Patient Name</th>
-                <th>Ward</th>
-                <th>Comments</th>
-                <th>Observations</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Status</th>
                 <th>Date Created</th>
                 <th>Created By</th>
-                <th>Triage</th>
-                <th>Action</th>
+                <!-- <th>Action</th> -->
               </tr>
             </thead>
             <tbody>
-              <tr v-if="reports.length == 0">
-                <td colspan="9" align="center">No Daily Reports</td>
+              <tr v-if="services.length == 0">
+                <td colspan="9" align="center">No Service</td>
               </tr>
-              <tr v-for="(report, index) in reports" :key="report._id">
+              <tr v-for="(service, index) in services" :key="service._id">
                 <td>
                   {{ index + 1 }}
                 </td>
+                <td>{{ service.name }}</td>
+                <td>{{ service.price }}</td>
                 <td>
-                  <a href="#">
-                    {{ report.patient.firstname }} {{ report.patient.lastname }}
-                  </a>
-                </td>
-                <td>{{ report.ward }}</td>
-                <td>{{ report.comment }}</td>
-                <td>{{ report.observation }}</td>
-                <td>{{ report.createdAt | moment('DD/MM/YYYY') }}</td>
-                <td>
-                  <a href="#">
-                    {{ report.creator.firstname }} {{ report.creator.lastname }}
-                  </a>
-                </td>
-                <td>
-                  <a
-                    href="#"
-                    class="btn btn-brand btn-elevate kt-login__btn-primary"
-                    >Triage</a
+                  <label
+                    v-if="service.status"
+                    class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill"
+                    >Active</label
+                  >
+                  <label
+                    v-if="!service.status"
+                    class="kt-badge kt-badge--dark kt-badge--inline kt-badge--pill"
+                    >Inactive</label
                   >
                 </td>
+                <td>{{ service.createdAt | moment('DD/MM/YYYY') }}</td>
                 <td>
+                  <a href="#">
+                    {{ service.creator.firstname }}
+                    {{ service.creator.lastname }}
+                  </a>
+                </td>
+                <!-- <td>
                   <button
                     v-if="!deletedata"
-                    @click="deleteReport(report)"
+                    @click="deleteService(department)"
                     class="btn btn-danger btn-elevate kt-login__btn-primary"
                   >
                     Delete
                   </button>
                   <button
-                    v-else
+                    v-if="deletedata && department._id == currentDepartment._id"
                     class="btn btn-danger kt-spinner kt-spinner--right 
                       kt-spinner--sm kt-spinner--light btn-elevate float-right"
                     disabled
                   >
                     Deleting...
                   </button>
-                </td>
+                </td> -->
               </tr>
             </tbody>
           </table>
@@ -223,7 +224,7 @@
 <script>
 import axios from '../../axios'
 export default {
-  name: 'dailyreportTable',
+  name: 'departmentTable',
   props: {
     title: {
       type: String
@@ -231,53 +232,57 @@ export default {
   },
   data() {
     return {
-      reports: [],
-      reportsUrl: '/nurse',
-      deletedata: false
+      services: [],
+      serviceUrl: '/admin/service'
+      //   currentService: '',
+      //   deleteData: false
     }
   },
   mounted() {
-    this.getReports()
+    this.getServices()
   },
   methods: {
     handleError(error) {
+      this.deleteData = false
       this.$iziToast.error({
         title: 'Error!',
         message: error.response.data
       })
     },
-    getReports() {
+    getServices() {
       axios
-        .get(this.reportsUrl)
+        .get(this.serviceUrl)
         .then(response => {
-          this.reports = response.data.data
-          //   let reports = this.reports
-          //   for (let i = 0; i < patients.length; i++) {
-          //     patients[i].url = this.imageurl + patients[i].photo
+          this.services = response.data.data
+          //   let notes = this.nursenotes
+          //   for (let i = 0; i < notes.length; i++) {
+          //     notes[i].url = this.patienturl + notes[i]._id
           //   }
         })
         .catch(error => {
           this.handleError(error)
         })
-    },
-
-    deleteReport(report) {
-      axios
-        .delete(this.reportsUrl, { data: { reportId: report._id } })
-        .then(response => {
-          this.reports = response.data.data
-          this.$iziToast.success({
-            title: 'Error!',
-            message: response.data.message
-          })
-          //   let reports = this.reports
-          //   for (let i = 0; i < patients.length; i++) {
-          //     patients[i].url = this.imageurl + patients[i].photo
-          //   }
-        })
-        .catch(error => {
-          this.handleError(error)
-        })
+      // },
+      // deleteDepartment: function(department) {
+      //   this.deleteData = true
+      //   this.currentDepartment = department
+      //   axios
+      //     .delete(this.departmentsUrl, { data: { departmentId: department._id } })
+      //     .then(response => {
+      //       this.departments = response.data.data
+      //       this.deleteData = false
+      //       this.$iziToast.success({
+      //         title: 'Error!',
+      //         message: response.data.message
+      //       })
+      //       //   let reports = this.reports
+      //       //   for (let i = 0; i < patients.length; i++) {
+      //       //     patients[i].url = this.imageurl + patients[i].photo
+      //       //   }
+      //     })
+      //     .catch(error => {
+      //       this.handleError(error)
+      //     })
     }
   }
 }

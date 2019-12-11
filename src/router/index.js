@@ -82,6 +82,14 @@ const routes = [
       requiresAuth: true
     }
   },
+  {
+    path: '/patient/:id',
+    name: 'patientprofile',
+    component: () => import('../views/app/patients/PatientProfile.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
   // employees routes
   {
     path: '/employee-list',
@@ -119,6 +127,7 @@ const routes = [
       requiresAuth: true
     }
   },
+  // Triages
   {
     path: '/create-triage',
     name: 'createtriage',
@@ -135,6 +144,7 @@ const routes = [
       requiresAuth: true
     }
   },
+  // daily reports
   {
     path: '/create-daily-report',
     name: 'createdailyreport',
@@ -152,10 +162,85 @@ const routes = [
       requiresAuth: true
     }
   },
+  // Nurse note
   {
-    path: '/patient/:id',
-    name: 'patientprofile',
-    component: () => import('../views/app/patients/PatientProfile.vue'),
+    path: '/nursing-notes',
+    name: 'nursenote',
+    component: () => import('../views/app/nurseutilities/NurseNotes.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/create-nursing-note',
+    name: 'createnursenote',
+    component: () => import('../views/app/nurseutilities/CreateNurseNote.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  // Care plan
+  {
+    path: '/care-plan',
+    name: 'careplan',
+    component: () => import('../views/app/nurseutilities/CarePlans.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/create-care-plan',
+    name: 'createcareplan',
+    component: () => import('../views/app/nurseutilities/CreateCarePlan.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  // Models
+  {
+    path: '/departments',
+    name: 'departments',
+    component: () => import('../views/app/model/Departments.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/create-department',
+    name: 'createdepartment',
+    component: () => import('../views/app/model/CreateDepartment.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/services',
+    name: 'services',
+    component: () => import('../views/app/model/Services.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/create-service',
+    name: 'createservice',
+    component: () => import('../views/app/model/CreateService.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/laboratories',
+    name: 'laboratories',
+    component: () => import('../views/app/model/Laboratories.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/create-laboratory',
+    name: 'createlaboratory',
+    component: () => import('../views/app/model/CreateLaboratory.vue'),
     meta: {
       requiresAuth: true
     }

@@ -12,6 +12,19 @@
             <small>Create a new patient account</small>
           </h3>
         </div>
+        <div class="kt-portlet__head-toolbar">
+          <div class="kt-portlet__head-wrapper">
+            <div class="kt-portlet__head-actions">
+              <router-link
+                to="/patients"
+                class="btn btn-brand btn-elevate btn-icon-sm"
+              >
+                <i class="la la-plus"></i>
+                Patients
+              </router-link>
+            </div>
+          </div>
+        </div>
       </div>
       <div v-if="!savedStepOne" class="kt-portlet__body">
         <h5 style="margin-bottom: 30px;color:#5d78ff;">Personal Information</h5>

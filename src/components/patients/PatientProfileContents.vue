@@ -1057,468 +1057,30 @@
                 </div>
                 <br />
                 <div class="tab-content">
+                  <h6 class="text-center">Dependants</h6><hr>
                   <div class="tab-pane active" id="kt_widget2_tab1_content">
                     <div class="kt-widget2">
-                      <div class="kt-widget2__item kt-widget2__item--primary">
+                      <div
+                        v-for="dependant in dependants"
+                        :key="dependant._id"
+                        class="kt-widget2__item kt-widget2__item--primary"
+                      >
                         <div class="kt-widget2__checkbox">
                           <label
                             class="kt-checkbox kt-checkbox--solid kt-checkbox--single"
                           >
-                            <input type="checkbox" />
                             <span></span>
                           </label>
                         </div>
-                        <div class="kt-widget2__info">
+                        <div class="kt-widget2__info ml-4">
                           <a href="#" class="kt-widget2__title">
-                            Make Metronic Great Again.Lorem Ipsum Amet
+                            {{ dependant.name }}
                           </a>
-                          <a href="#" class="kt-widget2__username">
-                            By Bob
-                          </a>
-                        </div>
-                        <div class="kt-widget2__actions">
-                          <a
-                            href="#"
-                            class="btn btn-clean btn-sm btn-icon btn-icon-md"
-                            data-toggle="dropdown"
-                          >
-                            <i class="flaticon-more-1"></i>
-                          </a>
-                          <div
-                            class="dropdown-menu dropdown-menu-fit dropdown-menu-right"
-                          >
-                            <ul class="kt-nav">
-                              <li class="kt-nav__item">
-                                <a href="#" class="kt-nav__link">
-                                  <i
-                                    class="kt-nav__link-icon flaticon2-line-chart"
-                                  ></i>
-                                  <span class="kt-nav__link-text">Reports</span>
-                                </a>
-                              </li>
-                              <li class="kt-nav__item">
-                                <a href="#" class="kt-nav__link">
-                                  <i
-                                    class="kt-nav__link-icon flaticon2-send"
-                                  ></i>
-                                  <span class="kt-nav__link-text"
-                                    >Messages</span
-                                  >
-                                </a>
-                              </li>
-                              <li class="kt-nav__item">
-                                <a href="#" class="kt-nav__link">
-                                  <i
-                                    class="kt-nav__link-icon flaticon2-pie-chart-1"
-                                  ></i>
-                                  <span class="kt-nav__link-text">Charts</span>
-                                </a>
-                              </li>
-                              <li class="kt-nav__item">
-                                <a href="#" class="kt-nav__link">
-                                  <i
-                                    class="kt-nav__link-icon flaticon2-avatar"
-                                  ></i>
-                                  <span class="kt-nav__link-text">Members</span>
-                                </a>
-                              </li>
-                              <li class="kt-nav__item">
-                                <a href="#" class="kt-nav__link">
-                                  <i
-                                    class="kt-nav__link-icon flaticon2-settings"
-                                  ></i>
-                                  <span class="kt-nav__link-text"
-                                    >Settings</span
-                                  >
-                                </a>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="kt-widget2__item kt-widget2__item--warning">
-                        <div class="kt-widget2__checkbox">
-                          <label
-                            class="kt-checkbox kt-checkbox--solid kt-checkbox--single"
-                          >
-                            <input type="checkbox" />
-                            <span></span>
-                          </label>
                         </div>
                         <div class="kt-widget2__info">
                           <a href="#" class="kt-widget2__title">
-                            Prepare Docs For Metting On Monday
+                           {{ dependant.dateofbirth | moment('DD/MM/YYYY') }}
                           </a>
-                          <a href="#" class="kt-widget2__username">
-                            By Sean
-                          </a>
-                        </div>
-                        <div class="kt-widget2__actions">
-                          <a
-                            href="#"
-                            class="btn btn-clean btn-sm btn-icon btn-icon-md"
-                            data-toggle="dropdown"
-                          >
-                            <i class="flaticon-more-1"></i>
-                          </a>
-                          <div
-                            class="dropdown-menu dropdown-menu-fit dropdown-menu-right"
-                          >
-                            <ul class="kt-nav">
-                              <li class="kt-nav__item">
-                                <a href="#" class="kt-nav__link">
-                                  <i
-                                    class="kt-nav__link-icon flaticon2-line-chart"
-                                  ></i>
-                                  <span class="kt-nav__link-text">Reports</span>
-                                </a>
-                              </li>
-                              <li class="kt-nav__item">
-                                <a href="#" class="kt-nav__link">
-                                  <i
-                                    class="kt-nav__link-icon flaticon2-send"
-                                  ></i>
-                                  <span class="kt-nav__link-text"
-                                    >Messages</span
-                                  >
-                                </a>
-                              </li>
-                              <li class="kt-nav__item">
-                                <a href="#" class="kt-nav__link">
-                                  <i
-                                    class="kt-nav__link-icon flaticon2-pie-chart-1"
-                                  ></i>
-                                  <span class="kt-nav__link-text">Charts</span>
-                                </a>
-                              </li>
-                              <li class="kt-nav__item">
-                                <a href="#" class="kt-nav__link">
-                                  <i
-                                    class="kt-nav__link-icon flaticon2-avatar"
-                                  ></i>
-                                  <span class="kt-nav__link-text">Members</span>
-                                </a>
-                              </li>
-                              <li class="kt-nav__item">
-                                <a href="#" class="kt-nav__link">
-                                  <i
-                                    class="kt-nav__link-icon flaticon2-settings"
-                                  ></i>
-                                  <span class="kt-nav__link-text"
-                                    >Settings</span
-                                  >
-                                </a>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="kt-widget2__item kt-widget2__item--brand">
-                        <div class="kt-widget2__checkbox">
-                          <label
-                            class="kt-checkbox kt-checkbox--solid kt-checkbox--single"
-                          >
-                            <input type="checkbox" />
-                            <span></span>
-                          </label>
-                        </div>
-                        <div class="kt-widget2__info">
-                          <a href="#" class="kt-widget2__title">
-                            Make Widgets Great Again.Estudiat Communy Elit
-                          </a>
-                          <a href="#" class="kt-widget2__username">
-                            By Aziko
-                          </a>
-                        </div>
-                        <div class="kt-widget2__actions">
-                          <a
-                            href="#"
-                            class="btn btn-clean btn-sm btn-icon btn-icon-md"
-                            data-toggle="dropdown"
-                          >
-                            <i class="flaticon-more-1"></i>
-                          </a>
-                          <div
-                            class="dropdown-menu dropdown-menu-fit dropdown-menu-right"
-                          >
-                            <ul class="kt-nav">
-                              <li class="kt-nav__item">
-                                <a href="#" class="kt-nav__link">
-                                  <i
-                                    class="kt-nav__link-icon flaticon2-line-chart"
-                                  ></i>
-                                  <span class="kt-nav__link-text">Reports</span>
-                                </a>
-                              </li>
-                              <li class="kt-nav__item">
-                                <a href="#" class="kt-nav__link">
-                                  <i
-                                    class="kt-nav__link-icon flaticon2-send"
-                                  ></i>
-                                  <span class="kt-nav__link-text"
-                                    >Messages</span
-                                  >
-                                </a>
-                              </li>
-                              <li class="kt-nav__item">
-                                <a href="#" class="kt-nav__link">
-                                  <i
-                                    class="kt-nav__link-icon flaticon2-pie-chart-1"
-                                  ></i>
-                                  <span class="kt-nav__link-text">Charts</span>
-                                </a>
-                              </li>
-                              <li class="kt-nav__item">
-                                <a href="#" class="kt-nav__link">
-                                  <i
-                                    class="kt-nav__link-icon flaticon2-avatar"
-                                  ></i>
-                                  <span class="kt-nav__link-text">Members</span>
-                                </a>
-                              </li>
-                              <li class="kt-nav__item">
-                                <a href="#" class="kt-nav__link">
-                                  <i
-                                    class="kt-nav__link-icon flaticon2-settings"
-                                  ></i>
-                                  <span class="kt-nav__link-text"
-                                    >Settings</span
-                                  >
-                                </a>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="kt-widget2__item kt-widget2__item--success">
-                        <div class="kt-widget2__checkbox">
-                          <label
-                            class="kt-checkbox kt-checkbox--solid kt-checkbox--single"
-                          >
-                            <input type="checkbox" />
-                            <span></span>
-                          </label>
-                        </div>
-                        <div class="kt-widget2__info">
-                          <a href="#" class="kt-widget2__title">
-                            Make Metronic Great Again. Lorem Ipsum
-                          </a>
-                          <a class="kt-widget2__username">
-                            By James
-                          </a>
-                        </div>
-                        <div class="kt-widget2__actions">
-                          <a
-                            href="#"
-                            class="btn btn-clean btn-sm btn-icon btn-icon-md"
-                            data-toggle="dropdown"
-                          >
-                            <i class="flaticon-more-1"></i>
-                          </a>
-                          <div
-                            class="dropdown-menu dropdown-menu-fit dropdown-menu-right"
-                          >
-                            <ul class="kt-nav">
-                              <li class="kt-nav__item">
-                                <a href="#" class="kt-nav__link">
-                                  <i
-                                    class="kt-nav__link-icon flaticon2-line-chart"
-                                  ></i>
-                                  <span class="kt-nav__link-text">Reports</span>
-                                </a>
-                              </li>
-                              <li class="kt-nav__item">
-                                <a href="#" class="kt-nav__link">
-                                  <i
-                                    class="kt-nav__link-icon flaticon2-send"
-                                  ></i>
-                                  <span class="kt-nav__link-text"
-                                    >Messages</span
-                                  >
-                                </a>
-                              </li>
-                              <li class="kt-nav__item">
-                                <a href="#" class="kt-nav__link">
-                                  <i
-                                    class="kt-nav__link-icon flaticon2-pie-chart-1"
-                                  ></i>
-                                  <span class="kt-nav__link-text">Charts</span>
-                                </a>
-                              </li>
-                              <li class="kt-nav__item">
-                                <a href="#" class="kt-nav__link">
-                                  <i
-                                    class="kt-nav__link-icon flaticon2-avatar"
-                                  ></i>
-                                  <span class="kt-nav__link-text">Members</span>
-                                </a>
-                              </li>
-                              <li class="kt-nav__item">
-                                <a href="#" class="kt-nav__link">
-                                  <i
-                                    class="kt-nav__link-icon flaticon2-settings"
-                                  ></i>
-                                  <span class="kt-nav__link-text"
-                                    >Settings</span
-                                  >
-                                </a>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="kt-widget2__item kt-widget2__item--danger">
-                        <div class="kt-widget2__checkbox">
-                          <label
-                            class="kt-checkbox kt-checkbox--solid kt-checkbox--single"
-                          >
-                            <input type="checkbox" />
-                            <span></span>
-                          </label>
-                        </div>
-                        <div class="kt-widget2__info">
-                          <a href="#" class="kt-widget2__title">
-                            Completa Financial Report For Emirates Airlines
-                          </a>
-                          <a href="#" class="kt-widget2__username">
-                            By Bob
-                          </a>
-                        </div>
-                        <div class="kt-widget2__actions">
-                          <a
-                            href="#"
-                            class="btn btn-clean btn-sm btn-icon btn-icon-md"
-                            data-toggle="dropdown"
-                          >
-                            <i class="flaticon-more-1"></i>
-                          </a>
-                          <div
-                            class="dropdown-menu dropdown-menu-fit dropdown-menu-right"
-                          >
-                            <ul class="kt-nav">
-                              <li class="kt-nav__item">
-                                <a href="#" class="kt-nav__link">
-                                  <i
-                                    class="kt-nav__link-icon flaticon2-line-chart"
-                                  ></i>
-                                  <span class="kt-nav__link-text">Reports</span>
-                                </a>
-                              </li>
-                              <li class="kt-nav__item">
-                                <a href="#" class="kt-nav__link">
-                                  <i
-                                    class="kt-nav__link-icon flaticon2-send"
-                                  ></i>
-                                  <span class="kt-nav__link-text"
-                                    >Messages</span
-                                  >
-                                </a>
-                              </li>
-                              <li class="kt-nav__item">
-                                <a href="#" class="kt-nav__link">
-                                  <i
-                                    class="kt-nav__link-icon flaticon2-pie-chart-1"
-                                  ></i>
-                                  <span class="kt-nav__link-text">Charts</span>
-                                </a>
-                              </li>
-                              <li class="kt-nav__item">
-                                <a href="#" class="kt-nav__link">
-                                  <i
-                                    class="kt-nav__link-icon flaticon2-avatar"
-                                  ></i>
-                                  <span class="kt-nav__link-text">Members</span>
-                                </a>
-                              </li>
-                              <li class="kt-nav__item">
-                                <a href="#" class="kt-nav__link">
-                                  <i
-                                    class="kt-nav__link-icon flaticon2-settings"
-                                  ></i>
-                                  <span class="kt-nav__link-text"
-                                    >Settings</span
-                                  >
-                                </a>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="kt-widget2__item kt-widget2__item--info">
-                        <div class="kt-widget2__checkbox">
-                          <label
-                            class="kt-checkbox kt-checkbox--solid kt-checkbox--single"
-                          >
-                            <input type="checkbox" />
-                            <span></span>
-                          </label>
-                        </div>
-                        <div class="kt-widget2__info">
-                          <a href="#" class="kt-widget2__title">
-                            Completa Financial Report For Emirates Airlines
-                          </a>
-                          <a href="#" class="kt-widget2__username">
-                            By Sean
-                          </a>
-                        </div>
-                        <div class="kt-widget2__actions">
-                          <a
-                            href="#"
-                            class="btn btn-clean btn-sm btn-icon btn-icon-md"
-                            data-toggle="dropdown"
-                          >
-                            <i class="flaticon-more-1"></i>
-                          </a>
-                          <div
-                            class="dropdown-menu dropdown-menu-fit dropdown-menu-right"
-                          >
-                            <ul class="kt-nav">
-                              <li class="kt-nav__item">
-                                <a href="#" class="kt-nav__link">
-                                  <i
-                                    class="kt-nav__link-icon flaticon2-line-chart"
-                                  ></i>
-                                  <span class="kt-nav__link-text">Reports</span>
-                                </a>
-                              </li>
-                              <li class="kt-nav__item">
-                                <a href="#" class="kt-nav__link">
-                                  <i
-                                    class="kt-nav__link-icon flaticon2-send"
-                                  ></i>
-                                  <span class="kt-nav__link-text"
-                                    >Messages</span
-                                  >
-                                </a>
-                              </li>
-                              <li class="kt-nav__item">
-                                <a href="#" class="kt-nav__link">
-                                  <i
-                                    class="kt-nav__link-icon flaticon2-pie-chart-1"
-                                  ></i>
-                                  <span class="kt-nav__link-text">Charts</span>
-                                </a>
-                              </li>
-                              <li class="kt-nav__item">
-                                <a href="#" class="kt-nav__link">
-                                  <i
-                                    class="kt-nav__link-icon flaticon2-avatar"
-                                  ></i>
-                                  <span class="kt-nav__link-text">Members</span>
-                                </a>
-                              </li>
-                              <li class="kt-nav__item">
-                                <a href="#" class="kt-nav__link">
-                                  <i
-                                    class="kt-nav__link-icon flaticon2-settings"
-                                  ></i>
-                                  <span class="kt-nav__link-text"
-                                    >Settings</span
-                                  >
-                                </a>
-                              </li>
-                            </ul>
-                          </div>
                         </div>
                       </div>
                     </div>
@@ -1544,11 +1106,13 @@ export default {
   data() {
     return {
       patientUrl: '/patient/',
-      patient: ''
+      patient: '',
+      dependants: []
     }
   },
   mounted() {
     this.getPatient()
+    this.getPatientDependant()
   },
   methods: {
     handleError(error) {
@@ -1557,12 +1121,25 @@ export default {
         message: error.response.data
       })
     },
+
     getPatient() {
       axios
         .get(this.patientUrl + this.$route.params.id)
         .then(response => {
           this.patient = response.data.data
           console.log(this.patient)
+        })
+        .catch(error => {
+          this.handleError(error)
+        })
+    },
+
+    getPatientDependant() {
+      axios
+        .get(this.patientUrl + 'dependant/' + this.$route.params.id)
+        .then(response => {
+          this.dependants = response.data.data
+          console.log(this.dependants)
         })
         .catch(error => {
           this.handleError(error)

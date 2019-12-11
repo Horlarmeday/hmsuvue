@@ -152,62 +152,34 @@
             <thead>
               <tr>
                 <th>S/N</th>
-                <th>Patient Name</th>
-                <th>Ward</th>
-                <th>Comments</th>
-                <th>Observations</th>
-                <th>Date Created</th>
+                <th>Nursing Diagnosis</th>
+                <th>Nursing Objective</th>
+                <th>Nursing Action</th>
+                <th>Scientific Principle</th>
+                <th>Evaluation</th>
                 <th>Created By</th>
-                <th>Triage</th>
-                <th>Action</th>
+                <th>Date Created</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-if="reports.length == 0">
-                <td colspan="9" align="center">No Daily Reports</td>
+              <tr v-if="careplans.length == 0">
+                <td colspan="9" align="center">No Care Plan</td>
               </tr>
-              <tr v-for="(report, index) in reports" :key="report._id">
+              <tr v-for="(plan, index) in careplans" :key="plan._id">
                 <td>
                   {{ index + 1 }}
                 </td>
+                <td>{{ plan.diagnosis }}</td>
+                <td>{{ plan.objective }}</td>
+                <td>{{ plan.action }}</td>
+                <td>{{ plan.scientificprinciple }}</td>
+                <td>{{ plan.evaluation }}</td>
                 <td>
                   <a href="#">
-                    {{ report.patient.firstname }} {{ report.patient.lastname }}
+                    {{ plan.creator.firstname }} {{ plan.creator.lastname }}
                   </a>
                 </td>
-                <td>{{ report.ward }}</td>
-                <td>{{ report.comment }}</td>
-                <td>{{ report.observation }}</td>
-                <td>{{ report.createdAt | moment('DD/MM/YYYY') }}</td>
-                <td>
-                  <a href="#">
-                    {{ report.creator.firstname }} {{ report.creator.lastname }}
-                  </a>
-                </td>
-                <td>
-                  <a
-                    href="#"
-                    class="btn btn-brand btn-elevate kt-login__btn-primary"
-                    >Triage</a
-                  >
-                </td>
-                <td>
-                  <button
-                    v-if="!deletedata"
-                    @click="deleteReport(report)"
-                    class="btn btn-danger btn-elevate kt-login__btn-primary"
-                  >
-                    Delete
-                  </button>
-                  <button
-                    v-else
-                    class="btn btn-danger kt-spinner kt-spinner--right 
-                      kt-spinner--sm kt-spinner--light btn-elevate float-right"
-                    disabled
-                  >
-                    Deleting...
-                  </button>
-                </td>
+                <td>{{ plan.createdAt | moment('DD/MM/YYYY') }}</td>
               </tr>
             </tbody>
           </table>
@@ -223,7 +195,7 @@
 <script>
 import axios from '../../axios'
 export default {
-  name: 'dailyreportTable',
+  name: 'careplanTable',
   props: {
     title: {
       type: String
@@ -231,13 +203,13 @@ export default {
   },
   data() {
     return {
-      reports: [],
-      reportsUrl: '/nurse',
+      careplans: [],
+      careplanUrl: '/nurse/nursing/careplan',
       deletedata: false
     }
   },
   mounted() {
-    this.getReports()
+    this.getCarePlans()
   },
   methods: {
     handleError(error) {
@@ -246,34 +218,11 @@ export default {
         message: error.response.data
       })
     },
-    getReports() {
+    getCarePlans() {
       axios
-        .get(this.reportsUrl)
+        .get(this.careplanUrl)
         .then(response => {
-          this.reports = response.data.data
-          //   let reports = this.reports
-          //   for (let i = 0; i < patients.length; i++) {
-          //     patients[i].url = this.imageurl + patients[i].photo
-          //   }
-        })
-        .catch(error => {
-          this.handleError(error)
-        })
-    },
-
-    deleteReport(report) {
-      axios
-        .delete(this.reportsUrl, { data: { reportId: report._id } })
-        .then(response => {
-          this.reports = response.data.data
-          this.$iziToast.success({
-            title: 'Error!',
-            message: response.data.message
-          })
-          //   let reports = this.reports
-          //   for (let i = 0; i < patients.length; i++) {
-          //     patients[i].url = this.imageurl + patients[i].photo
-          //   }
+          this.careplans = response.data.data
         })
         .catch(error => {
           this.handleError(error)

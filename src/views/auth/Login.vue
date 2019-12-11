@@ -34,6 +34,7 @@
                           class="form-control"
                           type="text"
                           placeholder="Username"
+                          :style="{ backgroundColor: '##b6d3ea30' }"
                           :state="errors[0] ? false : valid ? true : null"
                           required
                           v-model="username"
@@ -52,6 +53,7 @@
                           class="form-control"
                           type="password"
                           placeholder="Password"
+                          :style="{ backgroundColor: '##b6d3ea30' }"
                           :state="errors[0] ? false : valid ? true : null"
                           required
                           v-model="password"

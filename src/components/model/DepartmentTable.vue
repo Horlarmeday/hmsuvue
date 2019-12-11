@@ -152,55 +152,56 @@
             <thead>
               <tr>
                 <th>S/N</th>
-                <th>Patient Name</th>
-                <th>Ward</th>
-                <th>Comments</th>
-                <th>Observations</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Status</th>
                 <th>Date Created</th>
                 <th>Created By</th>
-                <th>Triage</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-if="reports.length == 0">
-                <td colspan="9" align="center">No Daily Reports</td>
+              <tr v-if="departments.length == 0">
+                <td colspan="9" align="center">No Departments</td>
               </tr>
-              <tr v-for="(report, index) in reports" :key="report._id">
+              <tr
+                v-for="(department, index) in departments"
+                :key="department._id"
+              >
                 <td>
                   {{ index + 1 }}
                 </td>
+                <td>{{ department.name }}</td>
+                <td>{{ department.description }}</td>
                 <td>
-                  <a href="#">
-                    {{ report.patient.firstname }} {{ report.patient.lastname }}
-                  </a>
-                </td>
-                <td>{{ report.ward }}</td>
-                <td>{{ report.comment }}</td>
-                <td>{{ report.observation }}</td>
-                <td>{{ report.createdAt | moment('DD/MM/YYYY') }}</td>
-                <td>
-                  <a href="#">
-                    {{ report.creator.firstname }} {{ report.creator.lastname }}
-                  </a>
-                </td>
-                <td>
-                  <a
-                    href="#"
-                    class="btn btn-brand btn-elevate kt-login__btn-primary"
-                    >Triage</a
+                  <label
+                    v-if="department.status"
+                    class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill"
+                    >Active</label
                   >
+                  <label
+                    v-if="!department.status"
+                    class="kt-badge kt-badge--dark kt-badge--inline kt-badge--pill"
+                    >Inactive</label
+                  >
+                </td>
+                <td>{{ department.createdAt | moment('DD/MM/YYYY') }}</td>
+                <td>
+                  <a href="#">
+                    {{ department.creator.firstname }}
+                    {{ department.creator.lastname }}
+                  </a>
                 </td>
                 <td>
                   <button
                     v-if="!deletedata"
-                    @click="deleteReport(report)"
+                    @click="deleteDepartment(department)"
                     class="btn btn-danger btn-elevate kt-login__btn-primary"
                   >
                     Delete
                   </button>
                   <button
-                    v-else
+                    v-if="deletedata && department._id == currentDepartment._id"
                     class="btn btn-danger kt-spinner kt-spinner--right 
                       kt-spinner--sm kt-spinner--light btn-elevate float-right"
                     disabled
@@ -223,7 +224,7 @@
 <script>
 import axios from '../../axios'
 export default {
-  name: 'dailyreportTable',
+  name: 'departmentTable',
   props: {
     title: {
       type: String
@@ -231,41 +232,45 @@ export default {
   },
   data() {
     return {
-      reports: [],
-      reportsUrl: '/nurse',
-      deletedata: false
+      departments: [],
+      departmentsUrl: '/admin/department',
+      currentDepartment: '',
+      deleteData: false
     }
   },
   mounted() {
-    this.getReports()
+    this.getDepartments()
   },
   methods: {
     handleError(error) {
+      this.deleteData = false
       this.$iziToast.error({
         title: 'Error!',
         message: error.response.data
       })
     },
-    getReports() {
+    getDepartments() {
       axios
-        .get(this.reportsUrl)
+        .get(this.departmentsUrl)
         .then(response => {
-          this.reports = response.data.data
-          //   let reports = this.reports
-          //   for (let i = 0; i < patients.length; i++) {
-          //     patients[i].url = this.imageurl + patients[i].photo
+          this.departments = response.data.data
+          //   let notes = this.nursenotes
+          //   for (let i = 0; i < notes.length; i++) {
+          //     notes[i].url = this.patienturl + notes[i]._id
           //   }
         })
         .catch(error => {
           this.handleError(error)
         })
     },
-
-    deleteReport(report) {
+    deleteDepartment: function(department) {
+      this.deleteData = true
+      this.currentDepartment = department
       axios
-        .delete(this.reportsUrl, { data: { reportId: report._id } })
+        .delete(this.departmentsUrl, { data: { departmentId: department._id } })
         .then(response => {
-          this.reports = response.data.data
+          this.departments = response.data.data
+          this.deleteData = false
           this.$iziToast.success({
             title: 'Error!',
             message: response.data.message

@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '../store/index'
-import Home from '../views/Home.vue'
+// import Home from '../views/Home.vue'
 import Login from '../views/auth/Login.vue'
 import Register from '../views/auth/Register.vue'
 import Dashboard from '../views/dashboards/Dashboard.vue'
@@ -18,8 +18,7 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: Home
+    redirect: '/login'
   },
   {
     path: '/about',
@@ -196,6 +195,14 @@ const routes = [
       requiresAuth: true
     }
   },
+  {
+    path: '/treatment-records',
+    name: 'treatment',
+    component: () => import('../views/app/nurseutilities/Treatment.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
   // Models
   {
     path: '/departments',
@@ -209,6 +216,14 @@ const routes = [
     path: '/create-department',
     name: 'createdepartment',
     component: () => import('../views/app/model/CreateDepartment.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/create-unit',
+    name: 'unit',
+    component: () => import('../views/app/model/Units.vue'),
     meta: {
       requiresAuth: true
     }
@@ -241,6 +256,64 @@ const routes = [
     path: '/create-laboratory',
     name: 'createlaboratory',
     component: () => import('../views/app/model/CreateLaboratory.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  // Pharmacy
+  {
+    path: '/create-generic-drug',
+    name: 'creategeneric',
+    component: () => import('../views/app/pharmacy/CreateGeneric.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/add-pharmacy-item',
+    name: 'pharmacyitem',
+    component: () => import('../views/app/pharmacy/CreateStoreItem.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/pharmacy-items',
+    name: 'pharmacyitem',
+    component: () => import('../views/app/pharmacy/PharmacyItem.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/pharmacy/:id',
+    name: 'pharmacyitemparams',
+    component: () => import('../views/app/pharmacy/OnePharmacyItem.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  // Laboratory
+  {
+    path: '/laboratory-tests',
+    name: 'laboratorytests',
+    component: () => import('../views/app/laboratory/LabTests.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/add-laboratory-items',
+    name: 'addlaboratoryitem',
+    component: () => import('../views/app/laboratory/CreateLabItem.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/laboratory-items',
+    name: 'laboratoryitems',
+    component: () => import('../views/app/laboratory/LabItems.vue'),
     meta: {
       requiresAuth: true
     }

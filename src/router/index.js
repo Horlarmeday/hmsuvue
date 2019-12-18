@@ -317,6 +317,23 @@ const routes = [
     meta: {
       requiresAuth: true
     }
+  },
+  // Medical imaging
+  {
+    path: '/create-imaging',
+    name: 'createimaging',
+    component: () => import('../views/app/imaging/ImagingItems.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/investigation/:id',
+    name: 'createinvestigation',
+    component: () => import('../views/app/imaging/InvestigationItems.vue'),
+    meta: {
+      requiresAuth: true
+    }
   }
 ]
 

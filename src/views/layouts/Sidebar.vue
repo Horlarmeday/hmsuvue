@@ -663,6 +663,24 @@
                       ></router-link
                     >
                   </li>
+                  <li
+                    class="kt-menu__item kt-menu__item--submenu"
+                    data-ktmenu-submenu-toggle="hover"
+                    aria-haspopup="true"
+                  >
+                    <router-link
+                      to="/immunization-consultations"
+                      class="kt-menu__link "
+                      style="padding-left: 40px;height: 40px;color:#9899ac;"
+                      ><i
+                        style="flex: 0 0 15px"
+                        class="kt-menu__link-bullet kt-menu__link-bullet--dot"
+                        ><span>-</span></i
+                      ><span class="kt-menu__link-text"
+                        >Immunizations</span
+                      ></router-link
+                    >
+                  </li>
                 </ul>
               </b-collapse>
             </li>
@@ -1243,24 +1261,6 @@
                     aria-haspopup="true"
                   >
                     <router-link
-                      to="/investigation-list"
-                      class="kt-menu__link"
-                      style="padding-left: 40px;height: 40px;color:#9899ac;"
-                      ><i
-                        style="flex: 0 0 15px"
-                        class="kt-menu__link-bullet kt-menu__link-bullet--dot"
-                        ><span>-</span></i
-                      ><span class="kt-menu__link-text"
-                        >Investigation List</span
-                      ></router-link
-                    >
-                  </li>
-                  <li
-                    class="kt-menu__item kt-menu__item--submenu"
-                    data-ktmenu-submenu-toggle="hover"
-                    aria-haspopup="true"
-                  >
-                    <router-link
                       to="/imaging-requests"
                       class="kt-menu__link"
                       style="padding-left: 40px;height: 40px;color:#9899ac;"
@@ -1400,7 +1400,7 @@
                       />
                     </g>
                   </svg> </span
-                ><span class="kt-menu__link-text">HMO</span>
+                ><span class="kt-menu__link-text">Health Insurance</span>
               </b-link>
               <b-collapse id="accordion-13" accordion="my-accordion">
                 <ul class="kt-menu__subnav">
@@ -1720,7 +1720,7 @@
               class="kt-menu__item  kt-menu__item--active"
               aria-haspopup="true"
             >
-              <router-link to="/security" class="kt-menu__link "
+              <router-link to="/settings" class="kt-menu__link "
                 ><span class="kt-menu__link-icon"
                   ><svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -1754,7 +1754,7 @@
                         rx="1"
                       />
                     </g></svg></span
-                ><span class="kt-menu__link-text">Security</span></router-link
+                ><span class="kt-menu__link-text">Settings</span></router-link
               >
             </li>
             <li

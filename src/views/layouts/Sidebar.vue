@@ -1410,7 +1410,7 @@
                     aria-haspopup="true"
                   >
                     <router-link
-                      to="/create-retainership"
+                      to="/create-insurance"
                       class="kt-menu__link"
                       style="padding-left: 40px;height: 40px;color:#9899ac;"
                       ><i
@@ -1418,7 +1418,7 @@
                         class="kt-menu__link-bullet kt-menu__link-bullet--dot"
                         ><span>-</span></i
                       ><span class="kt-menu__link-text"
-                        >Create HMO/Retainership</span
+                        >Create Insurance</span
                       ></router-link
                     >
                   </li>
@@ -1428,7 +1428,7 @@
                     aria-haspopup="true"
                   >
                     <router-link
-                      to="/retainership-and-hmo-list"
+                      to="/insurance-list"
                       class="kt-menu__link"
                       style="padding-left: 40px;height: 40px;color:#9899ac;"
                       ><i
@@ -1436,7 +1436,7 @@
                         class="kt-menu__link-bullet kt-menu__link-bullet--dot"
                         ><span>-</span></i
                       ><span class="kt-menu__link-text"
-                        >HMO/Retainership List</span
+                        >Insurance List</span
                       ></router-link
                     >
                   </li>

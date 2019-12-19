@@ -334,6 +334,56 @@ const routes = [
     meta: {
       requiresAuth: true
     }
+  },
+  // Insurance
+  {
+    path: '/create-insurance',
+    name: 'createinsurance',
+    component: () => import('../views/app/insurance/CreateInsurance.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/hmo/:id',
+    name: 'createhmo',
+    component: () => import('../views/app/insurance/CreateHmo.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/enrollee/:id',
+    name: 'createenrollee',
+    component: () => import('../views/app/insurance/CreateEnrollee.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  // Vendors
+  {
+    path: '/create-vendor-account',
+    name: 'createvendor',
+    component: () => import('../views/app/vendor/CreateVendor.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/vendor-list',
+    name: 'vendors',
+    component: () => import('../views/app/vendor/Vendors.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/vendor-supplies',
+    name: 'vendorsupplies',
+    component: () => import('../views/app/vendor/VendorSupply.vue'),
+    meta: {
+      requiresAuth: true
+    }
   }
 ]
 

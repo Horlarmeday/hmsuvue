@@ -138,16 +138,17 @@
           <div class="col-xl-6">
             <div class="form-group">
               <label>Date of Birth</label>
-              <!-- <datetime
-                v-model="birthday"
+              <datetime
+                type="date"
                 input-class="form-control"
-              ></datetime> -->
-              <input
+                v-model="birthday"
+              ></datetime>
+              <!-- <input
                 type="date"
                 class="form-control"
                 v-model="birthday"
                 placeholder="Date of Birth"
-              />
+              /> -->
               <span class="form-text text-muted"
                 >Please enter patient date of birth.</span
               >
@@ -710,12 +711,12 @@
 
 <script>
 import axios from '../../axios'
-// import { Datetime } from 'vue-datetime'
+import { Datetime } from 'vue-datetime'
 export default {
   name: 'patientForm',
-  // components: {
-  //   Datetime
-  // },
+  components: {
+    datetime: Datetime
+  },
   props: {
     title: {
       type: String

@@ -230,7 +230,9 @@
                 </td>
                 <td>{{ hmo.createdAt | moment('DD/MM/YYYY') }}</td>
                 <td>
-                  <router-link class="btn btn-brand mr-3" :to="hmo.url">Create Enrollee</router-link>
+                  <router-link class="btn btn-brand mr-3" :to="hmo.url"
+                    >Create Enrollee</router-link
+                  >
                   <button
                     v-if="!deletedata && hmo._id !== currentHmo._id"
                     @click="deleteHmo(hmo)"
@@ -321,7 +323,7 @@ export default {
           this.hmos = response.data.data
           let hmos = this.hmos
           for (let i = 0; i < hmos.length; i++) {
-            hmos[i].url = '/enrollee/' + hmos[i]._id;
+            hmos[i].url = '/enrollee/' + hmos[i]._id
           }
         })
         .catch(error => {

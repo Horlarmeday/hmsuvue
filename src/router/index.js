@@ -126,6 +126,15 @@ const routes = [
       requiresAuth: true
     }
   },
+  {
+    path: '/appointment/:id',
+    name: 'appointmentparams',
+    component: () =>
+      import('../views/app/appointments/CreateAppointmentParams.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
   // Triages
   {
     path: '/create-triage',
@@ -139,6 +148,14 @@ const routes = [
     path: '/triages',
     name: 'triages',
     component: () => import('../views/app/triages/Triages.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/triage/:id',
+    name: 'triageparams',
+    component: () => import('../views/app/triages/CreateTriageParams.vue'),
     meta: {
       requiresAuth: true
     }
@@ -381,6 +398,15 @@ const routes = [
     path: '/vendor-supplies',
     name: 'vendorsupplies',
     component: () => import('../views/app/vendor/VendorSupply.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  // Settings
+  {
+    path: '/settings',
+    name: 'settings',
+    component: () => import('../views/app/settings/Settings.vue'),
     meta: {
       requiresAuth: true
     }

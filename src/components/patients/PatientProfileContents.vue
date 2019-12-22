@@ -1057,7 +1057,8 @@
                 </div>
                 <br />
                 <div class="tab-content">
-                  <h6 class="text-center">Dependants</h6><hr>
+                  <h6 class="text-center">Dependants</h6>
+                  <hr />
                   <div class="tab-pane active" id="kt_widget2_tab1_content">
                     <div class="kt-widget2">
                       <div
@@ -1079,7 +1080,7 @@
                         </div>
                         <div class="kt-widget2__info">
                           <a href="#" class="kt-widget2__title">
-                           {{ dependant.dateofbirth | moment('DD/MM/YYYY') }}
+                            {{ dependant.dateofbirth | moment('DD/MM/YYYY') }}
                           </a>
                         </div>
                       </div>

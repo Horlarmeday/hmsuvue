@@ -9,28 +9,16 @@
           </span>
           <h3 class="kt-portlet__head-title">
             Create Appointment
-            <small>Create a new appointment</small>
+            <small
+              >Create a new appointment for {{ patient.firstname }}
+              {{ patient.lastname }}</small
+            >
           </h3>
         </div>
       </div>
       <div class="kt-portlet__body">
         <!--begin: Datatable -->
         <div class="row">
-          <div class="col-xl-6">
-            <div class="form-group">
-              <label>Patient Name</label>
-              <select class="form-control" v-model="patientId">
-                <option disabled selected>Select Patient</option>
-                <option
-                  v-for="patient in patients"
-                  :key="patient._id"
-                  :value="patient._id"
-                  >{{ patient.firstname }} {{ patient.lastname }}</option
-                >
-              </select>
-              <span class="form-text text-muted">Please select patient.</span>
-            </div>
-          </div>
           <div class="col-xl-6">
             <div class="form-group">
               <label>Appointment Type</label>
@@ -45,8 +33,6 @@
               >
             </div>
           </div>
-        </div>
-        <div class="row">
           <div class="col-xl-6">
             <div class="form-group">
               <label>Examiner</label>
@@ -62,6 +48,8 @@
               <span class="form-text text-muted">Please select examiner.</span>
             </div>
           </div>
+        </div>
+        <div class="row">
           <div class="col-xl-6">
             <div class="form-group">
               <label>Department</label>
@@ -76,8 +64,6 @@
               >
             </div>
           </div>
-        </div>
-        <div class="row">
           <div class="col-xl-6">
             <div class="form-group">
               <label>Appointment Date</label>
@@ -86,11 +72,19 @@
                 input-class="form-control"
                 v-model="appointmentdate"
               ></datetime>
+              <!-- <input
+                type="date"
+                class="form-control"
+                v-model="appointmentdate"
+                placeholder="Phone Number"
+              /> -->
               <span class="form-text text-muted"
                 >Please select appointment date.</span
               >
             </div>
           </div>
+        </div>
+        <div class="row">
           <div class="col-xl-6">
             <div class="form-group">
               <label>Appointment Time</label>
@@ -99,13 +93,17 @@
                 input-class="form-control"
                 v-model="appointmenttime"
               ></datetime>
+              <!-- <input
+                type="date"
+                class="form-control"
+                v-model="appointmenttime"
+                placeholder="Time"
+              /> -->
               <span class="form-text text-muted"
                 >Please select appointment time.</span
               >
             </div>
           </div>
-        </div>
-        <div class="row">
           <div class="col-xl-6">
             <div class="form-group">
               <label>Problem</label>
@@ -120,6 +118,7 @@
             </div>
           </div>
         </div>
+
         <div>
           <button
             v-if="!loading"
@@ -148,7 +147,7 @@
 import axios from '../../axios'
 import { Datetime } from 'vue-datetime'
 export default {
-  name: 'employeeForm',
+  name: 'appointmentparamsForm',
   props: {
     title: {
       type: String
@@ -159,7 +158,7 @@ export default {
   },
   data() {
     return {
-      patientId: '',
+      patient: '',
       examinerId: '',
       appointmentdate: '',
       appointmenttime: '',
@@ -167,10 +166,9 @@ export default {
       problem: '',
       department: '',
 
-      appointmentUrl: '/appointment',
-      landingpageUrl: '/appointment/appointments',
+      appointmentUrl: '/appointment/',
+      landingpageUrl: '/appointment/appointments/',
       loading: false,
-      patients: [],
       staffs: []
     }
   },
@@ -187,7 +185,6 @@ export default {
     createAppointment() {
       this.loading = true
       const data = {
-        patientId: this.patientId,
         examinerId: this.examinerId,
         appointmentdate: this.appointmentdate,
         appointmenttime: this.appointmenttime,
@@ -196,16 +193,16 @@ export default {
         department: this.department
       }
       axios
-        .post(this.appointmentUrl, data)
+        .post(this.appointmentUrl + this.$route.params.id, data)
         .then(response => {
           this.loading = false
-          this.patientId = ''
           this.examinerId = ''
           this.appointmentdate = ''
           this.appointmenttime = ''
           this.type = ''
           this.problem = ''
           this.department = ''
+          this.$router.push('/dashboard')
 
           this.$iziToast.success({
             title: 'Success!',
@@ -219,11 +216,10 @@ export default {
     },
     getPage() {
       axios
-        .get(this.landingpageUrl)
+        .get(this.landingpageUrl + this.$route.params.id)
         .then(response => {
-          this.patients = response.data.data.patients
+          this.patient = response.data.data.patient
           this.staffs = response.data.data.examiners
-          console.log(response.data)
         })
         .catch(error => {
           this.handleError(error)

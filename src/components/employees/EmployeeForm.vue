@@ -109,12 +109,13 @@
           <div class="col-xl-6">
             <div class="form-group">
               <label>Date of Birth</label>
-              <input
+              <datetime
                 type="date"
-                class="form-control"
+                input-class="form-control"
                 v-model="birthday"
-                placeholder="Date of Birth"
-              />
+                title="Date of Birth"
+              ></datetime>
+
               <span class="form-text text-muted"
                 >Please enter staff date of birth.</span
               >
@@ -318,12 +319,16 @@
 
 <script>
 import axios from '../../axios'
+import { Datetime } from 'vue-datetime'
 export default {
   name: 'employeeForm',
   props: {
     title: {
       type: String
     }
+  },
+  components: {
+    datetime: Datetime
   },
   data() {
     return {

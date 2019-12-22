@@ -176,10 +176,18 @@
                 <td>{{ patient.patientId }}</td>
                 <td>
                   <img
-                    style="border-radius: 50px"
+                    v-if="patient.photo"
+                    style="border-radius: 5px"
                     width="40"
                     :src="patient.photourl"
                     alt="Patient Image"
+                  />
+                  <img
+                    style="border-radius: 5px"
+                    v-else
+                    width="40"
+                    src="../../assets/images/100_4.jpg"
+                    alt="patient image"
                   />
                 </td>
                 <td>
@@ -227,6 +235,24 @@
             </tbody>
           </table>
         </div>
+        <div class="card-footer">
+          <p class="float-left">Showing {{ pageSize }} of {{ rows }} entries</p>
+          <button
+            class="btn btn-outline-brand btn-sm ml-3 float-right"
+            :disabled="isNextButtonDisabled"
+            @click="pageChangeHandle('next')"
+          >
+            Next →
+          </button>
+
+          <button
+            class="btn btn-outline-brand btn-sm float-right"
+            :disabled="isPreviousButtonDisabled"
+            @click="pageChangeHandle('previous')"
+          >
+            ← Prev
+          </button>
+        </div>
 
         <!--end: Datatable -->
       </div>
@@ -247,6 +273,11 @@ export default {
   data() {
     return {
       patients: [],
+      currentPage: 1,
+      pageCount: '',
+      pageSize: '',
+      rows: '',
+      meta: '',
       patientsUrl: '/patient/',
       imageurl: 'http://localhost:3000/static/uploads/'
     }
@@ -263,9 +294,14 @@ export default {
     },
     getPatients() {
       axios
-        .get(this.patientsUrl)
+        .get(`${this.patientsUrl}?currentPage=${this.currentPage}`)
         .then(response => {
-          this.patients = response.data.data
+          this.patients = response.data.data.patients
+          this.meta = response.data.data.meta
+          this.rows = this.meta.count
+          this.pageSize = this.meta.pageSize
+          this.pageCount = this.meta.pageCount
+
           let patients = this.patients
           for (let i = 0; i < patients.length; i++) {
             patients[i].photourl = this.imageurl + patients[i].photo
@@ -277,6 +313,24 @@ export default {
         .catch(error => {
           this.handleError(error)
         })
+    },
+    pageChangeHandle(value) {
+      if (value === 'next') {
+        this.currentPage += 1
+        console.log(this.currentPage)
+        this.getPatients()
+      } else if (value === 'previous') {
+        this.currentPage -= 1
+        this.getPatients()
+      }
+    }
+  },
+  computed: {
+    isPreviousButtonDisabled() {
+      return this.currentPage === 1
+    },
+    isNextButtonDisabled() {
+      return this.currentPage === this.pageCount
     }
   }
 }

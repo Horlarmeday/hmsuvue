@@ -277,7 +277,7 @@
                 <td>
                   <button
                     v-if="!deletedata && test._id !== currentTest._id"
-                    @click="deleteDrug(test)"
+                    @click="deleteTest(test)"
                     class="btn btn-danger btn-md btn-elevate kt-login__btn-primary"
                   >
                     Delete

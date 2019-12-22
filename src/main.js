@@ -11,7 +11,9 @@ import 'vue-datetime/dist/vue-datetime.css'
 import './vee-validate'
 
 import { CollapsePlugin } from 'bootstrap-vue'
+import { Datetime } from 'vue-datetime'
 
+Vue.use(Datetime)
 Vue.use(CollapsePlugin)
 Vue.use(iziToast)
 Vue.use(require('vue-moment'))

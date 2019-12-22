@@ -64,10 +64,13 @@
                 </div>
               </div>
               &nbsp;
-              <a href="#" class="btn btn-brand btn-elevate btn-icon-sm">
+              <router-link
+                to="/create-appointment"
+                class="btn btn-brand btn-elevate btn-icon-sm"
+              >
                 <i class="la la-plus"></i>
-                New Record
-              </a>
+                Create Appointment
+              </router-link>
             </div>
           </div>
         </div>

@@ -113,10 +113,6 @@
                 </div>
               </div>
               &nbsp;
-              <a href="#" class="btn btn-brand btn-elevate btn-icon-sm">
-                <i class="la la-plus"></i>
-                New Record
-              </a>
             </div>
           </div>
         </div>
@@ -133,7 +129,8 @@
                       type="text"
                       class="form-control"
                       placeholder="Search..."
-                      id="generalSearch"
+                      @keyup="myFunction"
+                      v-model="search"
                     />
                     <span class="kt-input-icon__icon kt-input-icon__icon--left">
                       <span><i class="la la-search"></i></span>
@@ -150,7 +147,7 @@
       <div class="kt-portlet__body ">
         <!--begin: Datatable -->
         <div class="dt-responsive table-responsive">
-          <table class="table table-striped table-bordered nowrap">
+          <table id="mytable" class="table table-striped table-bordered nowrap">
             <thead>
               <tr>
                 <th>S/N</th>
@@ -176,6 +173,24 @@
             </tbody>
           </table>
         </div>
+        <div class="card-footer">
+          <p class="float-left">Showing {{ pageSize }} of {{ rows }} entries</p>
+          <button
+            class="btn btn-outline-brand btn-sm ml-3 float-right"
+            :disabled="isNextButtonDisabled"
+            @click="pageChangeHandle('next')"
+          >
+            Next →
+          </button>
+
+          <button
+            class="btn btn-outline-brand btn-sm float-right"
+            :disabled="isPreviousButtonDisabled"
+            @click="pageChangeHandle('previous')"
+          >
+            ← Prev
+          </button>
+        </div>
 
         <!--end: Datatable -->
       </div>
@@ -196,6 +211,12 @@ export default {
   data() {
     return {
       name: '',
+      search: '',
+      currentPage: 1,
+      pageCount: '',
+      pageSize: '',
+      rows: '',
+      meta: '',
       units: [],
       unitUrl: '/admin/unit',
       loading: false
@@ -235,13 +256,37 @@ export default {
 
     getUnit() {
       axios
-        .get(this.unitUrl)
+        .get(`${this.unitUrl}?currentPage=${this.currentPage}`)
         .then(response => {
-          this.units = response.data.data
+          this.units = response.data.data.units
+          this.meta = response.data.data.meta
+          this.rows = this.meta.count
+          this.pageSize = this.meta.pageSize
+          this.pageCount = this.meta.pageCount
         })
         .catch(error => {
           this.handleError(error)
         })
+    },
+
+    pageChangeHandle(value) {
+      if (value === 'next') {
+        this.currentPage += 1
+        console.log(this.currentPage)
+        this.getUnit()
+      } else if (value === 'previous') {
+        this.currentPage -= 1
+        this.getUnit()
+      }
+    },
+    myFunction() {}
+  },
+  computed: {
+    isPreviousButtonDisabled() {
+      return this.currentPage === 1
+    },
+    isNextButtonDisabled() {
+      return this.currentPage === this.pageCount
     }
   }
 }

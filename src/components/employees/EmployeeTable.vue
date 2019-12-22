@@ -64,10 +64,13 @@
                 </div>
               </div>
               &nbsp;
-              <a href="#" class="btn btn-brand btn-elevate btn-icon-sm">
+              <router-link
+                to="/create-employee-account"
+                class="btn btn-brand btn-elevate btn-icon-sm"
+              >
                 <i class="la la-plus"></i>
-                New Record
-              </a>
+                Create Employee
+              </router-link>
             </div>
           </div>
         </div>
@@ -133,9 +136,12 @@
               </div>
             </div>
             <div class="col-xl-4 order-1 order-xl-2 kt-align-right">
-              <a href="#" class="btn btn-default kt-hidden">
-                <i class="la la-cart-plus"></i> New Order
-              </a>
+              <router-link
+                to="/create-employee-account"
+                class="btn btn-default kt-hidden"
+              >
+                <i class="la la-cart-plus"></i> Create Employee
+              </router-link>
               <div
                 class="kt-separator kt-separator--border-dashed kt-separator--space-lg d-xl-none"
               ></div>
@@ -174,7 +180,20 @@
                 </td>
                 <td>{{ staff.staffId }}</td>
                 <td>
-                  <img width="40" :src="staff.url" alt="staff Image" />
+                  <img
+                    v-if="staff.photo"
+                    style="border-radius: 5px"
+                    width="40"
+                    :src="staff.url"
+                    alt="staff Image"
+                  />
+                  <img
+                    v-else
+                    style="border-radius: 5px"
+                    width="40"
+                    src="../../assets/images/100_4.jpg"
+                    alt="staff image"
+                  />
                 </td>
                 <td>
                   <a href="#"> {{ staff.firstname }} {{ staff.lastname }} </a>
@@ -191,7 +210,7 @@
                   >
                   <label
                     v-if="staff.role == 'Admin'"
-                    class="kt-badge kt-badge--primary kt-badge--inline"
+                    class="kt-badge kt-badge--dark kt-badge--inline"
                     >{{ staff.role }}</label
                   >
                   <label
@@ -201,7 +220,12 @@
                   >
                   <label
                     v-if="staff.role == 'Doctor'"
-                    class="kt-badge kt-badge--info kt-badge--inline"
+                    class="kt-badge kt-badge--danger kt-badge--inline"
+                    >{{ staff.role }}</label
+                  >
+                  <label
+                    v-if="staff.role == 'Medical Records'"
+                    class="kt-badge kt-badge--warning kt-badge--inline"
                     >{{ staff.role }}</label
                   >
                 </td>

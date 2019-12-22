@@ -188,13 +188,13 @@
           <div class="col-xl-6">
             <div class="form-group">
               <label>Expiry Date</label>
-              <input
+              <datetime
                 type="date"
-                class="form-control"
+                input-class="form-control"
                 v-model="input.expiration"
-                placeholder="Batch Number"
-                required
-              />
+                title="Expiry Date"
+              ></datetime>
+
               <span class="form-text text-muted"
                 >Please enter batch number.</span
               >
@@ -362,12 +362,16 @@
 
 <script>
 import axios from '../../axios'
+import { Datetime } from 'vue-datetime'
 export default {
   name: 'createPharmacyItemForm',
   props: {
     title: {
       type: String
     }
+  },
+  components: {
+    datetime: Datetime
   },
   data() {
     return {

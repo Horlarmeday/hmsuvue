@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "apexcharts": "^3.11.1",
     "axios": "^0.19.0",
     "bootstrap-vue": "^2.1.0",
     "core-js": "^3.3.2",
@@ -17,10 +18,15 @@
     "perfect-scrollbar": "^1.4.0",
     "vee-validate": "^3.1.1",
     "vue": "^2.6.10",
+    "vue-apexcharts": "^1.5.1",
     "vue-datetime": "^1.0.0-beta.11",
+    "vue-fullcalendar": "^1.0.9",
     "vue-moment": "^4.0.0",
     "vue-router": "^3.1.3",
-    "vuex": "^3.0.1"
+    "vue-simple-calendar": "^4.3.2",
+    "vuejs-datepicker": "^1.6.2",
+    "vuex": "^3.0.1",
+    "weekstart": "^1.0.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.0.0",

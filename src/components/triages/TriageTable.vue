@@ -165,6 +165,7 @@
                 <th>Muac (muac)</th>
                 <th>SPO2 (%)</th>
                 <th>Creator</th>
+                <th>Created</th>
               </tr>
             </thead>
             <tbody>
@@ -204,7 +205,7 @@
                     >Yellow</label
                   >
                   <label
-                    v-if="triage.muac == 'Red'"
+                    v-if="triage.muac == 'red'"
                     class="kt-badge kt-badge--danger kt-badge--inline"
                     >Red</label
                   >
@@ -215,6 +216,11 @@
                   <a href="#">
                     {{ triage.creator.firstname }} {{ triage.creator.lastname }}
                   </a>
+                </td>
+                <td>
+                  {{
+                    triage.createdAt | moment('dddd, MMMM Do YYYY, h:mm:ss a')
+                  }}
                 </td>
               </tr>
             </tbody>

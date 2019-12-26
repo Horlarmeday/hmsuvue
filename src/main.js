@@ -8,6 +8,7 @@ import '../node_modules/nprogress/nprogress.css'
 import './assets/css/style.css'
 import 'izitoast/dist/css/iziToast.css'
 import 'vue-datetime/dist/vue-datetime.css'
+import 'vue-select/dist/vue-select.css'
 import './vee-validate'
 
 import { CollapsePlugin } from 'bootstrap-vue'

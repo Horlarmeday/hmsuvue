@@ -4,10 +4,10 @@ import 'izitoast/dist/css/iziToast.min.css'
 
 // Here you can include some "default" settings
 iziToast.settings({
-  close: false,
+  close: true,
   pauseOnHover: false,
-  timeout: 3000,
-  progressBar: false,
+  timeout: 10000,
+  progressBar: true,
   layout: 2,
   position: 'topRight'
 })

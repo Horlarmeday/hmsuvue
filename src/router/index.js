@@ -288,7 +288,7 @@ const routes = [
   },
   {
     path: '/add-pharmacy-item',
-    name: 'pharmacyitem',
+    name: 'createpharmacyitem',
     component: () => import('../views/app/pharmacy/CreateStoreItem.vue'),
     meta: {
       requiresAuth: true
@@ -296,7 +296,7 @@ const routes = [
   },
   {
     path: '/pharmacy-items',
-    name: 'pharmacyitem',
+    name: 'pharmacyitems',
     component: () => import('../views/app/pharmacy/PharmacyItem.vue'),
     meta: {
       requiresAuth: true
@@ -306,6 +306,14 @@ const routes = [
     path: '/pharmacy/:id',
     name: 'pharmacyitemparams',
     component: () => import('../views/app/pharmacy/OnePharmacyItem.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/pharmacy-requests',
+    name: 'pharmacyrequests',
+    component: () => import('../views/app/pharmacy/PharmacyRequests.vue'),
     meta: {
       requiresAuth: true
     }
@@ -335,6 +343,14 @@ const routes = [
       requiresAuth: true
     }
   },
+  {
+    path: '/lab-requests',
+    name: 'laboratoryrequest',
+    component: () => import('../views/app/laboratory/LabRequests.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
   // Medical imaging
   {
     path: '/create-imaging',
@@ -348,6 +364,14 @@ const routes = [
     path: '/investigation/:id',
     name: 'createinvestigation',
     component: () => import('../views/app/imaging/InvestigationItems.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/imaging-requests',
+    name: 'imagingrequests',
+    component: () => import('../views/app/imaging/ImagingRequests.vue'),
     meta: {
       requiresAuth: true
     }
@@ -407,6 +431,41 @@ const routes = [
     path: '/settings',
     name: 'settings',
     component: () => import('../views/app/settings/Settings.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  // Consultations
+  {
+    path: '/attended-consultations',
+    name: 'consultations',
+    component: () => import('../views/app/consultations/Consultations.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/consultation/:id',
+    name: 'consultationspage',
+    component: () => import('../views/app/consultations/ConsultationPage.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/triage-patient/:id',
+    name: 'triagepatient',
+    component: () =>
+      import('../views/app/consultations/AttendingToPatient.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/appointment-patient/:id',
+    name: 'appointmentpatient',
+    component: () =>
+      import('../views/app/consultations/AppointmentPatient.vue'),
     meta: {
       requiresAuth: true
     }

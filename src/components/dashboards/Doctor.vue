@@ -234,6 +234,7 @@
                     <thead>
                       <tr>
                         <th>S/N</th>
+                        <th>Appointment ID</th>
                         <th>Patient Name</th>
                         <th>Type</th>
                         <th>Date</th>
@@ -257,6 +258,7 @@
                         <td>
                           {{ index + 1 }}
                         </td>
+                        <td>{{ appointment.uniqueid }}</td>
                         <td>
                           <router-link
                             :to="appointment.url"
@@ -289,7 +291,7 @@
                         </td>
                         <td>
                           <router-link
-                            to="#"
+                            :to="appointment.consultationurl"
                             class="btn btn-bold btn-label-brand btn-sm"
                             >Take Up</router-link
                           >
@@ -365,7 +367,7 @@
                         </td>
                         <td>
                           <router-link
-                            to="#"
+                            :to="triage.triageurl"
                             class="btn btn-bold btn-label-brand btn-sm"
                             >Take Up</router-link
                           >
@@ -454,9 +456,16 @@ export default {
           this.doctorsCount = response.data.data.doctorsCount
           this.appointmentCount = response.data.data.appointmentCount
           let appointments = this.appointments
+          let triages = this.triages
           //   let demoevents = []
           for (let i = 0; i < appointments.length; i++) {
-            appointments[i].url = '/patient/' + appointments[i]._id
+            appointments[i].url = '/patient/' + appointments[i].patient._id
+            appointments[i].consultationurl =
+              '/appointment-patient/' + appointments[i].patient._id
+          }
+
+          for (let i = 0; i < triages.length; i++) {
+            triages[i].triageurl = '/triage-patient/' + triages[i].patient._id
           }
         })
         .catch(error => {

@@ -87,7 +87,8 @@
                       type="text"
                       class="form-control"
                       placeholder="Search..."
-                      id="generalSearch"
+                      v-model="input"
+                      @keyup="getAppointments"
                     />
                     <span class="kt-input-icon__icon kt-input-icon__icon--left">
                       <span><i class="la la-search"></i></span>
@@ -200,12 +201,12 @@
 
                 <td>
                   <label
-                    v-if="appointment.status"
+                    v-if="appointment.taken"
                     class="kt-badge kt-badge--success kt-badge--inline"
                     >Attended</label
                   >
                   <label
-                    v-if="!appointment.status"
+                    v-if="!appointment.taken"
                     class="kt-badge kt-badge--warning kt-badge--inline"
                     >Pending</label
                   >
@@ -220,6 +221,24 @@
               </tr>
             </tbody>
           </table>
+        </div>
+        <div class="card-footer">
+          <p class="float-left">Showing {{ pageSize }} of {{ rows }} entries</p>
+          <button
+            class="btn btn-outline-brand btn-sm ml-3 float-right"
+            :disabled="isNextButtonDisabled"
+            @click="pageChangeHandle('next')"
+          >
+            Next →
+          </button>
+
+          <button
+            class="btn btn-outline-brand btn-sm float-right"
+            :disabled="isPreviousButtonDisabled"
+            @click="pageChangeHandle('previous')"
+          >
+            ← Prev
+          </button>
         </div>
 
         <!--end: Datatable -->
@@ -241,7 +260,13 @@ export default {
   data() {
     return {
       appointments: [],
-      appointmenturl: '/appointment'
+      appointmenturl: '/appointment',
+      currentPage: 1,
+      input: '',
+      pageCount: '',
+      pageSize: '',
+      rows: '',
+      meta: ''
     }
   },
   mounted() {
@@ -256,9 +281,16 @@ export default {
     },
     getAppointments() {
       axios
-        .get(this.appointmenturl)
+        .get(
+          `${this.appointmenturl}?currentPage=${this.currentPage}&search=${this.input}`
+        )
         .then(response => {
-          this.appointments = response.data.data
+          this.appointments = response.data.data.appointments
+          this.meta = response.data.data.meta
+          this.rows = this.meta.count
+          this.pageSize = this.meta.pageSize
+          this.pageCount = this.meta.pageCount
+
           let appointment = this.appointments
           for (let i = 0; i < appointment.length; i++) {
             appointment[i].url = '/patient/' + appointment[i].patient._id
@@ -267,6 +299,23 @@ export default {
         .catch(error => {
           this.handleError(error)
         })
+    },
+    pageChangeHandle(value) {
+      if (value === 'next') {
+        this.currentPage += 1
+        this.getAppointments()
+      } else if (value === 'previous') {
+        this.currentPage -= 1
+        this.getAppointments()
+      }
+    }
+  },
+  computed: {
+    isPreviousButtonDisabled() {
+      return this.currentPage === 1
+    },
+    isNextButtonDisabled() {
+      return this.currentPage === this.pageCount
     }
   }
 }

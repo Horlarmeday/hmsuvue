@@ -38,7 +38,8 @@
                       type="text"
                       class="form-control"
                       placeholder="Search..."
-                      id="generalSearch"
+                      v-model="input"
+                      @keyup="getItems"
                     />
                     <span class="kt-input-icon__icon kt-input-icon__icon--left">
                       <span><i class="la la-search"></i></span>
@@ -180,6 +181,24 @@
               </tr>
             </tbody>
           </table>
+        </div>
+        <div class="card-footer">
+          <p class="float-left">Showing {{ pageSize }} of {{ rows }} entries</p>
+          <button
+            class="btn btn-outline-brand btn-sm ml-3 float-right"
+            :disabled="isNextButtonDisabled"
+            @click="pageChangeHandle('next')"
+          >
+            Next →
+          </button>
+
+          <button
+            class="btn btn-outline-brand btn-sm float-right"
+            :disabled="isPreviousButtonDisabled"
+            @click="pageChangeHandle('previous')"
+          >
+            ← Prev
+          </button>
         </div>
 
         <!--begin::Modal-->
@@ -481,7 +500,14 @@ export default {
       rquantity: '',
       receiverId: '',
       unit: '',
-      departmentId: ''
+      departmentId: '',
+
+      currentPage: 1,
+      input: '',
+      pageCount: '',
+      pageSize: '',
+      rows: '',
+      meta: ''
     }
   },
   mounted() {
@@ -497,9 +523,15 @@ export default {
     },
     getItems() {
       axios
-        .get(this.itemUrl)
+        .get(
+          `${this.itemUrl}?currentPage=${this.currentPage}&search=${this.input}`
+        )
         .then(response => {
-          this.items = response.data.data
+          this.items = response.data.data.items
+          this.meta = response.data.data.meta
+          this.rows = this.meta.count
+          this.pageSize = this.meta.pageSize
+          this.pageCount = this.meta.pageCount
         })
         .catch(error => {
           this.handleError(error)

@@ -228,6 +228,12 @@
                     class="kt-badge kt-badge--warning kt-badge--inline"
                     >{{ staff.role }}</label
                   >
+                  <label
+                    style="background:#22adff;"
+                    v-if="staff.role == 'Receptionist'"
+                    class="kt-badge kt-badge--warning kt-badge--inline"
+                    >{{ staff.role }}</label
+                  >
                 </td>
                 <td>
                   <label

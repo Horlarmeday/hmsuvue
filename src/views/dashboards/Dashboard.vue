@@ -53,6 +53,7 @@
             <Doctor v-else-if="user.role == 'Doctor'" />
             <Nurse v-else-if="user.role == 'Nurse'" />
             <MedicalRecords v-else-if="user.role == 'Medical Records'" />
+            <Receptionist v-else-if="user.role == 'Receptionist'" />
           </div>
           <Footer />
         </div>
@@ -71,6 +72,7 @@ import SuperAdmin from '@/components/dashboards/SuperAdmin.vue'
 import Doctor from '@/components/dashboards/Doctor.vue'
 import Nurse from '@/components/dashboards/Nurse.vue'
 import MedicalRecords from '@/components/dashboards/MedicalRecords.vue'
+import Receptionist from '@/components/dashboards/Receptionist.vue'
 export default {
   name: 'dashboard',
   components: {
@@ -81,7 +83,8 @@ export default {
     SuperAdmin,
     Doctor,
     Nurse,
-    MedicalRecords
+    MedicalRecords,
+    Receptionist
   },
   data() {
     return {

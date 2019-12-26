@@ -84,7 +84,8 @@
                       type="text"
                       class="form-control"
                       placeholder="Search..."
-                      id="generalSearch"
+                      v-model="input"
+                      @keyup="filterPatient"
                     />
                     <span class="kt-input-icon__icon kt-input-icon__icon--left">
                       <span><i class="la la-search"></i></span>
@@ -274,6 +275,7 @@ export default {
     return {
       patients: [],
       currentPage: 1,
+      input: '',
       pageCount: '',
       pageSize: '',
       rows: '',
@@ -295,6 +297,31 @@ export default {
     getPatients() {
       axios
         .get(`${this.patientsUrl}?currentPage=${this.currentPage}`)
+        .then(response => {
+          this.patients = response.data.data.patients
+          this.meta = response.data.data.meta
+          this.rows = this.meta.count
+          this.pageSize = this.meta.pageSize
+          this.pageCount = this.meta.pageCount
+
+          let patients = this.patients
+          for (let i = 0; i < patients.length; i++) {
+            patients[i].photourl = this.imageurl + patients[i].photo
+          }
+          for (let i = 0; i < patients.length; i++) {
+            patients[i].url = this.patientsUrl + patients[i]._id
+          }
+        })
+        .catch(error => {
+          this.handleError(error)
+        })
+    },
+
+    filterPatient() {
+      axios
+        .get(
+          `${this.patientsUrl}?currentPage=${this.currentPage}&search=${this.input}`
+        )
         .then(response => {
           this.patients = response.data.data.patients
           this.meta = response.data.data.meta

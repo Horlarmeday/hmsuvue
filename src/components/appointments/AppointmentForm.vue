@@ -28,6 +28,11 @@
                   >{{ patient.firstname }} {{ patient.lastname }}</option
                 >
               </select>
+              <!-- <v-select
+                label="firstname"
+                :reduce="patients => patients._id"
+                :options="patients"
+              ></v-select> -->
               <span class="form-text text-muted">Please select patient.</span>
             </div>
           </div>
@@ -147,6 +152,7 @@
 <script>
 import axios from '../../axios'
 import { Datetime } from 'vue-datetime'
+// import vSelect from 'vue-select'
 export default {
   name: 'employeeForm',
   props: {
@@ -156,6 +162,7 @@ export default {
   },
   components: {
     datetime: Datetime
+    // vSelect
   },
   data() {
     return {

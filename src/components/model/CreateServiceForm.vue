@@ -50,7 +50,7 @@
             <div class="form-group">
               <label>Price</label>
               <input
-                type="text"
+                type="number"
                 class="form-control"
                 v-model="price"
                 placeholder="Price of Service"

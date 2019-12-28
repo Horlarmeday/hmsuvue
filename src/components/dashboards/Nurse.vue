@@ -189,7 +189,8 @@
                           type="text"
                           class="form-control"
                           placeholder="Search..."
-                          id="generalSearch"
+                          v-model="input"
+                          @keyup="dashboard"
                         />
                         <span
                           class="kt-input-icon__icon kt-input-icon__icon--left"
@@ -577,6 +578,7 @@ export default {
       sendtodoctorUrl: '/triage/send/to/doctor',
       admitpatientUrl: '/patient/admit/patient',
       imageurl: 'http://localhost:3000/static/uploads/',
+      input: '',
 
       currentPage: 1,
       pageCount: '',
@@ -598,7 +600,9 @@ export default {
     },
     dashboard() {
       axios
-        .get(`${this.landingPageUrl}?currentPage=${this.currentPage}`)
+        .get(
+          `${this.landingPageUrl}?currentPage=${this.currentPage}&search=${this.input}`
+        )
         .then(response => {
           this.appointments = response.data.data.appointments
           this.patients = response.data.data.patients
@@ -685,7 +689,6 @@ export default {
     pageChangeHandle(value) {
       if (value === 'next') {
         this.currentPage += 1
-        console.log(this.currentPage)
         this.dashboard()
       } else if (value === 'previous') {
         this.currentPage -= 1

@@ -242,6 +242,20 @@
               >
             </div>
           </div>
+          <div class="col-xl-6">
+            <div class="form-group">
+              <label>Occupation</label>
+              <input
+                type="text"
+                class="form-control"
+                v-model="occupation"
+                placeholder="Occupation"
+              />
+              <span class="form-text text-muted"
+                >Please select patient's occupation.</span
+              >
+            </div>
+          </div>
         </div>
         <h5 style="margin-bottom: 30px;color:#5d78ff;">Next of Kin</h5>
 
@@ -822,7 +836,8 @@ export default {
         nextofkinname: this.nextofkinname,
         nextofkinaddress: this.nextofkinaddress,
         nextofkinphone: this.nextofkinphone,
-        relationship: this.relationship
+        relationship: this.relationship,
+        occupation: this.occupation
       }
       axios
         .post(this.stepOneUrl, stepOnedata)

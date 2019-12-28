@@ -469,6 +469,90 @@ const routes = [
     meta: {
       requiresAuth: true
     }
+  },
+  // Ante natal
+  {
+    path: '/create-antenatal-account/:id',
+    name: 'createantenatal',
+    component: () => import('../views/app/antenatal/CreateAntenatal.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/antenatal/:id',
+    name: 'antenatal',
+    component: () => import('../views/app/antenatal/AntenatalTests.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/antenatal-consultations',
+    name: 'antenataltable',
+    component: () => import('../views/app/antenatal/Antenatals.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/delivery/:id',
+    name: 'deliveryinfo',
+    component: () => import('../views/app/antenatal/DeliveryInfo.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/postnatal/:id',
+    name: 'postnatal',
+    component: () => import('../views/app/antenatal/PostNatal.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  // Chat
+  {
+    path: '/chat',
+    name: 'chatcontent',
+    component: () => import('../views/app/chat/Chat.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  // immunization
+  {
+    path: '/immunization-consultations',
+    name: 'immunizationtable',
+    component: () => import('../views/app/immunization/Immunization.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/create-immunization',
+    name: 'createimmunization',
+    component: () => import('../views/app/immunization/CreateImmunization.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/update-immunization/:id',
+    name: 'updateimmunization',
+    component: () => import('../views/app/immunization/CreateImmunization.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  // Account
+  {
+    path: '/create-billing',
+    name: 'billingform',
+    component: () => import('../views/app/accounts/CreateBilling.vue'),
+    meta: {
+      requiresAuth: true
+    }
   }
 ]
 

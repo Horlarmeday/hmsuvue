@@ -45,11 +45,11 @@
           class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper"
           id="kt_wrapper"
         >
-          <Header />
+          <AntenatalHeader />
           <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
             <Subheader title="Patients" />
 
-            <PatientForm title="Patients" />
+            <DeliveryInfoForm title="Antenatal" />
           </div>
           <!-- <Footer /> -->
         </div>
@@ -61,18 +61,18 @@
 
 <script>
 import Sidebar from '@/views/layouts/Sidebar.vue'
-import Header from '@/views/layouts/Header.vue'
+import AntenatalHeader from '@/views/layouts/Header.vue'
 import Subheader from '@/views/layouts/Subheader.vue'
 // import Footer from '@/views/layouts/Footer.vue'
-import PatientForm from '@/components/patients/PatientForm.vue'
+import DeliveryInfoForm from '@/components/antenatal/DeliveryInfoForm.vue'
 export default {
-  name: 'patientsform',
+  name: 'appointment',
   components: {
     Sidebar,
-    Header,
+    AntenatalHeader,
     Subheader,
     // Footer,
-    PatientForm
+    DeliveryInfoForm
   }
 }
 </script>

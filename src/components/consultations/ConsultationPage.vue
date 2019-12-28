@@ -551,6 +551,7 @@
                     <th>Strength</th>
                     <th>Duration</th>
                     <th>Quantity</th>
+                    <th>Quantity to Dispense</th>
                     <th>Price (₦)</th>
                     <th>PrescribedBy</th>
                     <th>Notes</th>
@@ -569,6 +570,7 @@
                     <td>
                       {{ index + 1 }}
                     </td>
+                    <td>{{ drug.route }}</td>
                     <td>
                       {{ drug.drug.name }}
                     </td>

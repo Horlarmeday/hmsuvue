@@ -49,7 +49,7 @@
           <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
             <Subheader title="Patients" />
 
-            <PatientForm title="Patients" />
+            <CreateImmunizationForm title="Immunization" />
           </div>
           <!-- <Footer /> -->
         </div>
@@ -64,15 +64,15 @@ import Sidebar from '@/views/layouts/Sidebar.vue'
 import Header from '@/views/layouts/Header.vue'
 import Subheader from '@/views/layouts/Subheader.vue'
 // import Footer from '@/views/layouts/Footer.vue'
-import PatientForm from '@/components/patients/PatientForm.vue'
+import CreateImmunizationForm from '@/components/immunization/CreateImmunizationForm.vue'
 export default {
-  name: 'patientsform',
+  name: 'immunizationcontent',
   components: {
     Sidebar,
     Header,
     Subheader,
     // Footer,
-    PatientForm
+    CreateImmunizationForm
   }
 }
 </script>

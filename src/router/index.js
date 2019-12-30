@@ -106,6 +106,22 @@ const routes = [
       requiresAuth: true
     }
   },
+  {
+    path: '/make-request',
+    name: 'makerequest',
+    component: () => import('../views/app/request/MakeRequest.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/requests',
+    name: 'requests',
+    component: () => import('../views/app/request/Requests.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
 
   // Appointments
   {
@@ -550,6 +566,14 @@ const routes = [
     path: '/create-billing',
     name: 'billingform',
     component: () => import('../views/app/accounts/CreateBilling.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/billings',
+    name: 'billingtable',
+    component: () => import('../views/app/accounts/Billings.vue'),
     meta: {
       requiresAuth: true
     }

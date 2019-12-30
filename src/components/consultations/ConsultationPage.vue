@@ -652,8 +652,8 @@
                     <v-select
                       @input="getPriceAndQuantity"
                       v-model="input.genericId"
-                      label="name"
-                      :reduce="drugs => drugs._id"
+                      label="drug"
+                      :reduce="drugs => drugs.name._id"
                       :options="drugs"
                     ></v-select>
                   </div>
@@ -674,7 +674,7 @@
                   <div class="col-10">
                     <input
                       class="form-control readonly"
-                      type="text"
+                      type="number"
                       v-model="quantityremaining"
                       readonly
                     />
@@ -798,7 +798,7 @@
                   <div class="col-10">
                     <input
                       class="form-control readonly"
-                      type="text"
+                      type="number"
                       v-model="input.totalprice"
                       readonly
                     />
@@ -1515,10 +1515,10 @@ export default {
         .post(this.getDrugsPriceUrl, data)
         .then(response => {
           this.input.price = response.data.data.price
-          if (response.data.data.rquantity === null) {
-            this.quantityremaining = response.data.data.quantity
+          if (response.data.data.hasOwnProperty('balance')) {
+            this.quantityremaining = response.data.data.balance
           } else {
-            this.quantityremaining = response.data.data.rquantity
+            this.quantityremaining = response.data.data.quantity
           }
         })
         .catch(error => {

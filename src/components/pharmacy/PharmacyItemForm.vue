@@ -397,7 +397,7 @@ export default {
       },
 
       pharmacyitemUrl: '/pharmacy/pharmacy/item',
-      landingpageUrl: '/pharmacy/pharmacypage',
+      landingpageUrl: '/pharmacy/pharmacy/page',
       loading: false,
       vendors: [],
       drugs: [],

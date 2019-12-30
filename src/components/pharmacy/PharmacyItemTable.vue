@@ -607,6 +607,15 @@ export default {
       } else {
         this.rquantity = parseInt(this.drug.quantity) - parseInt(this.quantity)
       }
+    },
+    pageChangeHandle(value) {
+      if (value === 'next') {
+        this.currentPage += 1
+        this.getItems()
+      } else if (value === 'previous') {
+        this.currentPage -= 1
+        this.getItems()
+      }
     }
 
     // gotoItem(item) {
@@ -615,6 +624,14 @@ export default {
     //     params: { id: item._id }
     //   })
     // }
+  },
+  computed: {
+    isPreviousButtonDisabled() {
+      return this.currentPage === 1
+    },
+    isNextButtonDisabled() {
+      return this.currentPage === this.pageCount
+    }
   }
 }
 </script>

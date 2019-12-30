@@ -192,7 +192,6 @@ export default {
         .then(response => {
           this.patients = response.data.data.patients
           this.services = response.data.data.services
-          console.log(response.data.data)
         })
         .catch(error => {
           this.handleError(error)

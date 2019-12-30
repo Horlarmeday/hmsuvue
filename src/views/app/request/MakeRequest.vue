@@ -13,7 +13,7 @@
     >
       <div class="kt-header-mobile__logo">
         <a href="#">
-          <img alt="Logo" src="../../assets/images/mobilelogo.png" />
+          <img alt="Logo" src="../../../assets/images/mobilelogo.png" />
         </a>
       </div>
       <div class="kt-header-mobile__toolbar">
@@ -47,16 +47,11 @@
         >
           <Header />
           <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
-            <Subheader />
+            <Subheader title="Patients" />
 
-            <SuperAdmin v-if="user.role == 'Super Admin'" />
-            <Doctor v-else-if="user.role == 'Doctor'" />
-            <Nurse v-else-if="user.role == 'Nurse'" />
-            <MedicalRecords v-else-if="user.role == 'Medical Records'" />
-            <Receptionist v-else-if="user.role == 'Receptionist'" />
-            <Account v-else-if="user.role == 'Accountant'" />
+            <RequestContent title="Requests" />
           </div>
-          <Footer />
+          <!-- <Footer /> -->
         </div>
       </div>
     </div>
@@ -68,49 +63,18 @@
 import Sidebar from '@/views/layouts/Sidebar.vue'
 import Header from '@/views/layouts/Header.vue'
 import Subheader from '@/views/layouts/Subheader.vue'
-import Footer from '@/views/layouts/Footer.vue'
-import SuperAdmin from '@/components/dashboards/SuperAdmin.vue'
-import Doctor from '@/components/dashboards/Doctor.vue'
-import Nurse from '@/components/dashboards/Nurse.vue'
-import MedicalRecords from '@/components/dashboards/MedicalRecords.vue'
-import Receptionist from '@/components/dashboards/Receptionist.vue'
-import Account from '@/components/dashboards/Account.vue'
+// import Footer from '@/views/layouts/Footer.vue'
+import RequestContent from '@/components/request/RequestContent.vue'
 export default {
-  name: 'dashboard',
+  name: 'pharmacyitem',
   components: {
     Sidebar,
     Header,
     Subheader,
-    Footer,
-    SuperAdmin,
-    Doctor,
-    Nurse,
-    MedicalRecords,
-    Receptionist,
-    Account
-  },
-  data() {
-    return {
-      user: ''
-    }
-  },
-  mounted() {
-    let token = localStorage.getItem('user-token')
-    const parseJwt = token => {
-      try {
-        return JSON.parse(atob(token.split('.')[1]))
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    const currentUser = parseJwt(token)
-    this.user = currentUser
+    // Footer,
+    RequestContent
   }
 }
 </script>
 
-<style>
-@import url('../../assets/css/scrollbar.css');
-@import url('../../assets/css/sidebar.css');
-@import url('../../assets/css/header.css');
-</style>
+<style></style>

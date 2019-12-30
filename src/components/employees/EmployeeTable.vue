@@ -87,32 +87,12 @@
                       type="text"
                       class="form-control"
                       placeholder="Search..."
-                      id="generalSearch"
+                      v-model="input"
+                      @keyup="getStaffs"
                     />
                     <span class="kt-input-icon__icon kt-input-icon__icon--left">
                       <span><i class="la la-search"></i></span>
                     </span>
-                  </div>
-                </div>
-                <div class="col-md-4 kt-margin-b-20-tablet-and-mobile">
-                  <div class="kt-form__group kt-form__group--inline">
-                    <div class="kt-form__label">
-                      <label>Status:</label>
-                    </div>
-                    <div class="kt-form__control">
-                      <select
-                        class="form-control bootstrap-select"
-                        id="kt_form_status"
-                      >
-                        <option value="">All</option>
-                        <option value="1">Pending</option>
-                        <option value="2">Delivered</option>
-                        <option value="3">Canceled</option>
-                        <option value="4">Success</option>
-                        <option value="5">Info</option>
-                        <option value="6">Danger</option>
-                      </select>
-                    </div>
                   </div>
                 </div>
                 <div class="col-md-4 kt-margin-b-20-tablet-and-mobile">
@@ -234,6 +214,12 @@
                     class="kt-badge kt-badge--warning kt-badge--inline"
                     >{{ staff.role }}</label
                   >
+                  <label
+                    style="background:#eeaeff;"
+                    v-if="staff.role == 'Accountant'"
+                    class="kt-badge kt-badge--warning kt-badge--inline"
+                    >{{ staff.role }}</label
+                  >
                 </td>
                 <td>
                   <label
@@ -270,6 +256,24 @@
             </tbody>
           </table>
         </div>
+        <div class="card-footer">
+          <p class="float-left">Showing {{ pageSize }} of {{ rows }} entries</p>
+          <button
+            class="btn btn-outline-brand btn-sm ml-3 float-right"
+            :disabled="isNextButtonDisabled"
+            @click="pageChangeHandle('next')"
+          >
+            Next →
+          </button>
+
+          <button
+            class="btn btn-outline-brand btn-sm float-right"
+            :disabled="isPreviousButtonDisabled"
+            @click="pageChangeHandle('previous')"
+          >
+            ← Prev
+          </button>
+        </div>
 
         <!--end: Datatable -->
       </div>
@@ -291,7 +295,14 @@ export default {
     return {
       staffs: [],
       staffsUrl: '/staff',
-      imageurl: 'http://localhost:3000/static/uploads/'
+      imageurl: 'http://localhost:3000/static/uploads/',
+      input: '',
+
+      currentPage: 1,
+      pageCount: '',
+      pageSize: '',
+      rows: '',
+      meta: ''
     }
   },
   mounted() {
@@ -306,9 +317,16 @@ export default {
     },
     getStaffs() {
       axios
-        .get(this.staffsUrl)
+        .get(
+          `${this.staffsUrl}?currentPage=${this.currentPage}&search=${this.input}`
+        )
         .then(response => {
-          this.staffs = response.data.data
+          this.staffs = response.data.data.staffs
+          this.meta = response.data.data.meta
+          this.rows = this.meta.count
+          this.pageSize = this.meta.pageSize
+          this.pageCount = this.meta.pageCount
+
           let staffs = this.staffs
           for (let i = 0; i < staffs.length; i++) {
             staffs[i].url = this.imageurl + staffs[i].photo
@@ -318,7 +336,24 @@ export default {
           this.handleError(error)
         })
     },
-    changeStatus() {}
+    changeStatus() {},
+    pageChangeHandle(value) {
+      if (value === 'next') {
+        this.currentPage += 1
+        this.getStaffs()
+      } else if (value === 'previous') {
+        this.currentPage -= 1
+        this.getStaffs()
+      }
+    }
+  },
+  computed: {
+    isPreviousButtonDisabled() {
+      return this.currentPage === 1
+    },
+    isNextButtonDisabled() {
+      return this.currentPage === this.pageCount
+    }
   }
 }
 </script>

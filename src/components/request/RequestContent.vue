@@ -8,63 +8,93 @@
             <i class="kt-font-brand flaticon2-line-chart"></i>
           </span>
           <h3 class="kt-portlet__head-title">
-            Create Investigation
-            <small>Create a new investigation record</small>
+            Create Request
+            <small>Create a new request</small>
           </h3>
         </div>
       </div>
       <div class="kt-portlet__body">
         <!--begin: Datatable -->
         <div class="row">
-          <div class="col-xl-12">
+          <div class="col-xl-6">
             <div class="form-group">
-              <label>Investigation Name </label>
-              <input
-                type="text"
-                class="form-control"
-                v-model="name"
-                placeholder="Investigation Name"
-              />
-              <span class="form-text text-muted"
-                >Please enter investigation name.</span
-              >
+              <label>Request For </label>
+              <v-select
+                v-model="input.genericId"
+                label="name"
+                :reduce="drugs => drugs._id"
+                :options="drugs"
+              ></v-select>
+              <span class="form-text text-muted">Please select item.</span>
             </div>
           </div>
-          <div class="col-xl-12">
+          <div class="col-xl-6">
             <div class="form-group">
-              <label>Description </label>
-              <input
-                type="text"
-                class="form-control"
-                v-model="description"
-                placeholder="Description"
-              />
-              <span class="form-text text-muted"
-                >Please enter description.</span
-              >
-            </div>
-          </div>
-          <div class="col-xl-12">
-            <div class="form-group">
-              <label>Price </label>
-              <input
-                type="number"
-                class="form-control"
-                v-model="price"
-                placeholder="Price"
-              />
-              <span class="form-text text-muted">Please enter price.</span>
+              <label>Inventory</label>
+              <select v-model="input.inventory" class="form-control">
+                <option selected disabled>Select</option>
+                <option value="Outpatient Pharmacy">Outpatient Pharmacy</option>
+                <option value="Inpatient Pharmacy">Inpatient Pharmacy</option>
+                <option value="NHIS Outpatient">NHIS Outpatient</option>
+                <option value="NHIS Inpatient">NHIS Inpatient</option>
+              </select>
+              <span class="form-text text-muted">Please select inventory.</span>
             </div>
           </div>
         </div>
-
+        <div class="row">
+          <div class="col-xl-6">
+            <div class="form-group">
+              <label>Quantity</label>
+              <input
+                type="number"
+                class="form-control"
+                v-model="input.quantity"
+                placeholder="Quantity"
+              />
+              <span class="form-text text-muted">Please enter quantity.</span>
+            </div>
+          </div>
+          <div class="col-xl-6">
+            <div class="form-group">
+              <label>Unit</label>
+              <select class="form-control" v-model="input.unit" required>
+                <option disabled selected>Select</option>
+                <option
+                  v-for="unit in units"
+                  :key="unit._id"
+                  :value="unit.name"
+                  >{{ unit.name }}</option
+                >
+              </select>
+              <span class="form-text text-muted">Please select unit.</span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xl-6">
+            <div class="form-group">
+              <label>Comments</label>
+              <textarea
+                col="30"
+                class="form-control"
+                rows="10"
+                v-model="input.comment"
+                placeholder="Comment"
+                required
+              >
+              </textarea>
+              <span class="form-text text-muted">Please enter comments.</span>
+            </div>
+          </div>
+        </div>
         <div>
           <button
             v-if="!loading"
-            @click="createInvestigation"
+            @click="createRequest"
             class="btn btn-brand btn-elevate float-right"
           >
-            Create
+            Create Request
           </button>
           <button
             v-else
@@ -140,6 +170,7 @@
                   </ul>
                 </div>
               </div>
+              &nbsp;
             </div>
           </div>
         </div>
@@ -156,7 +187,8 @@
                       type="text"
                       class="form-control"
                       placeholder="Search..."
-                      id="generalSearch"
+                      v-model="text"
+                      @keyup="getRequests"
                     />
                     <span class="kt-input-icon__icon kt-input-icon__icon--left">
                       <span><i class="la la-search"></i></span>
@@ -166,20 +198,17 @@
                 <div class="col-md-4 kt-margin-b-20-tablet-and-mobile">
                   <div class="kt-form__group kt-form__group--inline">
                     <div class="kt-form__label">
-                      <label>Status:</label>
+                      <label>Type:</label>
                     </div>
                     <div class="kt-form__control">
                       <select
                         class="form-control bootstrap-select"
-                        id="kt_form_status"
+                        id="kt_form_type"
                       >
                         <option value="">All</option>
-                        <option value="1">Pending</option>
-                        <option value="2">Delivered</option>
-                        <option value="3">Canceled</option>
-                        <option value="4">Success</option>
-                        <option value="5">Info</option>
-                        <option value="6">Danger</option>
+                        <option value="1">Online</option>
+                        <option value="2">Retail</option>
+                        <option value="3">Direct</option>
                       </select>
                     </div>
                   </div>
@@ -206,66 +235,74 @@
             <thead>
               <tr>
                 <th>S/N</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Price</th>
-                <th>Imaging</th>
+                <th>Item</th>
+                <th>Quantity</th>
+                <th>Unit</th>
+                <th>Inventory</th>
+                <th>Comment</th>
                 <th>Status</th>
+                <th>Requested By</th>
                 <th>Date Created</th>
-                <th>Action</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-if="investigations.length == 0">
-                <td colspan="9" align="center">No Investigations</td>
+              <tr v-if="requests.length == 0">
+                <td colspan="9" align="center">No Requests</td>
               </tr>
-              <tr
-                v-for="(investigation, index) in investigations"
-                :key="investigation._id"
-              >
+              <tr v-for="(request, index) in requests" :key="request._id">
                 <td>
                   {{ index + 1 }}
                 </td>
-                <td>{{ investigation.name }}</td>
-                <td>{{ investigation.description }}</td>
-                <td>{{ investigation.price }}</td>
-                <td>{{ investigation.imaging.name }}</td>
+                <td>{{ request.item.name }}</td>
+                <td>{{ request.quantity }}</td>
+                <td>{{ request.unit }}</td>
+                <td>{{ request.inventory }}</td>
+                <td>{{ request.comment }}</td>
                 <td>
                   <span
-                    v-if="investigation.status"
+                    v-if="request.status == 'granted'"
                     class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill"
-                    >Active</span
+                    >granted</span
                   >
                   <span
-                    v-else
-                    class="kt-badge kt-badge--info kt-badge--inline kt-badge--pill"
-                    >Inactive</span
+                    v-else-if="request.status == 'pending'"
+                    class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill"
+                    >pending</span
+                  >
+                  <span
+                    v-else-if="request.status == 'declined'"
+                    class="kt-badge kt-badge--danger kt-badge--inline kt-badge--pill"
+                    >pending</span
                   >
                 </td>
-                <td>{{ investigation.createdAt | moment('DD/MM/YYYY') }}</td>
                 <td>
-                  <button
-                    v-if="
-                      !deletedata &&
-                        investigation._id !== currentInvestigation._id
-                    "
-                    @click="deleteInvestigation(investigation)"
-                    class="btn btn-danger btn-md btn-elevate kt-login__btn-primary"
-                  >
-                    Delete
-                  </button>
-                  <button
-                    v-else
-                    class="btn btn-danger btn-md kt-spinner kt-spinner--right 
-                      kt-spinner--sm kt-spinner--light btn-elevate"
-                    disabled
-                  >
-                    Deleting...
-                  </button>
+                  <a href="#">
+                    {{ request.creator.firstname }}
+                    {{ request.creator.lastname }}
+                  </a>
                 </td>
+                <td>{{ request.createdAt | moment('DD/MM/YYYY, h:ma') }}</td>
               </tr>
             </tbody>
           </table>
+        </div>
+        <div class="card-footer">
+          <p class="float-left">Showing {{ pageSize }} of {{ rows }} entries</p>
+          <button
+            class="btn btn-outline-brand btn-sm ml-3 float-right"
+            :disabled="isNextButtonDisabled"
+            @click="pageChangeHandle('next')"
+          >
+            Next →
+          </button>
+
+          <button
+            class="btn btn-outline-brand btn-sm float-right"
+            :disabled="isPreviousButtonDisabled"
+            @click="pageChangeHandle('previous')"
+          >
+            ← Prev
+          </button>
         </div>
 
         <!--end: Datatable -->
@@ -277,92 +314,117 @@
 
 <script>
 import axios from '../../axios'
+import vSelect from 'vue-select'
 export default {
-  name: 'investigation',
+  name: 'makerequest',
   props: {
     title: {
       type: String
     }
   },
+  components: {
+    vSelect
+  },
   data() {
     return {
-      name: '',
-      description: '',
-      price: '',
-      investigations: [],
-      currentInvestigation: '',
-      investigationUrl: '/imaging/investigation/',
+      input: {
+        genericId: '',
+        quantity: '',
+        inventory: '',
+        unit: '',
+        comment: ''
+      },
+      drugs: [],
+      requests: [],
+      units: [],
+
+      createrequesturl: '/staff/make-request',
+      landingpageurl: '/pharmacy/pharmacy/page',
+      requesturl: '/staff/staffrequests',
       loading: false,
-      deletedata: false
+
+      currentPage: 1,
+      text: '',
+      pageCount: '',
+      pageSize: '',
+      rows: '',
+      meta: 3
     }
   },
   mounted() {
-    this.getInvestigations()
+    this.getPage()
+    this.getRequests()
   },
   methods: {
     handleError(error) {
-      console.log(error.response)
+      console.log(error)
       this.$iziToast.error({
         title: 'Error!',
         message: error.response.data
       })
     },
-    createInvestigation() {
+    createRequest() {
       this.loading = true
-      const data = {
-        name: this.name,
-        description: this.description,
-        price: this.price
+      axios
+        .post(this.createrequesturl, this.input)
+        .then(response => {
+          this.input = ''
+          this.requests = response.data.data
+          this.loading = false
+          this.$iziToast.success({
+            title: 'Success!',
+            message: response.data.message
+          })
+        })
+        .catch(error => {
+          this.loading = false
+          this.handleError(error)
+        })
+    },
+    getPage() {
+      axios
+        .get(this.landingpageurl)
+        .then(response => {
+          this.units = response.data.data.units
+          this.drugs = response.data.data.generics
+        })
+        .catch(error => {
+          this.handleError(error)
+        })
+    },
+
+    getRequests() {
+      axios
+        .get(
+          `${this.requesturl}?currentPage=${this.currentPage}&search=${this.text}`
+        )
+        .then(response => {
+          this.requests = response.data.data.requests
+          this.meta = response.data.data.meta
+          this.rows = this.meta.count
+          this.pageSize = this.meta.pageSize
+          this.pageCount = this.meta.pageCount
+        })
+        .catch(error => {
+          this.handleError(error)
+        })
+    },
+    pageChangeHandle(value) {
+      if (value === 'next') {
+        this.currentPage += 1
+        this.getRequests()
+      } else if (value === 'previous') {
+        this.currentPage -= 1
+        this.getRequests()
       }
-      axios
-        .post(this.investigationUrl + this.$route.params.id, data)
-        .then(response => {
-          this.name = ''
-          this.description = ''
-          this.price = ''
-          this.loading = false
-          this.investigations = response.data.data
-          this.$iziToast.success({
-            title: 'Success!',
-            message: response.data.message
-          })
-        })
-        .catch(error => {
-          this.loading = false
-          this.handleError(error)
-        })
+    }
+  },
+  computed: {
+    isPreviousButtonDisabled() {
+      return this.currentPage === 1
     },
-
-    getInvestigations() {
-      axios
-        .get(this.investigationUrl + this.$route.params.id)
-        .then(response => {
-          this.investigations = response.data.data
-        })
-        .catch(error => {
-          this.handleError(error)
-        })
-    },
-
-    deleteInvestigation(investigation) {
-      this.deletedata = true
-      this.currentInvestigation = investigation
-      axios
-        .delete(this.investigationUrl, {
-          data: { investigationId: investigation._id }
-        })
-        .then(response => {
-          this.deletedata = false
-          this.investigations = response.data.data
-          this.$iziToast.success({
-            title: 'Success!',
-            message: response.data.message
-          })
-        })
-        .catch(error => {
-          this.loading = false
-          this.handleError(error)
-        })
+    isNextButtonDisabled() {
+      return this.currentPage === this.pageCount
     }
   }
 }

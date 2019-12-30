@@ -8,83 +8,6 @@
             <i class="kt-font-brand flaticon2-line-chart"></i>
           </span>
           <h3 class="kt-portlet__head-title">
-            Create Investigation
-            <small>Create a new investigation record</small>
-          </h3>
-        </div>
-      </div>
-      <div class="kt-portlet__body">
-        <!--begin: Datatable -->
-        <div class="row">
-          <div class="col-xl-12">
-            <div class="form-group">
-              <label>Investigation Name </label>
-              <input
-                type="text"
-                class="form-control"
-                v-model="name"
-                placeholder="Investigation Name"
-              />
-              <span class="form-text text-muted"
-                >Please enter investigation name.</span
-              >
-            </div>
-          </div>
-          <div class="col-xl-12">
-            <div class="form-group">
-              <label>Description </label>
-              <input
-                type="text"
-                class="form-control"
-                v-model="description"
-                placeholder="Description"
-              />
-              <span class="form-text text-muted"
-                >Please enter description.</span
-              >
-            </div>
-          </div>
-          <div class="col-xl-12">
-            <div class="form-group">
-              <label>Price </label>
-              <input
-                type="number"
-                class="form-control"
-                v-model="price"
-                placeholder="Price"
-              />
-              <span class="form-text text-muted">Please enter price.</span>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <button
-            v-if="!loading"
-            @click="createInvestigation"
-            class="btn btn-brand btn-elevate float-right"
-          >
-            Create
-          </button>
-          <button
-            v-else
-            class="btn btn-brand kt-spinner kt-spinner--right 
-                      kt-spinner--sm kt-spinner--light btn-elevate float-right"
-            disabled
-          >
-            Creating...
-          </button>
-        </div>
-        <!--end: Datatable -->
-      </div>
-    </div>
-    <div class="kt-portlet kt-portlet--mobile">
-      <div class="kt-portlet__head kt-portlet__head--lg">
-        <div class="kt-portlet__head-label">
-          <span class="kt-portlet__head-icon">
-            <i class="kt-font-brand flaticon2-line-chart"></i>
-          </span>
-          <h3 class="kt-portlet__head-title">
             {{ title }} Table
             <small>This is the {{ title }} table</small>
           </h3>
@@ -140,6 +63,14 @@
                   </ul>
                 </div>
               </div>
+              &nbsp;
+              <router-link
+                to="/create-billing"
+                class="btn btn-brand btn-elevate btn-icon-sm"
+              >
+                <i class="la la-plus"></i>
+                Create Billing
+              </router-link>
             </div>
           </div>
         </div>
@@ -174,12 +105,8 @@
                         id="kt_form_status"
                       >
                         <option value="">All</option>
-                        <option value="1">Pending</option>
-                        <option value="2">Delivered</option>
-                        <option value="3">Canceled</option>
-                        <option value="4">Success</option>
-                        <option value="5">Info</option>
-                        <option value="6">Danger</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Paid">Paid</option>
                       </select>
                     </div>
                   </div>
@@ -206,62 +133,66 @@
             <thead>
               <tr>
                 <th>S/N</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Price</th>
-                <th>Imaging</th>
+                <th>Patient Name</th>
+                <th>Service</th>
+                <th>Total Amount (₦)</th>
                 <th>Status</th>
+                <th>Comment</th>
                 <th>Date Created</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-if="investigations.length == 0">
-                <td colspan="9" align="center">No Investigations</td>
+              <tr v-if="billings.length == 0">
+                <td colspan="9" align="center">No Billings</td>
               </tr>
-              <tr
-                v-for="(investigation, index) in investigations"
-                :key="investigation._id"
-              >
+            </tbody>
+            <tbody v-for="(billing, index) in billings" :key="billing._id">
+              <tr v-if="billing.services.length > 0">
                 <td>
                   {{ index + 1 }}
                 </td>
-                <td>{{ investigation.name }}</td>
-                <td>{{ investigation.description }}</td>
-                <td>{{ investigation.price }}</td>
-                <td>{{ investigation.imaging.name }}</td>
                 <td>
-                  <span
-                    v-if="investigation.status"
-                    class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill"
-                    >Active</span
+                  <router-link to="#"
+                    >{{ billing.patient.firstname }}
+                    {{ billing.patient.lastname }}
+                  </router-link>
+                </td>
+                <td>
+                  <p v-for="service in billing.services" :key="service._id">
+                    {{ service.name }}
+                  </p>
+                </td>
+                <td>{{ billing.amount }}</td>
+                <td>
+                  <label
+                    v-if="!billing.paid"
+                    class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill"
+                    >Pending</label
                   >
-                  <span
+                  <label
                     v-else
-                    class="kt-badge kt-badge--info kt-badge--inline kt-badge--pill"
-                    >Inactive</span
+                    class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill"
+                    >Paid</label
                   >
                 </td>
-                <td>{{ investigation.createdAt | moment('DD/MM/YYYY') }}</td>
+                <td>{{ billing.comment }}</td>
+                <td>{{ billing.createdAt | moment('DD/MM/YYYY, h:ma') }}</td>
                 <td>
                   <button
-                    v-if="
-                      !deletedata &&
-                        investigation._id !== currentInvestigation._id
-                    "
-                    @click="deleteInvestigation(investigation)"
-                    class="btn btn-danger btn-md btn-elevate kt-login__btn-primary"
+                    v-if="!billing.paid"
+                    @click="approveBilling(billing)"
+                    class="btn btn-brand btn-elevate"
                   >
-                    Delete
+                    Approve
                   </button>
-                  <button
+                  <router-link
                     v-else
-                    class="btn btn-danger btn-md kt-spinner kt-spinner--right 
-                      kt-spinner--sm kt-spinner--light btn-elevate"
-                    disabled
+                    :to="billing.invoiceurl"
+                    class="btn btn-success btn-elevate"
                   >
-                    Deleting...
-                  </button>
+                    Invoice
+                  </router-link>
                 </td>
               </tr>
             </tbody>
@@ -278,7 +209,7 @@
 <script>
 import axios from '../../axios'
 export default {
-  name: 'investigation',
+  name: 'billingTable',
   props: {
     title: {
       type: String
@@ -286,81 +217,59 @@ export default {
   },
   data() {
     return {
-      name: '',
-      description: '',
-      price: '',
-      investigations: [],
-      currentInvestigation: '',
-      investigationUrl: '/imaging/investigation/',
-      loading: false,
-      deletedata: false
+      billings: [],
+      billingUrl: '/account',
+      approvebillingurl: '/account/approve/billing',
+      pdfurl: 'http://localhost:3000/static/invoices/'
     }
   },
   mounted() {
-    this.getInvestigations()
+    this.getBillings()
   },
   methods: {
     handleError(error) {
-      console.log(error.response)
+      this.deleteData = false
       this.$iziToast.error({
         title: 'Error!',
         message: error.response.data
       })
     },
-    createInvestigation() {
-      this.loading = true
+    getBillings() {
+      axios
+        .get(this.billingUrl)
+        .then(response => {
+          this.billings = response.data.data
+          console.log(this.billings)
+          let billings = this.billings
+          for (let i = 0; i < billings.length; i++) {
+            billings[i].url = '/patient/' + billings[i]._id
+            billings[i].invoiceurl = this.pdfurl + billings[i].invoice
+          }
+        })
+        .catch(error => {
+          this.handleError(error)
+        })
+    },
+    approveBilling(billing) {
       const data = {
-        name: this.name,
-        description: this.description,
-        price: this.price
+        billingId: billing._id
       }
       axios
-        .post(this.investigationUrl + this.$route.params.id, data)
+        .post(this.approvebillingurl, data)
         .then(response => {
-          this.name = ''
-          this.description = ''
-          this.price = ''
-          this.loading = false
-          this.investigations = response.data.data
+          this.billings = response.data.data
+          console.log(this.billings)
+          let billings = this.billings
+          for (let i = 0; i < billings.length; i++) {
+            billings[i].url = '/patient/' + billings[i]._id
+            billings[i].invoiceurl = this.pdfurl + billings[i].invoice
+          }
           this.$iziToast.success({
             title: 'Success!',
             message: response.data.message
           })
         })
         .catch(error => {
-          this.loading = false
-          this.handleError(error)
-        })
-    },
-
-    getInvestigations() {
-      axios
-        .get(this.investigationUrl + this.$route.params.id)
-        .then(response => {
-          this.investigations = response.data.data
-        })
-        .catch(error => {
-          this.handleError(error)
-        })
-    },
-
-    deleteInvestigation(investigation) {
-      this.deletedata = true
-      this.currentInvestigation = investigation
-      axios
-        .delete(this.investigationUrl, {
-          data: { investigationId: investigation._id }
-        })
-        .then(response => {
-          this.deletedata = false
-          this.investigations = response.data.data
-          this.$iziToast.success({
-            title: 'Success!',
-            message: response.data.message
-          })
-        })
-        .catch(error => {
-          this.loading = false
           this.handleError(error)
         })
     }

@@ -319,6 +319,8 @@
                 <option value="Husband">Husband</option>
                 <option value="Son">Son</option>
                 <option value="Daughter">Daughter</option>
+                <option value="Uncle">Uncle</option>
+                <option value="Aunt">Aunt</option>
               </select>
               <span class="form-text text-muted"
                 >Please select patient next of kin relationship.</span
@@ -358,7 +360,7 @@
               <span class="form-text text-muted">Please select card type.</span>
             </div>
           </div>
-          <div class="col-xl-6">
+          <div v-if="cardtype === 'Family'" class="col-xl-6">
             <div class="form-group">
               <label>Number of Family</label>
               <input
@@ -373,8 +375,12 @@
             </div>
           </div>
         </div>
-        <h6>Dependants (if any)</h6>
-        <div class="row">
+        <hr />
+        <h6 v-if="cardtype === 'Family'">Dependants (if any)</h6>
+        <small v-if="cardtype === 'Family'" style="color: red"
+          >Create as many dependants as possible</small
+        >
+        <div v-if="cardtype === 'Family'" class="row">
           <div class="col-xl-6">
             <div class="form-group">
               <label>Name</label>
@@ -392,18 +398,61 @@
           <div class="col-xl-6">
             <div class="form-group">
               <label>Date of Birth</label>
-              <input
+              <datetime
                 type="date"
-                class="form-control"
+                input-class="form-control"
                 v-model="dependantdob"
                 placeholder="Date of Birth"
-              />
+              ></datetime>
               <span class="form-text text-muted"
                 >Please select dependant date of birth.</span
               >
             </div>
           </div>
+          <div class="col-xl-6">
+            <div class="form-group">
+              <label>Gender</label>
+              <select class="form-control" v-model="dependantgender">
+                <option disabled selected>Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+              <span class="form-text text-muted"
+                >Please select dependant gender.</span
+              >
+            </div>
+          </div>
+          <div class="col-xl-6">
+            <div class="form-group">
+              <label>Relationship</label>
+              <select v-model="dependantrelationship" class="form-control">
+                <option selected disabled>Select</option>
+                <option value="Brother">Brother</option>
+                <option value="Sister">Sister</option>
+                <option value="Father">Father</option>
+                <option value="Mother">Mother</option>
+                <option value="Wife">Wife</option>
+                <option value="Husband">Husband</option>
+                <option value="Son">Son</option>
+                <option value="Daughter">Daughter</option>
+                <option value="Uncle">Uncle</option>
+                <option value="Aunt">Aunt</option>
+              </select>
+              <span class="form-text text-muted"
+                >Please select dependant relationship.</span
+              >
+            </div>
+          </div>
+          <div class="form-group">
+            <button
+              @click="createFamilyDependant"
+              class="btn btn-primary btn-elevate btn-sm"
+            >
+              Create Dependant
+            </button>
+          </div>
         </div>
+        <br />
         <h5 style="margin-bottom: 30px;color:#5d78ff;">Health Insurance</h5>
         <div class="row">
           <div class="col-xl-6">
@@ -419,13 +468,22 @@
               >
             </div>
           </div>
-          <div class="col-xl-6">
+          <div v-if="insurance === 'Yes'" class="col-xl-6">
             <div class="form-group">
               <label>Insurance Type</label>
-              <select class="form-control" v-model="insurancetype">
-                <option disabled selected>Select</option>
-                <option value="Retainership">Retainership</option>
-                <option value="NHIS">NHIS</option>
+              <select
+                id="insurance"
+                class="form-control"
+                v-model="insurancetype"
+                @change="getHmos"
+              >
+                <option disabled>Select</option>
+                <option
+                  v-for="insurance in insurances"
+                  :key="insurance._id"
+                  :value="insurance._id"
+                  >{{ insurance.name }}
+                </option>
               </select>
               <span class="form-text text-muted"
                 >Please select patient insurance type.</span
@@ -433,17 +491,27 @@
             </div>
           </div>
         </div>
-        <div class="row">
+        <div v-if="insurance === 'Yes'" class="row">
           <div class="col-xl-6">
             <div class="form-group">
               <label>Retainership/HMO Name</label>
-              <select class="form-control" v-model="retainershipname">
-                <option disabled selected>Select</option>
-                <option value="NHIS">NHIS </option>
-                <option value="FHSS">FHSS</option>
-                <option value="PRIVATE HMO">PRIVATE HMO</option>
-                <option value="RETAINERSHIP">RETAINERSHIP</option>
-              </select>
+              <v-select
+                @input="getEnrollees"
+                v-model="retainershipname"
+                label="name"
+                :reduce="hmos => hmos._id"
+                :options="hmos"
+              ></v-select>
+              <!-- <select
+                class="form-control"
+                v-model="retainershipname"
+                @change="getEnrollees"
+              >
+                <option disabled>Select</option>
+                <option v-for="hmo in hmos" :key="hmo._id" :value="hmo._id"
+                  >{{ hmo.name }}
+                </option>
+              </select> -->
               <span class="form-text text-muted"
                 >Please select retainership/HMO name.</span
               >
@@ -452,24 +520,41 @@
           <div class="col-xl-6">
             <div class="form-group">
               <label>Enrollees</label>
-              <select class="form-control" v-model="enrollees">
-                <option disabled selected>Select</option>
-                <option value="NHIS ONE">NHIS ONE</option>
-                <option value="NHIS TWO">NHIS TWO</option>
-              </select>
+              <v-select
+                @input="getEnrolleeId"
+                v-model="enrollees"
+                label="name"
+                :reduce="allenrollees => allenrollees._id"
+                :options="allenrollees"
+              ></v-select>
+              <!-- <select
+                class="form-control"
+                v-model="enrollees"
+                @change="getEnrolleeId"
+              >
+                <option disabled>Select</option>
+                <option
+                  v-for="enrollee in allenrollees"
+                  :key="enrollee._id"
+                  :value="enrollee._id"
+                  >{{ enrollee.name }}
+                </option>
+              </select> -->
               <span class="form-text text-muted">Please select enrollees.</span>
             </div>
           </div>
         </div>
-        <div class="row">
+        <div v-if="insurance === 'Yes'" class="row">
           <div class="col-xl-6">
             <div class="form-group">
-              <label>Enrollee ID</label>
+              <label>Enrollee Code</label>
               <input
+                style="background: #f1f1f1"
                 type="text"
                 class="form-control"
                 v-model="enrolleeId"
                 placeholder="Enrollee ID"
+                readonly
               />
               <span class="form-text text-muted"
                 >Please enter enrollee ID.</span
@@ -477,8 +562,12 @@
             </div>
           </div>
         </div>
-        <h6>Dependants (if any)</h6>
-        <div class="row">
+        <hr />
+        <h6 v-if="insurance === 'Yes'">Dependants (if any)</h6>
+        <small v-if="insurance === 'Yes'" style="color: red"
+          >Create as many dependants as possible</small
+        >
+        <div v-if="insurance === 'Yes'" class="row">
           <div class="col-xl-6">
             <div class="form-group">
               <label>Name</label>
@@ -496,17 +585,58 @@
           <div class="col-xl-6">
             <div class="form-group">
               <label>Date of Birth</label>
-              <input
+              <datetime
                 type="date"
-                class="form-control"
+                input-class="form-control"
                 v-model="nhisdependantdob"
                 placeholder="Date of Birth"
-                @change="createDependant"
-              />
+              ></datetime>
               <span class="form-text text-muted"
                 >Please select dependant date of birth.</span
               >
             </div>
+          </div>
+          <div class="col-xl-6">
+            <div class="form-group">
+              <label>Gender</label>
+              <select class="form-control" v-model="nhisdependantgender">
+                <option disabled selected>Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+              <span class="form-text text-muted"
+                >Please select dependant gender.</span
+              >
+            </div>
+          </div>
+          <div class="col-xl-6">
+            <div class="form-group">
+              <label>Relationship</label>
+              <select v-model="nhisdependantrelationship" class="form-control">
+                <option selected disabled>Select</option>
+                <option value="Brother">Brother</option>
+                <option value="Sister">Sister</option>
+                <option value="Father">Father</option>
+                <option value="Mother">Mother</option>
+                <option value="Wife">Wife</option>
+                <option value="Husband">Husband</option>
+                <option value="Son">Son</option>
+                <option value="Daughter">Daughter</option>
+                <option value="Uncle">Uncle</option>
+                <option value="Aunt">Aunt</option>
+              </select>
+              <span class="form-text text-muted"
+                >Please select dependant relationship.</span
+              >
+            </div>
+          </div>
+          <div class="form-group">
+            <button
+              @click="createDependant"
+              class="btn btn-primary btn-elevate btn-sm"
+            >
+              Create Dependant
+            </button>
           </div>
         </div>
         <div>
@@ -680,9 +810,9 @@
                 type="radio"
                 name="consultation"
                 v-model="consultation"
-                :value="2000"
+                :value="3200"
               />
-              Adult (₦2000)
+              Adult (₦3200)
               <span></span>
             </label>
             <label class="kt-radio  kt-radio--brand">
@@ -690,9 +820,9 @@
                 type="radio"
                 name="consultation"
                 v-model="consultation"
-                :value="1500"
+                :value="2200"
               />
-              Children (₦1500)
+              Children (₦2200)
               <span></span>
             </label>
           </div>
@@ -701,6 +831,12 @@
           >
         </div>
         <div>
+          <router-link
+            to="/patients"
+            class="btn btn-dark btn-elevate float-left"
+          >
+            Skip
+          </router-link>
           <button
             v-if="!loading"
             @click="stepFour"
@@ -726,10 +862,12 @@
 <script>
 import axios from '../../axios'
 import { Datetime } from 'vue-datetime'
+import vSelect from 'vue-select'
 export default {
   name: 'patientForm',
   components: {
-    datetime: Datetime
+    datetime: Datetime,
+    vSelect
   },
   props: {
     title: {
@@ -756,11 +894,14 @@ export default {
       nextofkinaddress: '',
       nextofkinphone: '',
       relationship: '',
+      occupation: '',
 
       cardtype: '',
       numberoffamily: '',
       dependantname: '',
       dependantdob: '',
+      dependantgender: '',
+      dependantrelationship: '',
       insurance: '',
       insurancetype: '',
       retainershipname: '',
@@ -768,6 +909,8 @@ export default {
       enrolleeId: '',
       nhisdependantname: '',
       nhisdependantdob: '',
+      nhisdependantgender: '',
+      nhisdependantrelationship: '',
 
       registration: '',
       consultation: '',
@@ -792,11 +935,22 @@ export default {
       stepTwoUrl: '/patient/account/type',
       stepThreeUrl: '/patient/registration/payment',
       dependantUrl: '/patient/dependant',
-      photoLoading: false
+      familydependantUrl: '/patient/family/dependant',
+      insuranceUrl: '/admin/insurance',
+      hmoUrl: '/ajax/get/hmo/',
+      enrolleeUrl: '/ajax/get/enrollee/',
+      enrolleeIdUrl: '/ajax/get/enrolleeId/',
+      photoLoading: false,
+
+      insurances: [],
+      hmos: [],
+      allenrollees: [],
+      insurancename: ''
     }
   },
   mounted() {
     this.landingPage()
+    this.getInsurance()
   },
   methods: {
     handleError(error) {
@@ -856,17 +1010,48 @@ export default {
           this.handleError(error)
         })
     },
+    createFamilyDependant() {
+      let data = {
+        name: this.dependantname,
+        dateofbirth: this.dependantdob,
+        gender: this.dependantgender,
+        relationship: this.dependantrelationship,
+        patientId: this.patient
+      }
+      axios
+        .post(this.familydependantUrl, data)
+        .then(response => {
+          this.dependantname = ''
+          this.dependantdob = ''
+          this.dependantgender = ''
+          this.dependantrelationship = ''
+
+          this.$iziToast.success({
+            title: 'Success!',
+            message: response.data.message
+          })
+        })
+        .catch(error => {
+          this.loading = false
+          this.handleError(error)
+        })
+    },
 
     createDependant() {
-      console.log(this.patient)
       let data = {
         name: this.nhisdependantname,
         dateofbirth: this.nhisdependantdob,
+        gender: this.nhisdependantgender,
+        relationship: this.nhisdependantrelationship,
         patientId: this.patient
       }
       axios
         .post(this.dependantUrl, data)
         .then(response => {
+          this.nhisdependantname = ''
+          this.nhisdependantdob = ''
+          this.nhisdependantgender = ''
+          this.nhisdependantrelationship = ''
           this.$iziToast.success({
             title: 'Success!',
             message: response.data.message
@@ -878,19 +1063,25 @@ export default {
         })
     },
     stepTwo() {
-      console.log(this.patient)
       this.loading = true
-      const stepTwodata = {
-        cardtype: this.cardtype,
-        numberoffamily: this.numberoffamily,
-        dependantname: this.dependantname,
-        dependantdob: this.dependantdob,
-        insurance: this.insurance,
-        insurancetype: this.insurancetype,
-        retainershipname: this.retainershipname,
-        enrollees: this.enrollees,
-        enrolleeId: this.enrolleeId,
-        patientId: this.patient
+      let stepTwodata = null
+      if (this.cardtype === 'Single' && this.insurance === 'No') {
+        stepTwodata = {
+          cardtype: this.cardtype,
+          insurance: this.insurance,
+          patientId: this.patient
+        }
+      } else {
+        stepTwodata = {
+          cardtype: this.cardtype,
+          numberoffamily: this.numberoffamily,
+          insurance: this.insurance,
+          insurancetype: this.insurancetype,
+          retainershipname: this.retainershipname,
+          enrollees: this.enrollees,
+          enrolleeId: this.enrolleeId,
+          patientId: this.patient
+        }
       }
       axios
         .put(this.stepTwoUrl, stepTwodata)
@@ -939,11 +1130,10 @@ export default {
     startCamera() {
       this.toggleVideoShowing()
 
-      console.log(this.video)
-      console.log('after initial')
+      // console.log(this.video)
+      // console.log('after initial')
       this.video = this.$refs.video
       this.video.style = 'display:block;width:250px;margin-bottom:20px;'
-      console.log(this.video)
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
           this.video.srcObject = stream
@@ -963,10 +1153,12 @@ export default {
         .then(response => {
           this.photoLoading = false
           this.photoSaved = true
+          this.patient = response.data.data.patient
           this.$iziToast.success({
             title: 'Success!',
             message: response.data.message
           })
+
           this.savedStepThree = false
           this.savedStepFour = true
         })
@@ -985,6 +1177,60 @@ export default {
     },
     toggleVideoShowing() {
       this.videoShowing = !this.videoShowing
+    },
+
+    getInsurance() {
+      axios
+        .get(this.insuranceUrl)
+        .then(response => {
+          this.insurances = response.data.data
+        })
+        .catch(error => {
+          this.handleError(error)
+        })
+    },
+
+    getHmos() {
+      const data = {
+        insuranceId: this.insurancetype
+      }
+      axios
+        .post(this.hmoUrl, data)
+        .then(response => {
+          this.hmos = response.data.data
+        })
+        .catch(error => {
+          this.handleError(error)
+        })
+    },
+
+    getEnrollees() {
+      const data = {
+        hmoId: this.retainershipname
+      }
+      axios
+        .post(this.enrolleeUrl, data)
+        .then(response => {
+          this.allenrollees = response.data.data
+          this.enrolleeId = response.data.data.enrolleeId
+        })
+        .catch(error => {
+          this.handleError(error)
+        })
+    },
+
+    getEnrolleeId() {
+      const data = {
+        enrolleeId: this.enrollees
+      }
+      axios
+        .post(this.enrolleeIdUrl, data)
+        .then(response => {
+          this.enrolleeId = response.data.data.enrolleeId
+        })
+        .catch(error => {
+          this.handleError(error)
+        })
     }
   }
 }

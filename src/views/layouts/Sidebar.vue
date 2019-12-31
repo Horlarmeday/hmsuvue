@@ -912,6 +912,156 @@
               </b-collapse>
             </li>
             <li class="kt-menu__item">
+              <b-link v-b-toggle.accordion-20 class="m-1 kt-menu__link">
+                <span class="kt-menu__link-icon">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    width="24px"
+                    height="24px"
+                    viewBox="0 0 24 24"
+                    version="1.1"
+                    class="kt-svg-icon"
+                  >
+                    <g
+                      stroke="none"
+                      stroke-width="1"
+                      fill="none"
+                      fill-rule="evenodd"
+                    >
+                      <rect id="bound" x="0" y="0" width="24" height="24" />
+                      <path
+                        d="M4,9.67471899 L10.880262,13.6470401 C10.9543486,13.689814 11.0320333,13.7207107 11.1111111,13.740321 L11.1111111,21.4444444 L4.49070127,17.526473 C4.18655139,17.3464765 4,17.0193034 4,16.6658832 L4,9.67471899 Z M20,9.56911707 L20,16.6658832 C20,17.0193034 19.8134486,17.3464765 19.5092987,17.526473 L12.8888889,21.4444444 L12.8888889,13.6728275 C12.9050191,13.6647696 12.9210067,13.6561758 12.9368301,13.6470401 L20,9.56911707 Z"
+                        id="Combined-Shape"
+                        fill="#000000"
+                      />
+                      <path
+                        d="M4.21611835,7.74669402 C4.30015839,7.64056877 4.40623188,7.55087574 4.5299008,7.48500698 L11.5299008,3.75665466 C11.8237589,3.60013944 12.1762411,3.60013944 12.4700992,3.75665466 L19.4700992,7.48500698 C19.5654307,7.53578262 19.6503066,7.60071528 19.7226939,7.67641889 L12.0479413,12.1074394 C11.9974761,12.1365754 11.9509488,12.1699127 11.9085461,12.2067543 C11.8661433,12.1699127 11.819616,12.1365754 11.7691509,12.1074394 L4.21611835,7.74669402 Z"
+                        id="Path"
+                        fill="#000000"
+                        opacity="0.3"
+                      />
+                    </g>
+                  </svg> </span
+                ><span class="kt-menu__link-text">Inventory</span>
+              </b-link>
+              <b-collapse id="accordion-20" accordion="my-accordion">
+                <ul class="kt-menu__subnav">
+                  <li
+                    class="kt-menu__item kt-menu__item--submenu"
+                    data-ktmenu-submenu-toggle="hover"
+                    aria-haspopup="true"
+                  >
+                    <router-link
+                      to="/outpatient-inventory"
+                      class="kt-menu__link"
+                      style="padding-left: 40px;height: 40px;color:#9899ac;"
+                      ><i
+                        style="flex: 0 0 15px"
+                        class="kt-menu__link-bullet kt-menu__link-bullet--dot"
+                        ><span>-</span></i
+                      ><span class="kt-menu__link-text"
+                        >Outpatient Inventory</span
+                      ></router-link
+                    >
+                    <router-link
+                      to="/inpatient-inventory"
+                      class="kt-menu__link"
+                      style="padding-left: 40px;height: 40px;color:#9899ac;"
+                      ><i
+                        style="flex: 0 0 15px"
+                        class="kt-menu__link-bullet kt-menu__link-bullet--dot"
+                        ><span>-</span></i
+                      ><span class="kt-menu__link-text"
+                        >Inpatient Inventory</span
+                      ></router-link
+                    >
+                  </li>
+                </ul>
+              </b-collapse>
+            </li>
+            <li class="kt-menu__item">
+              <b-link v-b-toggle.accordion-21 class="m-1 kt-menu__link">
+                <span class="kt-menu__link-icon">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    width="24px"
+                    height="24px"
+                    viewBox="0 0 24 24"
+                    version="1.1"
+                    class="kt-svg-icon"
+                  >
+                    <g
+                      stroke="none"
+                      stroke-width="1"
+                      fill="none"
+                      fill-rule="evenodd"
+                    >
+                      <rect id="bound" x="0" y="0" width="24" height="24" />
+                      <path
+                        d="M3.5,21 L20.5,21 C21.3284271,21 22,20.3284271 22,19.5 L22,8.5 C22,7.67157288 21.3284271,7 20.5,7 L10,7 L7.43933983,4.43933983 C7.15803526,4.15803526 6.77650439,4 6.37867966,4 L3.5,4 C2.67157288,4 2,4.67157288 2,5.5 L2,19.5 C2,20.3284271 2.67157288,21 3.5,21 Z"
+                        id="Combined-Shape"
+                        fill="#000000"
+                        opacity="0.3"
+                      />
+                      <polygon
+                        id="Path"
+                        fill="#000000"
+                        opacity="0.3"
+                        points="4 19 10 11 16 19"
+                      />
+                      <polygon
+                        id="Path-Copy"
+                        fill="#000000"
+                        points="11 19 15 14 19 19"
+                      />
+                      <path
+                        d="M18,12 C18.8284271,12 19.5,11.3284271 19.5,10.5 C19.5,9.67157288 18.8284271,9 18,9 C17.1715729,9 16.5,9.67157288 16.5,10.5 C16.5,11.3284271 17.1715729,12 18,12 Z"
+                        id="Path"
+                        fill="#000000"
+                        opacity="0.3"
+                      />
+                    </g>
+                  </svg> </span
+                ><span class="kt-menu__link-text">NHIS Inventory</span>
+              </b-link>
+              <b-collapse id="accordion-21" accordion="my-accordion">
+                <ul class="kt-menu__subnav">
+                  <li
+                    class="kt-menu__item kt-menu__item--submenu"
+                    data-ktmenu-submenu-toggle="hover"
+                    aria-haspopup="true"
+                  >
+                    <router-link
+                      to="/nhis-outpatient-inventory"
+                      class="kt-menu__link"
+                      style="padding-left: 40px;height: 40px;color:#9899ac;"
+                      ><i
+                        style="flex: 0 0 15px"
+                        class="kt-menu__link-bullet kt-menu__link-bullet--dot"
+                        ><span>-</span></i
+                      ><span class="kt-menu__link-text"
+                        >NHIS Outpatient</span
+                      ></router-link
+                    >
+                    <router-link
+                      to="/nhis-inpatient-inventory"
+                      class="kt-menu__link"
+                      style="padding-left: 40px;height: 40px;color:#9899ac;"
+                      ><i
+                        style="flex: 0 0 15px"
+                        class="kt-menu__link-bullet kt-menu__link-bullet--dot"
+                        ><span>-</span></i
+                      ><span class="kt-menu__link-text"
+                        >NHIS Inpatient</span
+                      ></router-link
+                    >
+                  </li>
+                </ul>
+              </b-collapse>
+            </li>
+            <li class="kt-menu__item">
               <b-link v-b-toggle.accordion-8 class="m-1 kt-menu__link">
                 <span class="kt-menu__link-icon">
                   <svg

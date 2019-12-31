@@ -220,6 +220,36 @@
                     class="kt-badge kt-badge--warning kt-badge--inline"
                     >{{ staff.role }}</label
                   >
+                  <label
+                    style="background: #ef1011;color:#fff"
+                    v-if="staff.role == 'Pharmacy Store'"
+                    class="kt-badge kt-badge--warning kt-badge--inline"
+                    >{{ staff.role }}</label
+                  >
+                  <label
+                    style="background:#aef1f;"
+                    v-if="staff.role == 'Lab Store'"
+                    class="kt-badge kt-badge--warning kt-badge--inline"
+                    >{{ staff.role }}</label
+                  >
+                  <label
+                    style="background:#121df2;color:#fff"
+                    v-if="staff.role == 'Pharmacy'"
+                    class="kt-badge kt-badge--warning kt-badge--inline"
+                    >{{ staff.role }}</label
+                  >
+                  <label
+                    style="background:#01f2ee;color:#000"
+                    v-if="staff.role == 'Medical Imaging'"
+                    class="kt-badge kt-badge--warning kt-badge--inline"
+                    >{{ staff.role }}</label
+                  >
+                  <label
+                    style="background:#12eaa2;color:#000"
+                    v-if="staff.role == 'Laboratory'"
+                    class="kt-badge kt-badge--warning kt-badge--inline"
+                    >{{ staff.role }}</label
+                  >
                 </td>
                 <td>
                   <label

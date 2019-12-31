@@ -181,7 +181,7 @@
                 <option value="Accountant">Accountant</option>
                 <option value="Pharmacy Store">Pharmacy Store</option>
                 <option value="Lab Store">Lab Store</option>
-                <option value="Imaging">Imaging</option>
+                <option value="Medical Imaging">Medical Imaging</option>
                 <option value="Finance Officer">Finance Officer</option>
                 <option value="Midwife">Midwife</option>
               </select>

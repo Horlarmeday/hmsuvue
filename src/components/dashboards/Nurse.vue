@@ -264,19 +264,19 @@
                         v-if="patient.triages.length < 1"
                         class="btn btn-light kt-font-dark"
                       >
-                        Patient has no triage
+                        No triage
                       </button>
                       <button
                         v-if="
-                          !patient.triages[patient.triages.length - 1].seen &&
-                            !loading
+                          patient.triages.length > 0 &&
+                            !patient.triages[patient.triages.length - 1].seen
                         "
                         class="btn btn-dark btn-sm mr-3"
                         @click="sendToDoc(patient)"
                       >
                         Send to Doctor
                       </button>
-                      <button
+                      <!-- <button
                         v-else-if="
                           !patient.triages[patient.triages.length - 1].seen &&
                             loading &&
@@ -287,11 +287,11 @@
                         disabled
                       >
                         Sending...
-                      </button>
+                      </button> -->
                       <button
                         v-else-if="
-                          patient.triages[patient.triages.length - 1].seen &&
-                            !loading
+                          patient.triages.length > 0 &&
+                            patient.triages[patient.triages.length - 1].seen
                         "
                         class="btn btn-dark btn-sm mr-3"
                         disabled
@@ -432,15 +432,33 @@
                         </td>
                         <td>
                           <router-link
-                            to="#"
+                            v-if="appointment.patientId.antenatals.length > 0"
+                            :to="appointment.antenatal"
                             class="btn btn-bold btn-label-brand btn-sm"
                             >Take Up</router-link
+                          >
+                          <router-link
+                            v-else
+                            :to="appointment.createantenatal"
+                            class="btn btn-bold btn-label-brand btn-sm"
+                          >
+                            Register</router-link
                           >
                         </td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
+                <b-pagination
+                  class="float-right"
+                  v-model="currentPage"
+                  :per-page="7"
+                  :total-rows="irows"
+                  first-text="First"
+                  prev-text="Prev"
+                  next-text="Next"
+                  last-text="Last"
+                ></b-pagination>
               </div>
             </div>
           </div>
@@ -531,15 +549,35 @@
                         </td>
                         <td>
                           <router-link
-                            to="#"
+                            v-if="
+                              appointment.patientId.immunizations.length > 0
+                            "
+                            :to="appointment.immunization"
                             class="btn btn-bold btn-label-brand btn-sm"
-                            >Take Up</router-link
+                            >Continue</router-link
+                          >
+                          <router-link
+                            v-else
+                            :to="appointment.createimmunization"
+                            class="btn btn-bold btn-label-brand btn-sm"
+                          >
+                            Begin</router-link
                           >
                         </td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
+                <b-pagination
+                  class="float-right"
+                  v-model="currentPage"
+                  :total-rows="irows"
+                  :per-page="10"
+                  first-text="First"
+                  prev-text="Prev"
+                  next-text="Next"
+                  last-text="Last"
+                ></b-pagination>
               </div>
             </div>
           </div>
@@ -625,7 +663,14 @@ export default {
           }
 
           for (let i = 0; i < appointments.length; i++) {
-            appointments[i].url = '/patient/' + appointments[i]._id
+            appointments[i].url = '/patient/' + appointments[i].patient._id
+            appointments[i].antenatal =
+              '/antenatal/' + appointments[i].patient._id
+            appointments[i].createantenatal =
+              '/create-antenatal-account/' + appointments[i].patient._id
+            appointments[i].createimmunization = '/create-immunization'
+            appointments[i].immunization =
+              '/update-immunization/' + appointments[i].patient._id
           }
         })
         .catch(error => {
@@ -714,6 +759,9 @@ export default {
     },
     isNextButtonDisabled() {
       return this.currentPage === this.pageCount
+    },
+    irows() {
+      return this.appointments.length
     }
   }
 }

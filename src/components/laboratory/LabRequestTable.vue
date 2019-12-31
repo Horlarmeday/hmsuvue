@@ -140,6 +140,7 @@
                 <th>Reason for visit</th>
                 <th>Diagnosis</th>
                 <th>Lab Tests</th>
+                <th>Laboratory</th>
                 <th>Lab Result</th>
                 <th>Created</th>
               </tr>
@@ -172,6 +173,11 @@
                   </p>
                 </td>
                 <td v-else>No tests</td>
+                <td v-if="consultation.tests.length > 0">
+                  <p v-for="test in consultation.tests" :key="test._id">
+                    <span>{{ test.test.laboratory }}</span>
+                  </p>
+                </td>
                 <td>
                   <router-link to="#">View Result</router-link>
                 </td>

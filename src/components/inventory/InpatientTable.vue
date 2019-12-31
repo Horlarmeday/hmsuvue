@@ -64,13 +64,6 @@
                 </div>
               </div>
               &nbsp;
-              <router-link
-                to="/create-appointment"
-                class="btn btn-brand btn-elevate btn-icon-sm"
-              >
-                <i class="la la-plus"></i>
-                Create Appointment
-              </router-link>
             </div>
           </div>
         </div>
@@ -87,62 +80,15 @@
                       type="text"
                       class="form-control"
                       placeholder="Search..."
+                      @keyup="getInpatientItems"
                       v-model="input"
-                      @keyup="getAppointments"
                     />
                     <span class="kt-input-icon__icon kt-input-icon__icon--left">
                       <span><i class="la la-search"></i></span>
                     </span>
                   </div>
                 </div>
-                <div class="col-md-4 kt-margin-b-20-tablet-and-mobile">
-                  <div class="kt-form__group kt-form__group--inline">
-                    <div class="kt-form__label">
-                      <label>Status:</label>
-                    </div>
-                    <div class="kt-form__control">
-                      <select
-                        class="form-control bootstrap-select"
-                        id="kt_form_status"
-                      >
-                        <option value="">All</option>
-                        <option value="1">Pending</option>
-                        <option value="2">Delivered</option>
-                        <option value="3">Canceled</option>
-                        <option value="4">Success</option>
-                        <option value="5">Info</option>
-                        <option value="6">Danger</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-4 kt-margin-b-20-tablet-and-mobile">
-                  <div class="kt-form__group kt-form__group--inline">
-                    <div class="kt-form__label">
-                      <label>Type:</label>
-                    </div>
-                    <div class="kt-form__control">
-                      <select
-                        class="form-control bootstrap-select"
-                        id="kt_form_type"
-                      >
-                        <option value="">All</option>
-                        <option value="1">Online</option>
-                        <option value="2">Retail</option>
-                        <option value="3">Direct</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
               </div>
-            </div>
-            <div class="col-xl-4 order-1 order-xl-2 kt-align-right">
-              <a href="#" class="btn btn-default kt-hidden">
-                <i class="la la-cart-plus"></i> New Order
-              </a>
-              <div
-                class="kt-separator kt-separator--border-dashed kt-separator--space-lg d-xl-none"
-              ></div>
             </div>
           </div>
         </div>
@@ -152,73 +98,49 @@
       <div class="kt-portlet__body ">
         <!--begin: Datatable -->
         <div class="dt-responsive table-responsive">
-          <table class="table table-striped table-bordered nowrap">
+          <table id="mytable" class="table table-striped table-bordered nowrap">
             <thead>
               <tr>
                 <th>S/N</th>
-                <th>Appointment ID</th>
-                <th>Patient Name</th>
-                <th>Examiner</th>
-                <th>Type</th>
-                <th>Department</th>
-                <th>Appointment Date</th>
-                <th>Appointment Time</th>
-                <th>Status</th>
-                <th>Created</th>
-                <th>Created By</th>
+                <th>Product Code</th>
+                <th>Item</th>
+                <th>Quantity</th>
+                <th>Shelf</th>
+                <th>Unit</th>
+                <th>Selling Price</th>
+                <th>Consumed</th>
+                <th>Balance</th>
+                <th>Comment</th>
+                <th>Creator</th>
+                <th>Date Created</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-if="appointments.length == 0">
-                <td colspan="9" align="center">No Appointments</td>
+              <tr v-if="items.length == 0">
+                <td colspan="15" align="center">No Items</td>
               </tr>
-              <tr
-                v-for="(appointment, index) in appointments"
-                :key="appointment._id"
-              >
+              <tr v-for="(item, index) in items" :key="item._id">
                 <td>
                   {{ index + 1 }}
                 </td>
-                <td>{{ appointment.uniqueid }}</td>
+                <td>{{ item.productcode }}</td>
+                <td>{{ item.name.name }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.shelf }} {{ item.shelfno }}</td>
+                <td>{{ item.unit }}</td>
+                <td>{{ item.sellingprice }}</td>
+                <td>{{ item.consumed }}</td>
+                <td>{{ item.balance }}</td>
+                <td>{{ item.comment }}</td>
                 <td>
-                  <router-link :to="appointment.url">
-                    {{ appointment.patient.firstname }}
-                    {{ appointment.patient.lastname }}
-                  </router-link>
+                  {{ item.creator.firstname }} {{ item.creator.lastname }}
                 </td>
+                <td>{{ item.createdAt | moment('DD/MM/YYYY') }}</td>
                 <td>
-                  <a href="#">
-                    {{ appointment.examiner.firstname }}
-                    {{ appointment.examiner.lastname }}
-                  </a>
-                </td>
-                <td>{{ appointment.type }}</td>
-                <td>{{ appointment.department }}</td>
-                <td>
-                  {{ appointment.appointmentdate | moment('DD/MM/YYYY') }}
-                </td>
-                <td>
-                  {{ appointment.appointmenttime | moment('h:mma') }}
-                </td>
-
-                <td>
-                  <label
-                    v-if="appointment.taken"
-                    class="kt-badge kt-badge--success kt-badge--inline"
-                    >Attended</label
+                  <router-link :to="item.url" class="btn btn-brand btn-elevate"
+                    >Edit</router-link
                   >
-                  <label
-                    v-if="!appointment.taken"
-                    class="kt-badge kt-badge--warning kt-badge--inline"
-                    >Pending</label
-                  >
-                </td>
-                <td>{{ appointment.createdAt | moment('DD/MM/YYYY, ha') }}</td>
-                <td>
-                  <a href="#">
-                    {{ appointment.creator.firstname }}
-                    {{ appointment.creator.lastname }}
-                  </a>
                 </td>
               </tr>
             </tbody>
@@ -253,7 +175,7 @@
 <script>
 import axios from '../../axios'
 export default {
-  name: 'appointmentTable',
+  name: 'inpatientinventory',
   props: {
     title: {
       type: String
@@ -261,18 +183,19 @@ export default {
   },
   data() {
     return {
-      appointments: [],
-      appointmenturl: '/appointment',
-      currentPage: 1,
       input: '',
+      currentPage: 1,
       pageCount: '',
       pageSize: '',
       rows: '',
-      meta: ''
+      meta: '',
+      items: [],
+      itemsUrl: '/inventory/inpatient/',
+      loading: false
     }
   },
   mounted() {
-    this.getAppointments()
+    this.getInpatientItems()
   },
   methods: {
     handleError(error) {
@@ -281,36 +204,38 @@ export default {
         message: error.response.data
       })
     },
-    getAppointments() {
+
+    getInpatientItems() {
       axios
         .get(
-          `${this.appointmenturl}?currentPage=${this.currentPage}&search=${this.input}`
+          `${this.itemsUrl}?currentPage=${this.currentPage}&search=${this.input}`
         )
         .then(response => {
-          this.appointments = response.data.data.appointments
+          this.items = response.data.data.items
           this.meta = response.data.data.meta
           this.rows = this.meta.count
           this.pageSize = this.meta.pageSize
           this.pageCount = this.meta.pageCount
-
-          let appointment = this.appointments
-          for (let i = 0; i < appointment.length; i++) {
-            appointment[i].url = '/patient/' + appointment[i].patient._id
+          let items = this.items
+          for (let i = 0; i < items.length; i++) {
+            items[i].url = '/edit-inpatient/' + items[i]._id
           }
         })
         .catch(error => {
           this.handleError(error)
         })
     },
+
     pageChangeHandle(value) {
       if (value === 'next') {
         this.currentPage += 1
-        this.getAppointments()
+        this.getInpatientItems()
       } else if (value === 'previous') {
         this.currentPage -= 1
-        this.getAppointments()
+        this.getInpatientItems()
       }
-    }
+    },
+    myFunction() {}
   },
   computed: {
     isPreviousButtonDisabled() {

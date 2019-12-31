@@ -474,7 +474,7 @@
 <script>
 import axios from '../../axios'
 export default {
-  name: 'careplanTable',
+  name: 'labitemTable',
   props: {
     title: {
       type: String

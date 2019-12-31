@@ -234,7 +234,7 @@
                   </tr>
                 </tbody>
                 <tbody v-for="(patient, index) in patients" :key="patient._id">
-                  <tr>
+                  <tr v-if="patient.registration">
                     <td>
                       {{ index + 1 }}
                     </td>

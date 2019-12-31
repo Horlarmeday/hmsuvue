@@ -548,7 +548,7 @@ const routes = [
   {
     path: '/create-immunization',
     name: 'createimmunization',
-    component: () => import('../views/app/immunization/CreateImmunization.vue'),
+    component: () => import('../views/app/immunization/UpdateImmunization.vue'),
     meta: {
       requiresAuth: true
     }
@@ -574,6 +574,39 @@ const routes = [
     path: '/billings',
     name: 'billingtable',
     component: () => import('../views/app/accounts/Billings.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  // Inventories
+  {
+    path: '/inpatient-inventory',
+    name: 'inpatient',
+    component: () => import('../views/app/inventory/Inpatient.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/outpatient-inventory',
+    name: 'outpatient',
+    component: () => import('../views/app/inventory/Outpatient.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/nhis-inpatient-inventory',
+    name: 'nhisinpatient',
+    component: () => import('../views/app/inventory/NhisInpatient.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/nhis-outpatient-inventory',
+    name: 'nhisoutpatient',
+    component: () => import('../views/app/inventory/NhisOutpatient.vue'),
     meta: {
       requiresAuth: true
     }

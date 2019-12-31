@@ -55,6 +55,11 @@
             <MedicalRecords v-else-if="user.role == 'Medical Records'" />
             <Receptionist v-else-if="user.role == 'Receptionist'" />
             <Account v-else-if="user.role == 'Accountant'" />
+            <PharmacyStore v-else-if="user.role == 'Pharmacy Store'" />
+            <LabStore v-else-if="user.role == 'Lab Store'" />
+            <Pharmacy v-else-if="user.role == 'Pharmacy'" />
+            <Laboratory v-else-if="user.role == 'Laboratory'" />
+            <Imaging v-else-if="user.role == 'Medical Imaging'" />
           </div>
           <Footer />
         </div>
@@ -75,6 +80,11 @@ import Nurse from '@/components/dashboards/Nurse.vue'
 import MedicalRecords from '@/components/dashboards/MedicalRecords.vue'
 import Receptionist from '@/components/dashboards/Receptionist.vue'
 import Account from '@/components/dashboards/Account.vue'
+import PharmacyStore from '@/components/dashboards/PharmacyStore.vue'
+import LabStore from '@/components/dashboards/LabStore.vue'
+import Pharmacy from '@/components/dashboards/Pharmacy.vue'
+import Laboratory from '@/components/dashboards/Laboratory.vue'
+import Imaging from '@/components/dashboards/Imaging.vue'
 export default {
   name: 'dashboard',
   components: {
@@ -87,7 +97,12 @@ export default {
     Nurse,
     MedicalRecords,
     Receptionist,
-    Account
+    Account,
+    PharmacyStore,
+    LabStore,
+    Pharmacy,
+    Laboratory,
+    Imaging
   },
   data() {
     return {

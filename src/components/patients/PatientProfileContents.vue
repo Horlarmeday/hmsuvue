@@ -95,7 +95,13 @@
             <div class="kt-widget kt-widget--user-profile-1">
               <div class="kt-widget__head">
                 <div class="kt-widget__media">
-                  <img src="../../assets/images/100_1.jpg" alt="image" />
+                  <img v-if="photo" :src="photo" alt="Patient Image" />
+                  <img
+                    v-else
+                    src="../../assets/images/100_1.jpg"
+                    alt="patient image"
+                  />
+                  <!-- <img src="../../assets/images/100_1.jpg" alt="image" /> -->
                 </div>
                 <div class="kt-widget__content">
                   <div class="kt-widget__section">
@@ -1023,7 +1029,7 @@
                       Insurance Type
                     </a>
                     <span class="kt-widget4__number">{{
-                      patient.insurancetype
+                      patient.insurancetype.name
                     }}</span>
                   </div>
                   <div class="kt-widget4__item">
@@ -1060,30 +1066,116 @@
                   <h6 class="text-center">Dependants</h6>
                   <hr />
                   <div class="tab-pane active" id="kt_widget2_tab1_content">
-                    <div class="kt-widget2">
-                      <div
-                        v-for="dependant in dependants"
-                        :key="dependant._id"
-                        class="kt-widget2__item kt-widget2__item--primary"
+                    <div class="dt-responsive table-responsive">
+                      <table
+                        id="mytable"
+                        class="table table-striped table-bordered nowrap"
                       >
-                        <div class="kt-widget2__checkbox">
-                          <label
-                            class="kt-checkbox kt-checkbox--solid kt-checkbox--single"
+                        <thead>
+                          <tr>
+                            <th>S/N</th>
+                            <th>Photo</th>
+                            <th>Name</th>
+                            <th>Gender</th>
+                            <th>Relationship</th>
+                            <th>Date Created</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr v-if="dependants.length == 0">
+                            <td colspan="9" align="center">No Units</td>
+                          </tr>
+                          <tr
+                            v-for="(dependant, index) in dependants"
+                            :key="dependant._id"
                           >
-                            <span></span>
-                          </label>
-                        </div>
-                        <div class="kt-widget2__info ml-4">
-                          <a href="#" class="kt-widget2__title">
-                            {{ dependant.name }}
-                          </a>
-                        </div>
-                        <div class="kt-widget2__info">
-                          <a href="#" class="kt-widget2__title">
-                            {{ dependant.dateofbirth | moment('DD/MM/YYYY') }}
-                          </a>
-                        </div>
-                      </div>
+                            <td>
+                              {{ index + 1 }}
+                            </td>
+                            <td>
+                              <img
+                                v-if="dependant.photo"
+                                width="30"
+                                :src="dependant.photourl"
+                                alt="dependant Image"
+                              />
+                              <img
+                                v-else
+                                width="30"
+                                src="../../assets/images/100_1.jpg"
+                                alt="dependant image"
+                              />
+                            </td>
+                            <td>{{ dependant.name }}</td>
+                            <td>{{ dependant.gender }}</td>
+                            <td>{{ dependant.relationship }}</td>
+                            <td>
+                              {{ dependant.createdAt | moment('DD/MM/YYYY') }}
+                            </td>
+                            <td>
+                              <a
+                                href="#"
+                                class="btn btn-clean btn-sm btn-icon btn-icon-md"
+                                data-toggle="dropdown"
+                              >
+                                <button class="btn btn-brand btn-sm">Click</button>
+                              </a>
+                              <div
+                                class="dropdown-menu dropdown-menu-right dropdown-menu-fit dropdown-menu-md"
+                              >
+                                <!--begin::Nav-->
+                                <ul class="kt-nav">
+                                  <li class="kt-nav__head">
+                                    Options
+                                    <i
+                                      class="flaticon2-information"
+                                      data-toggle="kt-tooltip"
+                                      data-placement="right"
+                                      title="Click to learn more..."
+                                    ></i>
+                                  </li>
+                                  <li class="kt-nav__separator"></li>
+                                  <li class="kt-nav__item">
+                                    <a href="#" class="kt-nav__link">
+                                      <i
+                                        class="kt-nav__link-icon flaticon2-drop"
+                                      ></i>
+                                      <span class="kt-nav__link-text"
+                                        >Take Triage</span
+                                      >
+                                    </a>
+                                  </li>
+                                  <li class="kt-nav__item">
+                                    <a href="#" class="kt-nav__link">
+                                      <i
+                                        class="kt-nav__link-icon flaticon2-calendar-8"
+                                      ></i>
+                                      <span class="kt-nav__link-text"
+                                        >Edit</span
+                                      >
+                                    </a>
+                                  </li>
+                                  <li class="kt-nav__item">
+                                    <a href="#" class="kt-nav__link">
+                                      <i
+                                        class="kt-nav__link-icon flaticon2-link"
+                                      ></i>
+                                      <span class="kt-nav__link-text"
+                                        >Take Photo</span
+                                      >
+                                    </a>
+                                  </li>
+
+                                  <li class="kt-nav__separator"></li>
+                                </ul>
+
+                                <!--end::Nav-->
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
                     </div>
                   </div>
                 </div>
@@ -1108,7 +1200,9 @@ export default {
     return {
       patientUrl: '/patient/',
       patient: '',
-      dependants: []
+      photo: '',
+      dependants: [],
+      imageurl: 'http://localhost:3000/static/uploads/'
     }
   },
   mounted() {
@@ -1128,7 +1222,7 @@ export default {
         .get(this.patientUrl + this.$route.params.id)
         .then(response => {
           this.patient = response.data.data
-          console.log(this.patient)
+          this.photo = this.imageurl + this.patient.photo
         })
         .catch(error => {
           this.handleError(error)
@@ -1140,7 +1234,10 @@ export default {
         .get(this.patientUrl + 'dependant/' + this.$route.params.id)
         .then(response => {
           this.dependants = response.data.data
-          console.log(this.dependants)
+          let dependants = this.dependants
+          for (let i = 0; i < dependants.length; i++) {
+            dependants[i].photourl = this.imageurl + dependants[i].photo
+          }
         })
         .catch(error => {
           this.handleError(error)

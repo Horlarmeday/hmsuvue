@@ -8,15 +8,15 @@
             <i class="kt-font-brand flaticon2-line-chart"></i>
           </span>
           <h3 class="kt-portlet__head-title">
-            Create Lab Item
-            <small>Create a new lab item</small>
+            Edit Inpatient Item
+            <small>Edit inpatient pharmacy item</small>
           </h3>
         </div>
         <div class="kt-portlet__head-toolbar">
           <div class="kt-portlet__head-wrapper">
             <div class="kt-portlet__head-actions">
               <router-link
-                to="/laboratory-items"
+                to="/outpatient-inventory"
                 class="btn btn-brand btn-elevate btn-icon-sm"
               >
                 <i class="la la-plus"></i>
@@ -34,27 +34,23 @@
               <label>Name</label>
               <input
                 type="text"
+                v-model="item.drug"
                 class="form-control"
-                v-model="input.name"
-                placeholder="Name"
-                required
+                disabled
               />
-              <span class="form-text text-muted">Please enter item name.</span>
+              <span class="form-text text-muted">Item name.</span>
             </div>
           </div>
           <div class="col-xl-6">
             <div class="form-group">
-              <label>Description</label>
+              <label>Selling Price (₦)</label>
               <input
                 type="text"
                 class="form-control"
-                v-model="input.description"
-                placeholder="Description"
-                required
+                v-model="item.sellingprice"
+                disabled
               />
-              <span class="form-text text-muted"
-                >Please enter description.</span
-              >
+              <span class="form-text text-muted">Selling price.</span>
             </div>
           </div>
         </div>
@@ -65,19 +61,15 @@
               <input
                 type="text"
                 class="form-control"
-                v-model="input.productcode"
-                placeholder="Product Code"
-                required
+                v-model="item.productcode"
               />
-              <span class="form-text text-muted"
-                >Please enter product code.</span
-              >
+              <span class="form-text text-muted">Product code.</span>
             </div>
           </div>
           <div class="col-xl-6">
             <div class="form-group">
               <label>Shelf</label>
-              <select v-model="input.shelf" class="form-control" required>
+              <select v-model="item.shelf" class="form-control">
                 <option selected disabled>Select</option>
                 <option>A</option>
                 <option>B</option>
@@ -114,7 +106,7 @@
           <div class="col-xl-6">
             <div class="form-group">
               <label>Shelf Number (m*)</label>
-              <select v-model="input.shelfno" class="form-control" required>
+              <select v-model="item.shelfno" class="form-control">
                 <option selected disabled>Select</option>
                 <option>1</option>
                 <option>2</option>
@@ -134,49 +126,14 @@
           </div>
           <div class="col-xl-6">
             <div class="form-group">
-              <label>Voucher/Ref Number</label>
+              <label>Quantity</label>
               <input
                 type="text"
                 class="form-control"
-                v-model="input.voucher"
-                placeholder="Voucher/Ref No"
-                required
+                v-model="item.quantity"
+                disabled
               />
-              <span class="form-text text-muted"
-                >Please enter voucher number.</span
-              >
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-xl-6">
-            <div class="form-group">
-              <label>Vendor</label>
-              <select class="form-control" v-model="input.vendorId" required>
-                <option disabled selected>Select</option>
-                <option
-                  v-for="vendor in vendors"
-                  :key="vendor._id"
-                  :value="vendor._id"
-                  >{{ vendor.firstname }} {{ vendor.lastname }}</option
-                >
-              </select>
-              <span class="form-text text-muted">Please select vendor.</span>
-            </div>
-          </div>
-          <div class="col-xl-6">
-            <div class="form-group">
-              <label>Batch Number</label>
-              <input
-                type="text"
-                class="form-control"
-                v-model="input.batch"
-                placeholder="Batch Number"
-                required
-              />
-              <span class="form-text text-muted"
-                >Please enter batch number.</span
-              >
+              <span class="form-text text-muted">Please enter quantity.</span>
             </div>
           </div>
         </div>
@@ -184,37 +141,37 @@
           <div class="col-xl-6">
             <div class="form-group">
               <label>Expiry Date</label>
-              <datetime
-                type="date"
-                input-class="form-control"
-                v-model="input.expiration"
+              <input
+                type="text"
+                class="form-control"
+                :value="item.expiration | moment('DD/MM/YYYY')"
                 title="Expiry Date"
-              ></datetime>
-              <span class="form-text text-muted"
-                >Please enter batch number.</span
-              >
+                disabled
+              />
+
+              <span class="form-text text-muted">Expiry Date.</span>
+            </div>
+          </div>
+          <div class="col-xl-6">
+            <div class="form-group">
+              <label>Date Received</label>
+              <input
+                type="text"
+                class="form-control"
+                :value="item.createdAt | moment('DD/MM/YYYY')"
+                title="Expiry Date"
+                disabled
+              />
+
+              <span class="form-text text-muted">Date Received.</span>
             </div>
           </div>
         </div>
-        <h5 style="margin-bottom: 30px;color:#5d78ff;">QUANTITY</h5>
         <div class="row">
           <div class="col-xl-6">
             <div class="form-group">
-              <label>Quantity</label>
-              <input
-                type="number"
-                class="form-control"
-                v-model="input.quantity"
-                placeholder="Quantity"
-                required
-              />
-              <span class="form-text text-muted">Please enter quantity.</span>
-            </div>
-          </div>
-          <div class="col-xl-6">
-            <div class="form-group">
               <label>Unit </label>
-              <select class="form-control" v-model="input.unit" required>
+              <select class="form-control" v-model="item.unit" required>
                 <option disabled selected>Select</option>
                 <option
                   v-for="unit in units"
@@ -226,77 +183,42 @@
               <span class="form-text text-muted">Please select unit.</span>
             </div>
           </div>
-        </div>
-        <div class="row">
           <div class="col-xl-6">
             <div class="form-group">
-              <label>Cost Per Unit (₦)</label>
+              <label>Balance</label>
               <input
                 type="number"
                 class="form-control"
-                v-on:change="calculateCost"
-                v-model="input.price"
-                placeholder="Price"
+                v-model="item.balance"
+                disabled
               />
-              <span class="form-text text-muted">Please enter item cost.</span>
+              <span class="form-text text-muted">Balance</span>
             </div>
           </div>
+        </div>
+        <div class="row">
           <div class="col-xl-6">
             <div class="form-group">
-              <label>Purchase Cost (₦)</label>
+              <label>Consumed</label>
               <input
                 type="number"
                 class="form-control"
-                v-model="input.purchasecost"
-                required
-                readonly
+                v-model="item.consumed"
+                disabled
               />
-              <span class="form-text text-muted">Purchase cost</span>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-xl-6">
-            <div class="form-group">
-              <label>Date Received</label>
-              <input
-                type="date"
-                class="form-control"
-                v-model="input.datereceived"
-                required
-              />
-              <span class="form-text text-muted"
-                >Please select date received</span
-              >
+              <span class="form-text text-muted">Item Consumed.</span>
             </div>
           </div>
           <div class="col-xl-6">
             <div class="form-group">
-              <label>Loss & Adjustments</label>
-              <input
-                type="text"
+              <label>Comment</label>
+              <textarea
+                v-model="item.comment"
                 class="form-control"
-                v-model="input.loss"
-                required
-              />
-
-              <span class="form-text text-muted"
-                >Please enter loss & adjustments.</span
-              >
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-xl-6">
-            <div class="form-group">
-              <label>Remarks</label>
-              <input
-                type="text"
-                class="form-control"
-                v-model="input.remarks"
-                required
-              />
-              <span class="form-text text-muted">Please enter remarks</span>
+                cols="30"
+                rows="10"
+              ></textarea>
+              <span class="form-text text-muted">Please enter comment.</span>
             </div>
           </div>
         </div>
@@ -304,10 +226,10 @@
         <div>
           <button
             v-if="!loading"
-            @click="createLabItem"
+            @click="editItem"
             class="btn btn-brand btn-elevate float-right"
           >
-            Create Item
+            Update
           </button>
           <button
             v-else
@@ -315,7 +237,7 @@
                       kt-spinner--sm kt-spinner--light btn-elevate float-right"
             disabled
           >
-            Creating...
+            Updating...
           </button>
         </div>
         <!--end: Datatable -->
@@ -327,47 +249,26 @@
 
 <script>
 import axios from '../../axios'
-import { Datetime } from 'vue-datetime'
 export default {
-  name: 'createPharmacyItemForm',
+  name: 'editoutpatientform',
   props: {
     title: {
       type: String
     }
   },
-  components: {
-    datetime: Datetime
-  },
   data() {
     return {
-      input: {
-        price: '',
-        productcode: '',
-        description: '',
-        shelf: '',
-        shelfno: '',
-        voucher: '',
-        batch: '',
-        loss: '',
-        remarks: '',
-        quantity: '',
-        unit: '',
-        purchasecost: '',
-        datereceived: '',
-        expiration: '',
-        vendorId: ''
-      },
-
-      labitemUrl: '/laboratory/lab/item',
-      landingpageUrl: '/laboratory/lab/page',
+      edititemUrl: '/inventory/outpatient/',
+      itemUrl: '/inventory/outpatient/',
+      landingpageUrl: '/pharmacy/pharmacy/page',
       loading: false,
-      vendors: [],
-      drugs: [],
+      item: '',
       units: []
     }
   },
   mounted() {
     this.getPage()
+    this.getItem()
   },
   methods: {
     handleError(error) {
@@ -376,14 +277,13 @@ export default {
         message: error.response.data
       })
     },
-    createLabItem() {
+    editItem() {
       this.loading = true
 
       axios
-        .post(this.labitemUrl, this.input)
+        .put(this.edititemUrl + this.$route.params.id, this.item)
         .then(response => {
-          this.input = ''
-
+          this.loading = false
           this.$iziToast.success({
             title: 'Success!',
             message: response.data.message
@@ -398,17 +298,22 @@ export default {
       axios
         .get(this.landingpageUrl)
         .then(response => {
-          this.vendors = response.data.data.vendors
           this.units = response.data.data.units
         })
         .catch(error => {
           this.handleError(error)
         })
     },
-
-    calculateCost() {
-      this.input.purchasecost =
-        parseInt(this.input.quantity) * parseInt(this.input.price)
+    getItem() {
+      axios
+        .get(this.itemUrl + this.$route.params.id)
+        .then(response => {
+          this.item = response.data.data
+          console.log(this.item)
+        })
+        .catch(error => {
+          this.handleError(error)
+        })
     }
   }
 }

@@ -419,7 +419,19 @@
                         class="kt-menu__link-bullet kt-menu__link-bullet--dot"
                         ><span>-</span></i
                       ><span class="kt-menu__link-text"
-                        >Triages</span
+                        >Patient Triages</span
+                      ></router-link
+                    >
+                    <router-link
+                      to="/dependant-triages"
+                      class="kt-menu__link "
+                      style="padding-left: 40px;height: 40px;color:#9899ac;"
+                      ><i
+                        style="flex: 0 0 15px"
+                        class="kt-menu__link-bullet kt-menu__link-bullet--dot"
+                        ><span>-</span></i
+                      ><span class="kt-menu__link-text"
+                        >Dependant Triages</span
                       ></router-link
                     >
                   </li>

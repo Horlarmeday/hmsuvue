@@ -342,7 +342,7 @@
                       </tr>
                     </tbody>
                     <tbody v-for="(triage, index) in triages" :key="triage._id">
-                      <tr v-if="!triage.taken && triage.seen">
+                      <tr v-if="!triage.taken && triage.seen && triage.patient">
                         <td>
                           {{ index + 1 }}
                         </td>

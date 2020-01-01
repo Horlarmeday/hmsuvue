@@ -231,7 +231,7 @@
                       <label>Quantity</label>
                       <input
                         v-if="item.rquantity"
-                        type="text"
+                        type="number"
                         class="form-control"
                         :value="item.rquantity"
                         disabled
@@ -251,7 +251,7 @@
                     <div class="form-group">
                       <label>Quantity to Dispense</label>
                       <input
-                        type="text"
+                        type="number"
                         class="form-control"
                         v-model="quantity"
                         placeholder="Quantity"
@@ -287,7 +287,7 @@
                     <div class="form-group">
                       <label>Remaining Quantity</label>
                       <input
-                        type="text"
+                        type="number"
                         class="form-control"
                         v-model="rquantity"
                         placeholder="Quantity"

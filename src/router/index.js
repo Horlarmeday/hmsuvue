@@ -462,7 +462,7 @@ const routes = [
   },
   {
     path: '/consultation/:id',
-    name: 'consultationspage',
+    name: 'editconsultationpage',
     component: () => import('../views/app/consultations/ConsultationPage.vue'),
     meta: {
       requiresAuth: true
@@ -607,6 +607,47 @@ const routes = [
     path: '/nhis-outpatient-inventory',
     name: 'nhisoutpatient',
     component: () => import('../views/app/inventory/NhisOutpatient.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/edit-inpatient/:id',
+    name: 'editinpatient',
+    component: () => import('../views/app/inventory/EditInpatient.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/edit-outpatient/:id',
+    name: 'editoutpatient',
+    component: () => import('../views/app/inventory/EditOutpatient.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  // Dependant
+  {
+    path: '/edit-dependant/:id',
+    name: 'editdependant',
+    component: () => import('../views/app/dependant/EditDependant.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/create-dependant-triage/:id',
+    name: 'editdependant',
+    component: () => import('../views/app/dependant/DependantTriage.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/dependant-triages',
+    name: 'dependanttriages',
+    component: () => import('../views/app/triages/DependantTriages.vue'),
     meta: {
       requiresAuth: true
     }

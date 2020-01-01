@@ -230,14 +230,14 @@
                       <label>Quantity</label>
                       <input
                         v-if="drug.rquantity"
-                        type="text"
+                        type="number"
                         class="form-control"
                         :value="drug.rquantity"
                         disabled
                       />
                       <input
                         v-else
-                        type="text"
+                        type="number"
                         class="form-control"
                         :value="drug.quantity"
                         disabled
@@ -250,7 +250,7 @@
                     <div class="form-group">
                       <label>Quantity to Dispense</label>
                       <input
-                        type="text"
+                        type="number"
                         class="form-control"
                         v-model="quantity"
                         placeholder="Quantity"
@@ -286,7 +286,7 @@
                     <div class="form-group">
                       <label>Remaining Quantity</label>
                       <input
-                        type="text"
+                        type="number"
                         class="form-control"
                         v-model="rquantity"
                         placeholder="Quantity"

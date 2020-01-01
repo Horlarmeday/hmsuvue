@@ -1119,7 +1119,9 @@
                                 class="btn btn-clean btn-sm btn-icon btn-icon-md"
                                 data-toggle="dropdown"
                               >
-                                <button class="btn btn-brand btn-sm">Click</button>
+                                <button class="btn btn-brand btn-sm">
+                                  Click
+                                </button>
                               </a>
                               <div
                                 class="dropdown-menu dropdown-menu-right dropdown-menu-fit dropdown-menu-md"
@@ -1137,34 +1139,43 @@
                                   </li>
                                   <li class="kt-nav__separator"></li>
                                   <li class="kt-nav__item">
-                                    <a href="#" class="kt-nav__link">
+                                    <router-link
+                                      :to="dependant.triageurl"
+                                      class="kt-nav__link"
+                                    >
                                       <i
                                         class="kt-nav__link-icon flaticon2-drop"
                                       ></i>
                                       <span class="kt-nav__link-text"
                                         >Take Triage</span
                                       >
-                                    </a>
+                                    </router-link>
                                   </li>
                                   <li class="kt-nav__item">
-                                    <a href="#" class="kt-nav__link">
+                                    <router-link
+                                      :to="dependant.url"
+                                      class="kt-nav__link"
+                                    >
                                       <i
                                         class="kt-nav__link-icon flaticon2-calendar-8"
                                       ></i>
                                       <span class="kt-nav__link-text"
                                         >Edit</span
                                       >
-                                    </a>
+                                    </router-link>
                                   </li>
                                   <li class="kt-nav__item">
-                                    <a href="#" class="kt-nav__link">
+                                    <router-link
+                                      :to="dependant.url"
+                                      class="kt-nav__link"
+                                    >
                                       <i
                                         class="kt-nav__link-icon flaticon2-link"
                                       ></i>
                                       <span class="kt-nav__link-text"
                                         >Take Photo</span
                                       >
-                                    </a>
+                                    </router-link>
                                   </li>
 
                                   <li class="kt-nav__separator"></li>
@@ -1202,7 +1213,8 @@ export default {
       patient: '',
       photo: '',
       dependants: [],
-      imageurl: 'http://localhost:3000/static/uploads/'
+      imageurl: 'http://localhost:3000/static/uploads/',
+      dependantUrl: '/edit-dependant/'
     }
   },
   mounted() {
@@ -1237,6 +1249,9 @@ export default {
           let dependants = this.dependants
           for (let i = 0; i < dependants.length; i++) {
             dependants[i].photourl = this.imageurl + dependants[i].photo
+            dependants[i].url = this.dependantUrl + dependants[i]._id
+            dependants[i].triageurl =
+              '/create-dependant-triage/' + dependants[i]._id
           }
         })
         .catch(error => {

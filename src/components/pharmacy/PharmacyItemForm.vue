@@ -207,7 +207,7 @@
             <div class="form-group">
               <label>Quantity</label>
               <input
-                type="text"
+                type="number"
                 class="form-control"
                 v-model="input.quantity"
                 placeholder="Quantity"
@@ -237,7 +237,7 @@
             <div class="form-group">
               <label>Cost Per Unit (₦)</label>
               <input
-                type="text"
+                type="number"
                 class="form-control"
                 v-on:change="calculateCost"
                 v-model="input.price"
@@ -250,7 +250,7 @@
             <div class="form-group">
               <label>Purchase Cost (₦)</label>
               <input
-                type="text"
+                type="number"
                 class="form-control"
                 v-model="input.purchasecost"
                 required
@@ -265,7 +265,7 @@
             <div class="form-group">
               <label>Selling Price (₦)</label>
               <input
-                type="text"
+                type="number"
                 class="form-control"
                 v-on:change="calculateIncone"
                 v-model="input.sellingprice"
@@ -280,12 +280,12 @@
             <div class="form-group">
               <label>Expected Income</label>
               <input
-                type="text"
+                type="number"
                 class="form-control"
                 v-model="input.expectedincome"
                 required
                 readonly
-              />equired />
+              />
               <span class="form-text text-muted">Expected income.</span>
             </div>
           </div>

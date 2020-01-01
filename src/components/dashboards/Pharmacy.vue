@@ -260,7 +260,7 @@
                   v-for="(consultation, index) in consultations"
                   :key="consultation._id"
                 >
-                  <tr v-if="consultation.drugstatus">
+                  <tr v-if="!consultation.pharmacyfinish">
                     <td>
                       {{ index + 1 }}
                     </td>
@@ -314,9 +314,11 @@
               aria-hidden="true"
             >
               <div class="modal-dialog modal-lg" role="document">
-                <div style="width: 130%" class="modal-content">
+                <div style="width: 150%" class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Drugs</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">
+                      {{ firstname }} {{ lastname }}
+                    </h5>
                     <button
                       type="button"
                       class="close"
@@ -341,6 +343,7 @@
                             <th>Status</th>
                             <th>PrescribedBy</th>
                             <th>Notes</th>
+                            <th>Action</th>
                           </tr>
                         </thead>
                         <tbody v-if="drugs.length == 0">
@@ -373,7 +376,7 @@
                             </td>
                             <td>
                               <label
-                                v-if="drug.status"
+                                v-if="drug.dispense"
                                 class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill"
                                 >Dispensed</label
                               >
@@ -392,6 +395,53 @@
                             </td>
                             <td>
                               {{ drug.notes }}
+                            </td>
+                            <td>
+                              <form
+                                v-if="!drug.dispense"
+                                @submit.prevent="dispenseDrug(drug, index)"
+                              >
+                                <select name="department" class="form-control">
+                                  <option>Select</option>
+                                  <option value="Inpatient"
+                                    >Inpatient Inventory</option
+                                  >
+                                  <option value="Outpatient"
+                                    >Outpatient Inventory</option
+                                  >
+                                  <option value="NhisInpatient"
+                                    >NhisInpatient Inventory</option
+                                  >
+                                  <option value="NhisOutpatient"
+                                    >NhisOutpatient Inventory</option
+                                  >
+                                </select>
+                                <button
+                                  v-if="!dispenseloading"
+                                  class="btn btn-success btn-elevate btn-sm"
+                                  type="submit"
+                                >
+                                  Dispense
+                                </button>
+                                <button
+                                  v-if="
+                                    dispenseloading &&
+                                      currentDrug._id == drug._id
+                                  "
+                                  class="btn btn-brand kt-spinner kt-spinner--right 
+                               kt-spinner--sm kt-spinner--light btn-elevate float-right"
+                                  disabled
+                                >
+                                  Dispensing...
+                                </button>
+                              </form>
+                              <button
+                                v-else
+                                class="btn btn-default btn-elevate btn-sm"
+                                disabled
+                              >
+                                Dispensed
+                              </button>
                             </td>
                           </tr>
                         </tbody>
@@ -652,7 +702,7 @@
                             </td>
                             <td>
                               <label
-                                v-if="drug.status"
+                                v-if="drug.dispense"
                                 class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill"
                                 >Dispensed</label
                               >
@@ -717,20 +767,26 @@ export default {
       ancs: [],
       ancdrugs: [],
       consultationId: '',
+      consult: '',
       name: '',
+      firstname: '',
+      lastname: '',
 
       totalPatients: '',
       triagesCount: '',
       pharmacyCount: '',
       appointmentCount: '',
+      // department: '',
 
       date: '',
       status: '',
       loading: false,
-
+      dispenseloading: false,
+      currentDrug: '',
       consultationDrugurl: '/consultation/consultation/drugs',
       landingPageUrl: '/dashboard/pharmacy',
       antenatalDrugurl: '/antenatal/anc/drugs',
+      dispenseDrugurl: '/ajax/dispense-drug',
       currentPage: 1,
       pageCount: '',
       pageSize: '',
@@ -744,7 +800,7 @@ export default {
   },
   methods: {
     handleError(error) {
-      console.log(error.response)
+      console.log(error)
       this.$iziToast.error({
         title: 'Error!',
         message: error.response.data
@@ -790,7 +846,40 @@ export default {
         .post(this.consultationDrugurl, data)
         .then(response => {
           this.drugs = response.data.data.drugs
-          console.log(this.drugs)
+          this.consult = response.data.data._id
+          this.firstname = response.data.data.patient.firstname
+          this.lastname = response.data.data.patient.lastname
+        })
+        .catch(error => {
+          this.handleError(error)
+        })
+    },
+
+    dispenseDrug(drug, index) {
+      this.currentDrug = drug
+      const e = document.getElementsByName('department')[index]
+      const depart = e.options[e.selectedIndex].value
+      console.log(depart)
+      if (depart === '' || depart === null) {
+        this.$iziToast.error({
+          title: 'Error!',
+          message: 'Please choose the inventory to dispense from'
+        })
+        return false
+      }
+      const data = {
+        consultationId: this.consult,
+        inventory: depart,
+        index: index
+      }
+      axios
+        .post(this.dispenseDrugurl, data)
+        .then(response => {
+          this.drugs[index].dispense = response.data.data
+          this.$iziToast.success({
+            title: 'Success!',
+            message: response.data.message
+          })
         })
         .catch(error => {
           this.handleError(error)

@@ -174,14 +174,14 @@
               </tr>
             </tbody>
             <tbody v-for="(triage, index) in triages" :key="triage._id">
-              <tr v-if="triage.patient">
+              <tr v-if="triage.dependant">
                 <td>
                   {{ index + 1 }}
                 </td>
                 <td>
-                  <router-link :to="triage.url">
-                    {{ triage.patient.firstname }} {{ triage.patient.lastname }}
-                  </router-link>
+                  <a href="#">
+                    {{ triage.dependant.name }}
+                  </a>
                 </td>
                 <td>{{ triage.weight }}</td>
                 <td>
@@ -220,9 +220,7 @@
                   </a>
                 </td>
                 <td>
-                  {{
-                    triage.createdAt | moment('dddd, MMMM Do YYYY, h:mm:ss a')
-                  }}
+                  {{ triage.createdAt | moment('ddd, MMM Do YYYY, h:mm a') }}
                 </td>
               </tr>
             </tbody>
@@ -266,10 +264,6 @@ export default {
         .get(this.triagesUrl)
         .then(response => {
           this.triages = response.data.data
-          let triages = this.triages
-          for (let i = 0; i < triages.length; i++) {
-            triages[i].url = '/patient/' + triages[i].patient._id
-          }
           //   let triages = this.triages
           //   for (let i = 0; i < patients.length; i++) {
           //     triages[i].url = this.imageurl + patients[i].photo

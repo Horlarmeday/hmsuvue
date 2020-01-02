@@ -14,7 +14,7 @@
       <div class="kt-aside__brand kt-grid__item " id="kt_aside_brand">
         <div class="kt-aside__brand-logo">
           <a href="#">
-            <img alt="Logo" src="../../assets/images/mobilelogo.png" />
+            <img width="25" alt="Logo" src="../../assets/images/log.png" />
           </a>
           <h5
             style="padding-left: 10px; color: #fff;text-transform: Capitalize;padding-top:5px"

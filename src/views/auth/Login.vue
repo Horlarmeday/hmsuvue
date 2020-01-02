@@ -15,7 +15,7 @@
             <div class="kt-login__container">
               <div class="kt-login__logo">
                 <a href="#">
-                  <img src="../../assets/logo.png" />
+                  <img src="../../assets/ms.png" />
                 </a>
               </div>
               <div class="kt-login__signin">

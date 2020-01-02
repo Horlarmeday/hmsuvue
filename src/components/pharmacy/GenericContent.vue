@@ -29,6 +29,18 @@
                 >Please enter generic name.</span
               >
             </div>
+            <div class="form-group">
+              <label>Code </label>
+              <input
+                type="text"
+                class="form-control"
+                v-model="code"
+                placeholder="Code"
+              />
+              <span class="form-text text-muted"
+                >Please enter generic code.</span
+              >
+            </div>
           </div>
         </div>
 
@@ -201,6 +213,7 @@
               <tr>
                 <th>S/N</th>
                 <th>Generic Name</th>
+                <th>Code</th>
                 <th>Status</th>
                 <th>Date Created</th>
                 <th>Action</th>
@@ -215,6 +228,7 @@
                   {{ index + 1 }}
                 </td>
                 <td>{{ drug.name }}</td>
+                <td>{{ drug.code }}</td>
                 <td>
                   <span
                     v-if="drug.status"
@@ -287,6 +301,7 @@ export default {
   data() {
     return {
       name: '',
+      code: '',
       drugs: [],
       currentDrug: '',
       genericUrl: '/pharmacy/generic',
@@ -315,7 +330,8 @@ export default {
     createGeneric() {
       this.loading = true
       const data = {
-        name: this.name
+        name: this.name,
+        code: this.code
       }
       axios
         .post(this.genericUrl, data)

@@ -87,7 +87,8 @@
                       type="text"
                       class="form-control"
                       placeholder="Search..."
-                      id="generalSearch"
+                      v-model="input"
+                      @keyup="getServices"
                     />
                     <span class="kt-input-icon__icon kt-input-icon__icon--left">
                       <span><i class="la la-search"></i></span>
@@ -213,7 +214,24 @@
             </tbody>
           </table>
         </div>
+        <div class="card-footer">
+          <p class="float-left">Showing {{ pageSize }} of {{ rows }} entries</p>
+          <button
+            class="btn btn-outline-brand btn-sm ml-3 float-right"
+            :disabled="isNextButtonDisabled"
+            @click="pageChangeHandle('next')"
+          >
+            Next →
+          </button>
 
+          <button
+            class="btn btn-outline-brand btn-sm float-right"
+            :disabled="isPreviousButtonDisabled"
+            @click="pageChangeHandle('previous')"
+          >
+            ← Prev
+          </button>
+        </div>
         <!--end: Datatable -->
       </div>
     </div>
@@ -224,7 +242,7 @@
 <script>
 import axios from '../../axios'
 export default {
-  name: 'departmentTable',
+  name: 'serviceTable',
   props: {
     title: {
       type: String
@@ -233,7 +251,14 @@ export default {
   data() {
     return {
       services: [],
-      serviceUrl: '/admin/service'
+      serviceUrl: '/admin/service',
+
+      currentPage: 1,
+      pageCount: '',
+      pageSize: '',
+      rows: '',
+      meta: '',
+      input: ''
       //   currentService: '',
       //   deleteData: false
     }
@@ -251,9 +276,15 @@ export default {
     },
     getServices() {
       axios
-        .get(this.serviceUrl)
+        .get(
+          `${this.serviceUrl}?currentPage=${this.currentPage}&search=${this.input}`
+        )
         .then(response => {
-          this.services = response.data.data
+          this.services = response.data.data.services
+          this.meta = response.data.data.meta
+          this.rows = this.meta.count
+          this.pageSize = this.meta.pageSize
+          this.pageCount = this.meta.pageCount
           //   let notes = this.nursenotes
           //   for (let i = 0; i < notes.length; i++) {
           //     notes[i].url = this.patienturl + notes[i]._id
@@ -283,6 +314,23 @@ export default {
       //     .catch(error => {
       //       this.handleError(error)
       //     })
+    },
+    pageChangeHandle(value) {
+      if (value === 'next') {
+        this.currentPage += 1
+        this.getServices()
+      } else if (value === 'previous') {
+        this.currentPage -= 1
+        this.getServices()
+      }
+    }
+  },
+  computed: {
+    isPreviousButtonDisabled() {
+      return this.currentPage === 1
+    },
+    isNextButtonDisabled() {
+      return this.currentPage === this.pageCount
     }
   }
 }

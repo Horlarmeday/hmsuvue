@@ -115,10 +115,6 @@
                 </div>
               </div>
               &nbsp;
-              <a href="#" class="btn btn-brand btn-elevate btn-icon-sm">
-                <i class="la la-plus"></i>
-                New Record
-              </a>
             </div>
           </div>
         </div>
@@ -135,7 +131,8 @@
                       type="text"
                       class="form-control"
                       placeholder="Search..."
-                      id="generalSearch"
+                      v-model="input"
+                      @keyup="getGeneric"
                     />
                     <span class="kt-input-icon__icon kt-input-icon__icon--left">
                       <span><i class="la la-search"></i></span>
@@ -252,6 +249,24 @@
             </tbody>
           </table>
         </div>
+        <div class="card-footer">
+          <p class="float-left">Showing {{ pageSize }} of {{ rows }} entries</p>
+          <button
+            class="btn btn-outline-brand btn-sm ml-3 float-right"
+            :disabled="isNextButtonDisabled"
+            @click="pageChangeHandle('next')"
+          >
+            Next →
+          </button>
+
+          <button
+            class="btn btn-outline-brand btn-sm float-right"
+            :disabled="isPreviousButtonDisabled"
+            @click="pageChangeHandle('previous')"
+          >
+            ← Prev
+          </button>
+        </div>
 
         <!--end: Datatable -->
       </div>
@@ -276,7 +291,14 @@ export default {
       currentDrug: '',
       genericUrl: '/pharmacy/generic',
       loading: false,
-      deletedata: false
+      deletedata: false,
+
+      currentPage: 1,
+      pageCount: '',
+      pageSize: '',
+      rows: '',
+      meta: '',
+      input: ''
     }
   },
   mounted() {
@@ -314,9 +336,15 @@ export default {
 
     getGeneric() {
       axios
-        .get(this.genericUrl)
+        .get(
+          `${this.genericUrl}?currentPage=${this.currentPage}&search=${this.input}`
+        )
         .then(response => {
-          this.drugs = response.data.data
+          this.drugs = response.data.data.genericdrugs
+          this.meta = response.data.data.meta
+          this.rows = this.meta.count
+          this.pageSize = this.meta.pageSize
+          this.pageCount = this.meta.pageCount
         })
         .catch(error => {
           this.handleError(error)
@@ -340,6 +368,23 @@ export default {
           this.loading = false
           this.handleError(error)
         })
+    },
+    pageChangeHandle(value) {
+      if (value === 'next') {
+        this.currentPage += 1
+        this.getGeneric()
+      } else if (value === 'previous') {
+        this.currentPage -= 1
+        this.getGeneric()
+      }
+    }
+  },
+  computed: {
+    isPreviousButtonDisabled() {
+      return this.currentPage === 1
+    },
+    isNextButtonDisabled() {
+      return this.currentPage === this.pageCount
     }
   }
 }

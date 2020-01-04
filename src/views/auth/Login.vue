@@ -57,6 +57,7 @@
                           :state="errors[0] ? false : valid ? true : null"
                           required
                           v-model="password"
+                          autocomplete="off"
                         />
                         <div class="invalid-feedback">{{ errors[0] }}</div>
                       </div>

@@ -308,7 +308,7 @@
                     </td>
                     <td>
                       <router-link
-                        to="#"
+                        :to="consultation.microurl"
                         class="btn btn-brand btn-elevated btn-sm mr-2"
                       >
                         Add Result (M)
@@ -610,6 +610,8 @@ export default {
           let ancs = this.ancs
           for (let i = 0; i < consultations.length; i++) {
             consultations[i].url = '/patient/' + consultations[i].patient._id
+            consultations[i].microurl =
+              '/microbiology-result/' + consultations[i]._id
           }
 
           for (let i = 0; i < ancs.length; i++) {

@@ -638,7 +638,7 @@ const routes = [
   },
   {
     path: '/create-dependant-triage/:id',
-    name: 'editdependant',
+    name: 'createdependanttriage',
     component: () => import('../views/app/dependant/DependantTriage.vue'),
     meta: {
       requiresAuth: true
@@ -648,6 +648,23 @@ const routes = [
     path: '/dependant-triages',
     name: 'dependanttriages',
     component: () => import('../views/app/triages/DependantTriages.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  // Lab results
+  {
+    path: '/microbiology-result/:id',
+    name: 'microbiologyresult',
+    component: () => import('../views/app/laboratory/Microbiology.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/haematology-result/:id',
+    name: 'microbiologyresult',
+    component: () => import('../views/app/laboratory/Haematology.vue'),
     meta: {
       requiresAuth: true
     }

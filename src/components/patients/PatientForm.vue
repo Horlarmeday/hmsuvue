@@ -159,8 +159,12 @@
           <div class="col-xl-6">
             <div class="form-group">
               <label>Country</label>
-              <select v-model="country" class="form-control">
-                <option selected disabled>Select</option>
+              <select
+                v-model="country"
+                class="form-control"
+                @change="getStates"
+              >
+                <option disabled>Select</option>
                 <option value="Nigeria">Nigeria</option>
               </select>
               <span class="form-text text-muted"
@@ -171,12 +175,14 @@
           <div class="col-xl-6">
             <div class="form-group">
               <label>State</label>
-              <select v-model="state" class="form-control">
-                <option selected disabled>Select</option>
-                <option value="Oyo">Oyo</option>
-                <option value="Lagos">Lagos</option>
-                <option value="Ogun">Ogun</option>
-                <option value="Kwara">Kwara</option>
+              <select v-model="state" class="form-control" @change="getCities">
+                <option disabled>Select</option>
+                <option
+                  v-for="state in states"
+                  :key="state.slug"
+                  :value="state.slug"
+                  >{{ state.name }}</option
+                >
               </select>
               <span class="form-text text-muted"
                 >Please select patient state.</span
@@ -189,8 +195,13 @@
             <div class="form-group">
               <label>Local Government</label>
               <select v-model="lga" class="form-control">
-                <option selected disabled>Select</option>
-                <option value="Alimosho">Alimosho</option>
+                <option disabled>Select</option>
+                <option
+                  v-for="city in cities"
+                  :key="city.slug"
+                  :value="city.name"
+                  >{{ city.name }}</option
+                >
               </select>
               <span class="form-text text-muted"
                 >Please select patient Local Government.</span
@@ -863,6 +874,7 @@
 import axios from '../../axios'
 import { Datetime } from 'vue-datetime'
 import vSelect from 'vue-select'
+import sc from 'states-cities-db'
 export default {
   name: 'patientForm',
   components: {
@@ -876,6 +888,8 @@ export default {
   },
   data() {
     return {
+      states: [],
+      cities: [],
       firstname: '',
       lastname: '',
       email: '',
@@ -951,6 +965,7 @@ export default {
   mounted() {
     this.landingPage()
     this.getInsurance()
+    // this.getCountry()
   },
   methods: {
     handleError(error) {
@@ -1231,6 +1246,17 @@ export default {
         .catch(error => {
           this.handleError(error)
         })
+    },
+    // getCountry() {
+    //   const country = sc.getBySlug('country', 'nigeria')
+    // },
+    getStates() {
+      const states = sc.getStates('nigeria')
+      this.states = states
+    },
+    getCities() {
+      const cities = sc.getCities(`${this.state}`)
+      this.cities = cities
     }
   }
 }

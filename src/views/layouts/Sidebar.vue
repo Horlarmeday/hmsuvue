@@ -268,7 +268,15 @@
                 </ul>
               </b-collapse>
             </li>
-            <li v-if="user.role == 'Doctor' || user.role == 'Super Admin' || user.role == 'Receptionist' || user.role == 'Nurse'" class="kt-menu__item">
+            <li
+              v-if="
+                user.role == 'Doctor' ||
+                  user.role == 'Super Admin' ||
+                  user.role == 'Receptionist' ||
+                  user.role == 'Nurse'
+              "
+              class="kt-menu__item"
+            >
               <b-link v-b-toggle.accordion-2 class="m-1 kt-menu__link">
                 <span class="kt-menu__link-icon">
                   <svg
@@ -347,7 +355,10 @@
                 </ul>
               </b-collapse>
             </li>
-            <li v-if="user.role == 'Nurse' || user.role == 'Super Admin'" class="kt-menu__item">
+            <li
+              v-if="user.role == 'Nurse' || user.role == 'Super Admin'"
+              class="kt-menu__item"
+            >
               <b-link v-b-toggle.accordion-3 class="m-1 kt-menu__link">
                 <span class="kt-menu__link-icon">
                   <svg
@@ -438,7 +449,10 @@
                 </ul>
               </b-collapse>
             </li>
-            <li v-if="user.role == 'Nurse' || user.role == 'Super Admin'" class="kt-menu__item">
+            <li
+              v-if="user.role == 'Nurse' || user.role == 'Super Admin'"
+              class="kt-menu__item"
+            >
               <b-link v-b-toggle.accordion-4 class="m-1 kt-menu__link">
                 <span class="kt-menu__link-icon">
                   <svg
@@ -603,7 +617,14 @@
                 </ul>
               </b-collapse>
             </li>
-            <li v-if="user.role == 'Super Admin' || user.role == 'Doctor' || user.role == 'Nurse'" class="kt-menu__item">
+            <li
+              v-if="
+                user.role == 'Super Admin' ||
+                  user.role == 'Doctor' ||
+                  user.role == 'Nurse'
+              "
+              class="kt-menu__item"
+            >
               <b-link v-b-toggle.accordion-5 class="m-1 kt-menu__link">
                 <span class="kt-menu__link-icon">
                   <svg
@@ -866,7 +887,10 @@
                 </ul>
               </b-collapse>
             </li>
-            <li v-if="user.role == 'Super Admin' || user.role == 'Pharmacy'" class="kt-menu__item">
+            <li
+              v-if="user.role == 'Super Admin' || user.role == 'Pharmacy'"
+              class="kt-menu__item"
+            >
               <b-link v-b-toggle.accordion-7 class="m-1 kt-menu__link">
                 <span class="kt-menu__link-icon">
                   <svg
@@ -923,7 +947,10 @@
                 </ul>
               </b-collapse>
             </li>
-            <li v-if="user.role == 'Super Admin' || user.role == 'Pharmacy'" class="kt-menu__item">
+            <li
+              v-if="user.role == 'Super Admin' || user.role == 'Pharmacy'"
+              class="kt-menu__item"
+            >
               <b-link v-b-toggle.accordion-20 class="m-1 kt-menu__link">
                 <span class="kt-menu__link-icon">
                   <svg
@@ -1004,7 +1031,10 @@
                 </ul>
               </b-collapse>
             </li>
-            <li v-if="user.role == 'Super Admin' || user.role == 'Pharmacy'" class="kt-menu__item">
+            <li
+              v-if="user.role == 'Super Admin' || user.role == 'Pharmacy'"
+              class="kt-menu__item"
+            >
               <b-link v-b-toggle.accordion-21 class="m-1 kt-menu__link">
                 <span class="kt-menu__link-icon">
                   <svg
@@ -1085,7 +1115,10 @@
                 </ul>
               </b-collapse>
             </li>
-            <li v-if="user.role == 'Super Admin' || user.role == 'Laboratory'" class="kt-menu__item">
+            <li
+              v-if="user.role == 'Super Admin' || user.role == 'Laboratory'"
+              class="kt-menu__item"
+            >
               <b-link v-b-toggle.accordion-8 class="m-1 kt-menu__link">
                 <span class="kt-menu__link-icon">
                   <svg
@@ -1154,7 +1187,10 @@
                 </ul>
               </b-collapse>
             </li>
-            <li v-if="user.role == 'Super Admin' || user.role == 'Pharmacy Store'" class="kt-menu__item">
+            <li
+              v-if="user.role == 'Super Admin' || user.role == 'Pharmacy Store'"
+              class="kt-menu__item"
+            >
               <b-link v-b-toggle.accordion-9 class="m-1 kt-menu__link">
                 <span class="kt-menu__link-icon">
                   <svg
@@ -1263,7 +1299,10 @@
                 </ul>
               </b-collapse>
             </li>
-            <li v-if="user.role == 'Super Admin' || user.role == 'Lab Store'" class="kt-menu__item">
+            <li
+              v-if="user.role == 'Super Admin' || user.role == 'Lab Store'"
+              class="kt-menu__item"
+            >
               <b-link v-b-toggle.accordion-10 class="m-1 kt-menu__link">
                 <span class="kt-menu__link-icon">
                   <svg
@@ -1374,7 +1413,12 @@
                 </ul>
               </b-collapse>
             </li>
-            <li v-if="user.role == 'Super Admin' || user.role == 'Medical Imaging'" class="kt-menu__item">
+            <li
+              v-if="
+                user.role == 'Super Admin' || user.role == 'Medical Imaging'
+              "
+              class="kt-menu__item"
+            >
               <b-link v-b-toggle.accordion-11 class="m-1 kt-menu__link">
                 <span class="kt-menu__link-icon">
                   <svg
@@ -1450,7 +1494,17 @@
                 </ul>
               </b-collapse>
             </li>
-            <li v-if="user.role == 'Super Admin' || user.role == 'Pharmacy' || user.role == 'Pharmacy Store' || user.role == 'Lab Store' || user.role == 'Laboratory' || user.role == 'Medical Records'" class="kt-menu__item">
+            <li
+              v-if="
+                user.role == 'Super Admin' ||
+                  user.role == 'Pharmacy' ||
+                  user.role == 'Pharmacy Store' ||
+                  user.role == 'Lab Store' ||
+                  user.role == 'Laboratory' ||
+                  user.role == 'Medical Records'
+              "
+              class="kt-menu__item"
+            >
               <b-link v-b-toggle.accordion-19 class="m-1 kt-menu__link">
                 <span class="kt-menu__link-icon">
                   <svg
@@ -1488,7 +1542,7 @@
               <b-collapse id="accordion-19" accordion="my-accordion">
                 <ul class="kt-menu__subnav">
                   <li
-                  v-if="user.role == 'Pharmacy' || user.role == 'Laboratory'"
+                    v-if="user.role == 'Pharmacy' || user.role == 'Laboratory'"
                     class="kt-menu__item kt-menu__item--submenu"
                     data-ktmenu-submenu-toggle="hover"
                     aria-haspopup="true"
@@ -1507,7 +1561,11 @@
                     >
                   </li>
                   <li
-                  v-if="user.role == 'Pharmacy Store' || user.role == 'Lab Store' || user.role == 'Medical Records'"
+                    v-if="
+                      user.role == 'Pharmacy Store' ||
+                        user.role == 'Lab Store' ||
+                        user.role == 'Medical Records'
+                    "
                     class="kt-menu__item kt-menu__item--submenu"
                     data-ktmenu-submenu-toggle="hover"
                     aria-haspopup="true"
@@ -1526,7 +1584,7 @@
                     >
                   </li>
                   <li
-                  v-if="user.role == 'Super Admin'"
+                    v-if="user.role == 'Super Admin'"
                     class="kt-menu__item kt-menu__item--submenu"
                     data-ktmenu-submenu-toggle="hover"
                     aria-haspopup="true"
@@ -1626,7 +1684,10 @@
                 </ul>
               </b-collapse>
             </li>
-            <li v-if="user.role == 'Super Admin' || user.role == 'NHIS'" class="kt-menu__item">
+            <li
+              v-if="user.role == 'Super Admin' || user.role == 'NHIS'"
+              class="kt-menu__item"
+            >
               <b-link v-b-toggle.accordion-13 class="m-1 kt-menu__link">
                 <span class="kt-menu__link-icon">
                   <svg
@@ -1807,7 +1868,10 @@
                 </ul>
               </b-collapse>
             </li>
-            <li v-if="user.role == 'Super Admin' || user.role == 'Doctor'" class="kt-menu__item">
+            <li
+              v-if="user.role == 'Super Admin' || user.role == 'Doctor'"
+              class="kt-menu__item"
+            >
               <b-link v-b-toggle.accordion-16 class="m-1 kt-menu__link">
                 <span class="kt-menu__link-icon">
                   <svg
@@ -1882,7 +1946,12 @@
                 </ul>
               </b-collapse>
             </li>
-            <li v-if="user.role == 'Super Admin' || user.role == 'Finance Officer'" class="kt-menu__item">
+            <li
+              v-if="
+                user.role == 'Super Admin' || user.role == 'Finance Officer'
+              "
+              class="kt-menu__item"
+            >
               <b-link v-b-toggle.accordion-17 class="m-1 kt-menu__link">
                 <span class="kt-menu__link-icon">
                   <svg
@@ -2139,7 +2208,7 @@ export default {
       })
       ps.update()
     },
-     logout: function() {
+    logout: function() {
       this.$store.dispatch('logout').then(() => {
         this.$router.push('/login')
       })

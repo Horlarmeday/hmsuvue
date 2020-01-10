@@ -8,7 +8,7 @@
             <i class="kt-font-brand flaticon2-line-chart"></i>
           </span>
           <h3 class="kt-portlet__head-title">
-            {{ title }}
+            {{ title }} Table
             <small>This is the {{ title }} table</small>
           </h3>
         </div>
@@ -64,10 +64,6 @@
                 </div>
               </div>
               &nbsp;
-              <a href="#" class="btn btn-brand btn-elevate btn-icon-sm">
-                <i class="la la-plus"></i>
-                New Record
-              </a>
             </div>
           </div>
         </div>
@@ -84,50 +80,12 @@
                       type="text"
                       class="form-control"
                       placeholder="Search..."
-                      id="generalSearch"
+                      v-model="input"
+                      @keyup="getPage"
                     />
                     <span class="kt-input-icon__icon kt-input-icon__icon--left">
                       <span><i class="la la-search"></i></span>
                     </span>
-                  </div>
-                </div>
-                <div class="col-md-4 kt-margin-b-20-tablet-and-mobile">
-                  <div class="kt-form__group kt-form__group--inline">
-                    <div class="kt-form__label">
-                      <label>Status:</label>
-                    </div>
-                    <div class="kt-form__control">
-                      <select
-                        class="form-control bootstrap-select"
-                        id="kt_form_status"
-                      >
-                        <option value="">All</option>
-                        <option value="1">Pending</option>
-                        <option value="2">Delivered</option>
-                        <option value="3">Canceled</option>
-                        <option value="4">Success</option>
-                        <option value="5">Info</option>
-                        <option value="6">Danger</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-4 kt-margin-b-20-tablet-and-mobile">
-                  <div class="kt-form__group kt-form__group--inline">
-                    <div class="kt-form__label">
-                      <label>Type:</label>
-                    </div>
-                    <div class="kt-form__control">
-                      <select
-                        class="form-control bootstrap-select"
-                        id="kt_form_type"
-                      >
-                        <option value="">All</option>
-                        <option value="1">Online</option>
-                        <option value="2">Retail</option>
-                        <option value="3">Direct</option>
-                      </select>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -152,93 +110,84 @@
             <thead>
               <tr>
                 <th>S/N</th>
-                <th>Patient ID</th>
-                <th>Patient Name</th>
-                <th>Birthday</th>
-                <th>Sex</th>
-                <th>Ward</th>
+                <th>Patient</th>
+                <th>Surgery</th>
+                <th>Anaesthesia</th>
+                <th>Indications</th>
+                <th>Procedure</th>
+                <th>Order</th>
+                <th>Surgeon</th>
+                <th>Scrubnurse</th>
                 <th>Status</th>
-                <th>Observation</th>
-                <th>Ward Round</th>
-                <th>IO Chart</th>
-                <th>Actions</th>
+                <th>Date Created</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(patient, index) in patients" :key="patient._id">
+              <tr v-if="theaters.length == 0">
+                <td colspan="9" align="center">No Operation Notes</td>
+              </tr>
+              <tr v-for="(theater, index) in theaters" :key="theater._id">
                 <td>
                   {{ index + 1 }}
                 </td>
                 <td>
-                  {{ patient.patientId }}
-                </td>
-                <td>
-                  <router-link :to="patient.url">
-                    {{ patient.firstname }} {{ patient.lastname }}
+                  <router-link :to="theater.url">
+                    {{ theater.patient.firstname }}
+                    {{ theater.patient.lastname }}
                   </router-link>
                 </td>
+                <td>{{ theater.surgery }}</td>
+                <td>{{ theater.anaesthesia }}</td>
+                <td>{{ theater.indications }}</td>
+                <td>{{ theater.procedure }}</td>
+                <td>{{ theater.order }}</td>
                 <td>
-                  {{ patient.birthday | moment('DD/MM/YYYY') }}
+                  <a href="#">
+                    {{ theater.surgeon.firstname }}
+                    {{ theater.surgeon.lastname }}
+                  </a>
                 </td>
                 <td>
-                  <label
-                    v-if="patient.gender == 'Female'"
+                  <a href="#">
+                    {{ theater.scrubnurse.firstname }}
+                    {{ theater.scrubnurse.lastname }}
+                  </a>
+                </td>
+                <td>
+                  <span
+                    v-if="theater.status"
                     class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill"
-                    >Female</label
+                    >Active</span
                   >
-                  <label
+                  <span
                     v-else
-                    class="kt-badge kt-badge--primary kt-badge--inline kt-badge--pill"
-                    >Male</label
+                    class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill"
+                    >pending</span
                   >
                 </td>
-                <td>{{ patient.gender }} Ward</td>
-                <td>
-                  <label
-                    v-if="patient.admissionStatus == 'Addmitted'"
-                    class="kt-badge kt-badge--danger kt-badge--inline kt-badge--pill"
-                    >{{ patient.admissionStatus }}</label
-                  >
-                  <label
-                    v-if="patient.admissionStatus == 'Discharged'"
-                    class="kt-badge kt-badge--dark kt-badge--inline kt-badge--pill"
-                    >{{ patient.admissionStatus }}</label
-                  >
-                  <label
-                    v-if="patient.admissionStatus == 'Normal'"
-                    class="kt-badge kt-badge--info kt-badge--inline kt-badge--pill"
-                    >{{ patient.admissionStatus }}</label
-                  >
-                </td>
-                <td>
-                  <a href="#" class="btn btn-success btn-elevate"
-                    >Observation</a
-                  >
-                </td>
-                <td>
-                  <router-link
-                    :to="patient.wardroundurl"
-                    class="btn btn-brand btn-elevate"
-                    >Ward Round</router-link
-                  >
-                </td>
-                <td>
-                  <router-link
-                    :to="patient.iocharturl"
-                    class="btn btn-dark btn-elevate"
-                    >IO Chart</router-link
-                  >
-                </td>
-                <td>
-                  <router-link
-                    :to="patient.dischargeurl"
-                    class="btn btn-success btn-elevate"
-                    >Discharge/Transfer</router-link
-                  >
-                </td>
+
+                <td>{{ theater.createdAt | moment('DD/MM/YYYY, h:ma') }}</td>
               </tr>
             </tbody>
           </table>
+        </div>
+        <div class="card-footer">
+          <p class="float-left">Showing {{ pageSize }} of {{ rows }} entries</p>
+          <button
+            class="btn btn-outline-brand btn-sm ml-3 float-right"
+            :disabled="isNextButtonDisabled"
+            @click="pageChangeHandle('next')"
+          >
+            Next →
+          </button>
+
+          <button
+            class="btn btn-outline-brand btn-sm float-right"
+            :disabled="isPreviousButtonDisabled"
+            @click="pageChangeHandle('previous')"
+          >
+            ← Prev
+          </button>
         </div>
 
         <!--end: Datatable -->
@@ -251,7 +200,7 @@
 <script>
 import axios from '../../axios'
 export default {
-  name: 'patientStatusTable',
+  name: 'operationnotetable',
   props: {
     title: {
       type: String
@@ -259,12 +208,19 @@ export default {
   },
   data() {
     return {
-      patients: [],
-      patientsUrl: '/patient/addmitted'
+      theaters: [],
+      landingpageurl: '/theater',
+
+      currentPage: 1,
+      input: '',
+      pageCount: '',
+      pageSize: '',
+      rows: '',
+      meta: 3
     }
   },
   mounted() {
-    this.getPatients()
+    this.getPage()
   },
   methods: {
     handleError(error) {
@@ -273,22 +229,43 @@ export default {
         message: error.response.data
       })
     },
-    getPatients() {
+    getPage() {
       axios
-        .get(this.patientsUrl)
+        .get(
+          `${this.landingpageurl}?currentPage=${this.currentPage}&search=${this.input}`
+        )
         .then(response => {
-          this.patients = response.data.data
-          let patients = this.patients
-          for (let i = 0; i < patients.length; i++) {
-            patients[i].url = '/patient/' + patients[i]._id
-            patients[i].wardroundurl = '/wardround/' + patients[i]._id
-            patients[i].iocharturl = '/iochart/' + patients[i]._id
-            patients[i].dischargeurl = '/discharge/' + patients[i]._id
+          this.theaters = response.data.data.theaters
+          this.meta = response.data.data.meta
+          this.rows = this.meta.count
+          this.pageSize = this.meta.pageSize
+          this.pageCount = this.meta.pageCount
+
+          let theaters = this.theaters
+          for (let i = 0; i < theaters.length; i++) {
+            theaters[i].url = '/patient/' + theaters[i].patient._id
           }
         })
         .catch(error => {
           this.handleError(error)
         })
+    },
+    pageChangeHandle(value) {
+      if (value === 'next') {
+        this.currentPage += 1
+        this.getPage()
+      } else if (value === 'previous') {
+        this.currentPage -= 1
+        this.getPage()
+      }
+    }
+  },
+  computed: {
+    isPreviousButtonDisabled() {
+      return this.currentPage === 1
+    },
+    isNextButtonDisabled() {
+      return this.currentPage === this.pageCount
     }
   }
 }

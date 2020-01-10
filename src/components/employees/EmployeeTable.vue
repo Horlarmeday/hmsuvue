@@ -250,6 +250,12 @@
                     class="kt-badge kt-badge--warning kt-badge--inline"
                     >{{ staff.role }}</label
                   >
+                  <label
+                    style="background:#aaddf1;color:#000"
+                    v-if="staff.role == 'Theater'"
+                    class="kt-badge kt-badge--warning kt-badge--inline"
+                    >{{ staff.role }}</label
+                  >
                 </td>
                 <td>
                   <label

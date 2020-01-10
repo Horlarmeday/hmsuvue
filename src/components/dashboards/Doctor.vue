@@ -312,7 +312,7 @@
 
     <!--Begin::Section-->
     <div class="row">
-      <div class="col-xl-12">
+      <div class="col-xl-6">
         <!--begin:: Widgets/New Users-->
         <div class="kt-portlet kt-portlet--tabs kt-portlet--height-fluid">
           <div class="kt-portlet__head">
@@ -342,7 +342,7 @@
                       </tr>
                     </tbody>
                     <tbody v-for="(triage, index) in triages" :key="triage._id">
-                      <tr v-if="!triage.taken && triage.seen && triage.patient">
+                      <tr v-if="triage.patient">
                         <td>
                           {{ index + 1 }}
                         </td>
@@ -368,6 +368,81 @@
                         <td>
                           <router-link
                             :to="triage.triageurl"
+                            class="btn btn-bold btn-label-brand btn-sm"
+                            >Take Up</router-link
+                          >
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--end:: Widgets/New Users-->
+      </div>
+      <div class="col-xl-6">
+        <!--begin:: Widgets/New Users-->
+        <div class="kt-portlet kt-portlet--tabs kt-portlet--height-fluid">
+          <div class="kt-portlet__head">
+            <div class="kt-portlet__head-label">
+              <h3 class="kt-portlet__head-title">
+                In-waiting Dependants
+              </h3>
+            </div>
+          </div>
+          <div class="kt-portlet__body">
+            <div class="tab-content">
+              <div class="tab-pane active" id="kt_widget4_tab1_content">
+                <div class="dt-responsive table-responsive">
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>S/N</th>
+                        <th>Patient Name</th>
+                        <th>QMS Number</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-if="dependanttriages.length == 0">
+                        <td colspan="9" align="center">
+                          No Waiting Dependants
+                        </td>
+                      </tr>
+                    </tbody>
+                    <tbody
+                      v-for="(triage, index) in dependanttriages"
+                      :key="triage._id"
+                    >
+                      <tr v-if="triage.dependant">
+                        <td>
+                          {{ index + 1 }}
+                        </td>
+                        <td>
+                          <router-link to="#" class="kt-widget4__username">
+                            {{ triage.dependant.name }}
+                          </router-link>
+                        </td>
+                        <td>{{ triage.qms }}</td>
+                        <td>
+                          <span
+                            v-if="!triage.taken"
+                            class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill"
+                            >Pending</span
+                          >
+                          <span
+                            v-else
+                            class="kt-badge kt-badge--info kt-badge--inline kt-badge--pill"
+                            >Taken</span
+                          >
+                        </td>
+                        <td>
+                          <router-link
+                            :to="triage.dependanttriageurl"
                             class="btn btn-bold btn-label-brand btn-sm"
                             >Take Up</router-link
                           >
@@ -423,6 +498,7 @@ export default {
     return {
       appointments: [],
       triages: [],
+      dependanttriages: [],
       totalPatients: '',
       triagesCount: '',
       doctorsCount: '',
@@ -451,12 +527,14 @@ export default {
         .then(response => {
           this.appointments = response.data.data.appointments
           this.triages = response.data.data.triages
+          this.dependanttriages = response.data.data.triages
           this.totalPatients = response.data.data.patientCount
           this.triagesCount = response.data.data.triagesCount
           this.doctorsCount = response.data.data.doctorsCount
           this.appointmentCount = response.data.data.appointmentCount
           let appointments = this.appointments
           let triages = this.triages
+          let dependanttriages = this.dependanttriages
           //   let demoevents = []
           for (let i = 0; i < appointments.length; i++) {
             appointments[i].url = '/patient/' + appointments[i].patient._id
@@ -465,7 +543,17 @@ export default {
           }
 
           for (let i = 0; i < triages.length; i++) {
-            triages[i].triageurl = '/triage-patient/' + triages[i].patient._id
+            if (triages[i].patient) {
+              triages[i].url = '/patient/' + triages[i].patient._id
+              triages[i].triageurl = '/triage-patient/' + triages[i].patient._id
+            }
+          }
+
+          for (let i = 0; i < dependanttriages.length; i++) {
+            if (triages[i].dependant) {
+              dependanttriages[i].dependanttriageurl =
+                '/triage-dependant/' + dependanttriages[i].dependant._id
+            }
           }
         })
         .catch(error => {

@@ -127,14 +127,14 @@
               <div class="kt-widget24__details">
                 <div class="kt-widget24__info">
                   <h4 class="kt-widget24__title">
-                    Medical Imaging
+                    Theater
                   </h4>
                   <span class="kt-widget24__desc">
-                    Total number of imaging personnel
+                    Total number of theater personnel
                   </span>
                 </div>
                 <span class="kt-widget24__stats kt-font-success">
-                  {{ imagingCount }}
+                  {{ theaterCount }}
                 </span>
               </div>
               <div class="progress progress--sm">
@@ -173,7 +173,7 @@
           <div class="kt-portlet__head">
             <div class="kt-portlet__head-label">
               <h3 class="kt-portlet__head-title">
-                Imaging Requests
+                Booked Patients
               </h3>
             </div>
           </div>
@@ -201,26 +201,6 @@
                         </span>
                       </div>
                     </div>
-                    <div class="col-md-4 kt-margin-b-20-tablet-and-mobile">
-                      <div class="kt-form__group kt-form__group--inline">
-                        <div class="kt-form__label">
-                          <label>Filter:</label>
-                        </div>
-                        <div class="kt-form__control">
-                          <select
-                            class="form-control bootstrap-select"
-                            id="kt_form_status"
-                            v-model="date"
-                          >
-                            <option value="">Select</option>
-                            <option value="today">Today</option>
-                            <option value="week">This Week</option>
-                            <option value="30days">Last 30 Days</option>
-                            <option value="total">Total</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
                   </div>
                 </div>
                 <div class="col-xl-4 order-1 order-xl-2 kt-align-right">
@@ -236,97 +216,75 @@
 
             <!--end: Search Form -->
           </div>
-          <div class="kt-portlet__body ">
-            <!--begin: Datatable -->
+          <div class="kt-portlet__body">
             <div class="dt-responsive table-responsive">
               <table class="table table-striped table-bordered nowrap">
                 <thead>
                   <tr>
                     <th>S/N</th>
                     <th>Patient Name</th>
-                    <th>Reason for visit</th>
-                    <th>Diagnosis</th>
-                    <th>Imaging Test</th>
-                    <th>Imaging Result</th>
-                    <th>Payment Status</th>
-                    <th>Created</th>
-                    <th>Result</th>
-                    <th>Action</th>
+                    <th>Surgery</th>
+                    <th>Created By</th>
+                    <th>Date Booked</th>
+                    <th>Status</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
-                <tbody v-if="consultations.length == 0">
-                  <tr>
-                    <td colspan="9" align="center">
-                      No Medical Investigations
-                    </td>
+                <tbody>
+                  <tr v-if="theaters.length == 0">
+                    <td colspan="9" align="center">No Booked Surgery</td>
                   </tr>
-                </tbody>
-                <tbody
-                  v-for="(consultation, index) in consultations"
-                  :key="consultation._id"
-                >
-                  <tr>
+                  <tr v-for="(theater, index) in theaters" :key="theater._id">
                     <td>
                       {{ index + 1 }}
                     </td>
+
                     <td>
-                      <router-link :to="consultation.url">
-                        {{ consultation.patient.firstname }}
-                        {{ consultation.patient.lastname }}
+                      <router-link :to="theater.url">
+                        {{ theater.patient.firstname }}
+                        {{ theater.patient.lastname }}
                       </router-link>
                     </td>
-                    <td>{{ consultation.reasonforvisit }}</td>
-                    <td>{{ consultation.diagnosis }}</td>
-
-                    <td v-if="consultation.imagings.length > 0">
-                      <p
-                        v-for="imaging in consultation.imagings"
-                        :key="imaging._id"
-                      >
-                        <span>{{ imaging.investigation.name }}</span>
-                      </p>
-                    </td>
-                    <td v-else>No Investigations</td>
                     <td>
-                      <router-link to="#">View Result</router-link>
-                    </td>
-                    <td>
-                      <label
-                        v-if="consultation.imagingpaid"
-                        class="kt-badge kt-badge--success kt-badge--inline"
-                        >Paid</label
-                      >
-                      <label
-                        v-else
-                        class="kt-badge kt-badge--warning kt-badge--inline"
-                        >Pending</label
-                      >
+                      {{ theater.book }}
                     </td>
 
                     <td>
-                      {{ consultation.updatedAt | moment('DD/MM/YYYY, ha') }}
+                      <router-link v-if="theater.creator" to="#">
+                        {{ theater.creator.firstname }}
+                        {{ theater.creator.lastname }}
+                      </router-link>
+                      <p v-else>None</p>
+                    </td>
+                    <td>
+                      {{ theater.createdAt | moment('DD/MM/YYYY, h:mm:ss') }}
+                    </td>
+
+                    <td>
+                      <label
+                        v-if="theater.status"
+                        class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill"
+                        >Booked</label
+                      >
+                      <label
+                        v-if="!theater.status"
+                        class="kt-badge kt-badge--dark kt-badge--inline kt-badge--pill"
+                        >Unbooked</label
+                      >
                     </td>
                     <td>
                       <router-link
-                        :to="consultation.scanurl"
-                        class="btn btn-brand btn-elevated btn-sm mr-2"
+                        :to="theater.operationnote"
+                        class="btn btn-brand btn-sm mr-3"
                       >
-                        Add Result (Scan)
+                        Operation Note
                       </router-link>
                       <router-link
-                        to="#"
-                        class="btn btn-brand btn-elevated btn-sm mr-2"
+                        :to="theater.drugurl"
+                        class="btn btn-brand btn-sm mr-3"
                       >
-                        Add Result (X-ray)
+                        Prescribe Drugs
                       </router-link>
-                    </td>
-                    <td>
-                      <button
-                        :disabled="!consultation.imagingpaid"
-                        class="btn btn-success"
-                      >
-                        Done
-                      </button>
                     </td>
                   </tr>
                 </tbody>
@@ -352,8 +310,6 @@
                 ← Prev
               </button>
             </div>
-
-            <!--end: Datatable -->
           </div>
         </div>
 
@@ -371,21 +327,19 @@
 import axios from '../../axios'
 
 export default {
-  name: 'imagingdashboard',
+  name: 'theaterdasboard',
   data() {
     return {
-      consultations: [],
-      consultationId: '',
+      theaters: [],
       totalPatients: '',
       triagesCount: '',
-      imagingCount: '',
+      theaterCount: '',
       appointmentCount: '',
-
       date: '',
       status: '',
       loading: false,
+      landingPageUrl: '/dashboard/theater',
 
-      landingPageUrl: '/dashboard/imaging',
       currentPage: 1,
       pageCount: '',
       pageSize: '',
@@ -411,29 +365,29 @@ export default {
           `${this.landingPageUrl}?currentPage=${this.currentPage}&search=${this.input}`
         )
         .then(response => {
-          this.consultations = response.data.data.consultations
+          this.theaters = response.data.data.theaters
           this.totalPatients = response.data.data.patientCount
-          this.triagesCount = response.data.data.triagesCount
-          this.imagingCount = response.data.data.imagingCount
+          this.triagesCount = response.data.data.theaterCount
+          this.theaterCount = response.data.data.theaterCount
           this.appointmentCount = response.data.data.appointmentCount
+
           this.meta = response.data.data.meta
           this.rows = this.meta.count
           this.pageSize = this.meta.pageSize
           this.pageCount = this.meta.pageCount
 
-          let consultations = this.consultations
+          let theaters = this.theaters
 
-          for (let i = 0; i < consultations.length; i++) {
-            consultations[i].url = '/patient/' + consultations[i].patient._id
-            consultations[i].scanurl =
-              '/ultrasound-scan-result/' + consultations[i]._id
+          for (let i = 0; i < theaters.length; i++) {
+            theaters[i].url = '/patient/' + theaters[i].patient._id
+            theaters[i].operationnote = '/operation-note/' + theaters[i]._id
+            theaters[i].drugurl = '/operation-drug/' + theaters[i]._id
           }
         })
         .catch(error => {
           this.handleError(error)
         })
     },
-
     pageChangeHandle(value) {
       if (value === 'next') {
         this.currentPage += 1

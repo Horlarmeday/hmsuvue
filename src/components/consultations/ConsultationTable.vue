@@ -152,10 +152,18 @@
                 <td>
                   {{ index + 1 }}
                 </td>
-                <td>
+                <td v-if="consultation.patient">
                   <router-link :to="consultation.url">
                     {{ consultation.patient.firstname }}
                     {{ consultation.patient.lastname }}
+                  </router-link>
+                </td>
+                <td v-if="consultation.dependant">
+                  <router-link to="#">
+                    {{ consultation.dependant.name }}
+                    <small class="kt-badge kt-badge--danger kt-badge--inline"
+                      >Dependant</small
+                    >
                   </router-link>
                 </td>
                 <td>{{ consultation.reasonforvisit }}</td>

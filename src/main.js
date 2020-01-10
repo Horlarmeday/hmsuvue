@@ -11,12 +11,13 @@ import 'vue-datetime/dist/vue-datetime.css'
 import 'vue-select/dist/vue-select.css'
 import './vee-validate'
 
-import { CollapsePlugin, PaginationPlugin  } from 'bootstrap-vue'
+import { CollapsePlugin, PaginationPlugin, TabsPlugin } from 'bootstrap-vue'
 import { Datetime } from 'vue-datetime'
 
 Vue.use(Datetime)
 Vue.use(CollapsePlugin)
 Vue.use(PaginationPlugin)
+Vue.use(TabsPlugin)
 Vue.use(iziToast)
 Vue.use(require('vue-moment'))
 

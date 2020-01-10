@@ -16,7 +16,7 @@
                 <i class="flaticon2-graphic"></i>
               </span>
               <h3 class="kt-portlet__head-title">
-                PATIENT DETAILS
+                DEPENDANT DETAILS
               </h3>
             </div>
           </div>
@@ -29,32 +29,20 @@
                 <a href="#" class="kt-widget4__title kt-widget4__title--light">
                   Full Name
                 </a>
-                <span style="color: #000000" class="kt-widget4__number"
-                  >{{ patient.firstname }} {{ patient.lastname }}</span
-                >
-              </div>
-              <div style="padding-bottom: 0px" class="kt-widget4__item">
-                <span class="kt-widget4__icon">
-                  <i
-                    class="flaticon-safe-shield-protection  kt-font-success"
-                  ></i>
-                </span>
-                <a href="#" class="kt-widget4__title kt-widget4__title--light">
-                  Marital Status
-                </a>
-                <span style="color: #000" class="kt-widget4__number">{{
-                  patient.maritalstatus
+                <span style="color: #000000" class="kt-widget4__number">{{
+                  dependant.name
                 }}</span>
               </div>
+
               <div style="padding-bottom: 0px" class="kt-widget4__item">
                 <span class="kt-widget4__icon">
                   <i class="flaticon2-line-chart kt-font-danger"></i>
                 </span>
                 <a href="#" class="kt-widget4__title kt-widget4__title--light">
-                  Phone Number
+                  Relationship to Patient
                 </a>
                 <span style="color: #000" class="kt-widget4__number">{{
-                  patient.phonenumber
+                  dependant.relationship
                 }}</span>
               </div>
               <div style="padding-bottom: 0px" class="kt-widget4__item">
@@ -65,7 +53,7 @@
                   Age
                 </a>
                 <span style="color: #000" class="kt-widget4__number">{{
-                  patient.birthday | moment('from', 'now', true)
+                  dependant.dateofbirth | moment('from', 'now', true)
                 }}</span>
               </div>
               <div style="padding-bottom: 0px" class="kt-widget4__item">
@@ -76,7 +64,7 @@
                   Gender
                 </a>
                 <span style="color: #000" class="kt-widget4__number">{{
-                  patient.gender
+                  dependant.gender
                 }}</span>
               </div>
 
@@ -447,15 +435,15 @@
 <script>
 import axios from '../../axios'
 export default {
-  name: 'triagepatient',
+  name: 'triagedependant',
   data() {
     return {
       age: '',
       triage: '',
-      patient: '',
+      dependant: '',
       loading: false,
-      triagePatientUrl: '/consultation/consultation/',
-      createconsultationUrl: '/consultation/triage/',
+      triageDependantUrl: '/consultation/consultation/dependant/',
+      createconsultationUrl: '/consultation/dependant/',
       consultation: '',
       input: {
         reasonforvisit: '',
@@ -482,9 +470,9 @@ export default {
     },
     getPage() {
       axios
-        .get(this.triagePatientUrl + this.$route.params.id)
+        .get(this.triageDependantUrl + this.$route.params.id)
         .then(response => {
-          this.patient = response.data.data.patient
+          this.dependant = response.data.data.dependant
           this.triage = response.data.data.triage
           this.age = response.data.data.age
         })
@@ -505,7 +493,9 @@ export default {
         .then(response => {
           this.loading = false
           this.consultation = response.data.data
-          this.$router.push({ path: `/consultation/${this.consultation._id}` })
+          this.$router.push({
+            path: `/dependant/consultation/${this.consultation._id}`
+          })
           this.$iziToast.success({
             title: 'Success!',
             message: response.data.message

@@ -45,11 +45,11 @@
           class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper"
           id="kt_wrapper"
         >
-          <Header />
+          <AntenatalHeader />
           <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
-            <Subheader title="Addmitted" />
+            <Subheader title="Patients" />
 
-            <PatientStatusTable title="Addmitted Patients" />
+            <PaymentTable title="Payment" />
           </div>
           <!-- <Footer /> -->
         </div>
@@ -61,18 +61,18 @@
 
 <script>
 import Sidebar from '@/views/layouts/Sidebar.vue'
-import Header from '@/views/layouts/Header.vue'
+import AntenatalHeader from '@/views/layouts/Header.vue'
 import Subheader from '@/views/layouts/Subheader.vue'
 // import Footer from '@/views/layouts/Footer.vue'
-import PatientStatusTable from '@/components/patients/PatientStatusTable.vue'
+import PaymentTable from '@/components/account/PaymentTable.vue'
 export default {
-  name: 'addmittedpatients',
+  name: 'payments',
   components: {
     Sidebar,
-    Header,
+    AntenatalHeader,
     Subheader,
     // Footer,
-    PatientStatusTable
+    PaymentTable
   }
 }
 </script>

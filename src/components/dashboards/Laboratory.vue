@@ -293,9 +293,16 @@
                     </td>
                     <td>
                       <label
-                        v-if="consultation.testpaid"
+                        v-if="consultation.labtestpaid === 'Paid'"
                         class="kt-badge kt-badge--success kt-badge--inline"
                         >Paid</label
+                      >
+                      <label
+                        v-else-if="
+                          consultation.labtestpaid === 'Cleared by NHIS'
+                        "
+                        class="kt-badge kt-badge--success kt-badge--inline"
+                        >Cleared by NHIS</label
                       >
                       <label
                         v-else
@@ -314,13 +321,13 @@
                         Add Result (M)
                       </router-link>
                       <router-link
-                        to="#"
+                        :to="consultation.haemaurl"
                         class="btn btn-brand btn-elevated btn-sm mr-2"
                       >
                         Add Result (HS)
                       </router-link>
                       <router-link
-                        to="#"
+                        :to="consultation.chemicalurl"
                         class="btn btn-brand btn-elevated btn-sm"
                       >
                         Add Result (CP)
@@ -328,7 +335,7 @@
                     </td>
                     <td>
                       <button
-                        :disabled="!consultation.testpaid"
+                        :disabled="consultation.labtestpaid === 'Unpaid'"
                         class="btn btn-success"
                       >
                         Done
@@ -612,6 +619,10 @@ export default {
             consultations[i].url = '/patient/' + consultations[i].patient._id
             consultations[i].microurl =
               '/microbiology-result/' + consultations[i]._id
+            consultations[i].haemaurl =
+              '/haematology-result/' + consultations[i]._id
+            consultations[i].chemicalurl =
+              '/chemical-pathology-result/' + consultations[i]._id
           }
 
           for (let i = 0; i < ancs.length; i++) {

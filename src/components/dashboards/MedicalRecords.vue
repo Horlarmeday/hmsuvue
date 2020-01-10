@@ -191,7 +191,8 @@
                           type="text"
                           class="form-control"
                           placeholder="Search..."
-                          id="generalSearch"
+                          v-model="input"
+                          @keyup="dashboard"
                         />
                         <span
                           class="kt-input-icon__icon kt-input-icon__icon--left"
@@ -369,7 +370,8 @@ export default {
       pageCount: '',
       pageSize: '',
       rows: '',
-      meta: ''
+      meta: '',
+      input: ''
     }
   },
   mounted() {
@@ -385,7 +387,9 @@ export default {
     },
     dashboard() {
       axios
-        .get(`${this.landingPageUrl}?currentPage=${this.currentPage}`)
+        .get(
+          `${this.landingPageUrl}?currentPage=${this.currentPage}&search=${this.input}`
+        )
         .then(response => {
           this.patients = response.data.data.patients
           this.totalPatients = response.data.data.patientCount

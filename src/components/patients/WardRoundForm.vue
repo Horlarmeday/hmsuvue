@@ -8,102 +8,52 @@
             <i class="kt-font-brand flaticon2-line-chart"></i>
           </span>
           <h3 class="kt-portlet__head-title">
-            Create Treatment Record
-            <small>Create a new treatment record</small>
+            Create Ward Round for {{ patient.firstname }} {{ patient.lastname }}
+            <small>Create a new ward round</small>
           </h3>
         </div>
       </div>
       <div class="kt-portlet__body">
         <!--begin: Datatable -->
         <div class="row">
-          <div class="col-xl-6">
+          <div class="col-xl-12">
             <div class="form-group">
-              <label>Patient </label>
-              <select v-model="patientId" class="form-control">
-                <option selected disabled>Select</option>
+              <label>Lead Doctor </label>
+              <select v-model="examinerId" class="form-control">
+                <option disabled>Select</option>
                 <option
-                  v-for="patient in patients"
-                  :key="patient._id"
-                  :value="patient._id"
-                  >{{ patient.firstname }} {{ patient.lastname }}</option
+                  v-for="staff in staffs"
+                  :key="staff._id"
+                  :value="staff._id"
+                  >{{ staff.firstname }} {{ staff.lastname }}</option
                 >
               </select>
-              <span class="form-text text-muted">Please enter patient.</span>
-            </div>
-          </div>
-          <div class="col-xl-6">
-            <div class="form-group">
-              <label>Drugs</label>
-              <select v-model="drugId" class="form-control">
-                <option selected disabled>Select</option>
-                <option
-                  v-for="drug in drugs"
-                  :key="drug._id"
-                  :value="drug._id"
-                  >{{ drug.name }}</option
-                >
-              </select>
-              <span class="form-text text-muted">Please enter drugs.</span>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-xl-6">
-            <div class="form-group">
-              <label>Route</label>
-              <select v-model="route" class="form-control">
-                <option selected>Select</option>
-                <option value="Oral">Oral</option>
-                <option value="IV">IV</option>
-                <option value="IM">IM</option>
-                <option value="SC">SC</option>
-                <option value="SLID">SLID</option>
-                <option value="PR">PR</option>
-                <option value="OCC">OCC</option>
-                <option value="GUTT">GUTT</option>
-                <option value="TOPICAL">TOPICAL</option>
-              </select>
-              <span class="form-text text-muted">Please enter route.</span>
-            </div>
-          </div>
-          <div class="col-xl-6">
-            <div class="form-group">
-              <label>Dosage</label>
-              <input
-                type="text"
-                class="form-control"
-                placeholder="Dosage"
-                v-model="dosage"
-                required
-              />
-              <span class="form-text text-muted">Please enter dosage.</span>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-xl-6">
-            <div class="form-group">
-              <label>Comments</label>
-              <textarea
-                col="30"
-                class="form-control"
-                rows="10"
-                v-model="comment"
-                placeholder="Comment"
-                required
+              <span class="form-text text-muted"
+                >Please select lead doctor.</span
               >
-              </textarea>
-              <span class="form-text text-muted">Please enter comments.</span>
+            </div>
+          </div>
+          <div class="col-xl-12">
+            <div class="form-group">
+              <label>Ward Round</label>
+              <textarea
+                v-model="wardround"
+                class="form-control"
+                cols="30"
+                rows="10"
+              ></textarea>
+              <span class="form-text text-muted">Please enter ward round.</span>
             </div>
           </div>
         </div>
+
         <div>
           <button
             v-if="!loading"
-            @click="createTreatment"
+            @click="createWardRound"
             class="btn btn-brand btn-elevate float-right"
           >
-            Create Treatment
+            Create
           </button>
           <button
             v-else
@@ -180,10 +130,6 @@
                 </div>
               </div>
               &nbsp;
-              <a href="#" class="btn btn-brand btn-elevate btn-icon-sm">
-                <i class="la la-plus"></i>
-                New Record
-              </a>
             </div>
           </div>
         </div>
@@ -200,7 +146,6 @@
                       type="text"
                       class="form-control"
                       placeholder="Search..."
-                      id="generalSearch"
                     />
                     <span class="kt-input-icon__icon kt-input-icon__icon--left">
                       <span><i class="la la-search"></i></span>
@@ -208,14 +153,6 @@
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="col-xl-4 order-1 order-xl-2 kt-align-right">
-              <a href="#" class="btn btn-default kt-hidden">
-                <i class="la la-cart-plus"></i> New Order
-              </a>
-              <div
-                class="kt-separator kt-separator--border-dashed kt-separator--space-lg d-xl-none"
-              ></div>
             </div>
           </div>
         </div>
@@ -225,47 +162,47 @@
       <div class="kt-portlet__body ">
         <!--begin: Datatable -->
         <div class="dt-responsive table-responsive">
-          <table class="table table-striped table-bordered nowrap">
+          <table id="mytable" class="table table-striped table-bordered nowrap">
             <thead>
               <tr>
                 <th>S/N</th>
-                <th>Patient Name</th>
-                <th>Drugs</th>
-                <th>Route</th>
-                <th>Dosage</th>
-                <th>Comment</th>
-                <th>Nurse</th>
+                <th>Lead Doctor</th>
+                <th>Ward Round</th>
                 <th>Date Created</th>
+                <th>Created By</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-if="treatments.length == 0">
-                <td colspan="9" align="center">No Treatments</td>
+              <tr v-if="wardrounds.length == 0">
+                <td colspan="9" align="center">No Entries</td>
               </tr>
-              <tr v-for="(treatment, index) in treatments" :key="treatment._id">
+              <tr v-for="(round, index) in wardrounds" :key="round._id">
                 <td>
                   {{ index + 1 }}
                 </td>
                 <td>
-                  <router-link :to="treatment.url">
-                    {{ treatment.patient.firstname }}
-                    {{ treatment.patient.lastname }}
-                  </router-link>
+                  {{ round.examiner.firstname }} {{ round.examiner.lastname }}
                 </td>
-                <td>{{ treatment.drug.name }}</td>
-                <td>{{ treatment.route }}</td>
-                <td>{{ treatment.dosage }}</td>
-                <td>{{ treatment.comment }}</td>
+                <td>{{ round.wardround }}</td>
+                <td>{{ round.createdAt | moment('DD/MM/YYYY') }}</td>
                 <td>
-                  <a href="#">
-                    {{ treatment.creator.firstname }}
-                    {{ treatment.creator.lastname }}
-                  </a>
+                  {{ round.creator.firstname }} {{ round.creator.lastname }}
                 </td>
-                <td>{{ treatment.createdAt | moment('DD/MM/YYYY') }}</td>
               </tr>
             </tbody>
           </table>
+        </div>
+        <div class="card-footer">
+          <b-pagination
+            class="float-right"
+            v-model="currentPage"
+            :per-page="7"
+            :total-rows="irows"
+            first-text="First"
+            prev-text="Prev"
+            next-text="Next"
+            last-text="Last"
+          ></b-pagination>
         </div>
 
         <!--end: Datatable -->
@@ -278,7 +215,7 @@
 <script>
 import axios from '../../axios'
 export default {
-  name: 'treatment',
+  name: 'unit',
   props: {
     title: {
       type: String
@@ -286,23 +223,21 @@ export default {
   },
   data() {
     return {
-      drugId: '',
-      patientId: '',
-      comment: '',
-      dosage: '',
-      route: '',
-      patients: [],
-      drugs: [],
-      treatments: [],
+      patient: '',
+      wardrounds: [],
+      examinerId: '',
+      wardround: '',
 
-      treatmentUrl: '/nurse/nursing/treatment',
-      treatmentPageUrl: '/nurse/nursing/treatmentpage',
+      currentPage: 1,
+      staffs: [],
+      landingpageUrl: '/patient/',
+      wardroundUrl: '/patient/wardround/',
       loading: false
     }
   },
   mounted() {
-    this.getPageData()
-    this.getTreatments()
+    this.getPage()
+    this.getWardRound()
   },
   methods: {
     handleError(error) {
@@ -311,30 +246,19 @@ export default {
         message: error.response.data
       })
     },
-    createTreatment() {
+    createWardRound() {
       this.loading = true
       const data = {
-        drugId: this.drugId,
-        patientId: this.patientId,
-        comment: this.comment,
-        dosage: this.dosage,
-        route: this.route
+        wardround: this.wardround,
+        examinerId: this.examinerId
       }
       axios
-        .post(this.treatmentUrl, data)
+        .post(this.wardroundUrl + this.$route.params.id, data)
         .then(response => {
-          this.comment = ''
-          this.route = ''
-          this.dosage = ''
-          this.drugId = ''
-          this.patientId = ''
+          this.wardround = ''
+          this.examinerId = ''
           this.loading = false
-          this.treatments = response.data.data
-          let treatments = this.treatments
-
-          for (let i = 0; i < treatments.length; i++) {
-            treatments[i].url = '/patient/' + treatments[i].patient._id
-          }
+          this.wardrounds = response.data.data
           this.$iziToast.success({
             title: 'Success!',
             message: response.data.message
@@ -345,34 +269,33 @@ export default {
           this.handleError(error)
         })
     },
-    getPageData() {
+
+    getPage() {
       axios
-        .get(this.treatmentPageUrl)
+        .get(this.landingpageUrl + this.$route.params.id)
         .then(response => {
-          this.patients = response.data.data.patients
-          this.drugs = response.data.data.drugs
+          this.patient = response.data.data
         })
         .catch(error => {
-          this.loading = false
           this.handleError(error)
         })
     },
 
-    getTreatments() {
+    getWardRound() {
       axios
-        .get(this.treatmentUrl)
+        .get(this.wardroundUrl + this.$route.params.id)
         .then(response => {
-          this.treatments = response.data.data
-          let treatments = this.treatments
-
-          for (let i = 0; i < treatments.length; i++) {
-            treatments[i].url = '/patient/' + treatments[i].patient._id
-          }
+          this.wardrounds = response.data.data.wardrounds
+          this.staffs = response.data.data.staffs
         })
         .catch(error => {
-          this.loading = false
           this.handleError(error)
         })
+    }
+  },
+  computed: {
+    irows() {
+      return this.wardrounds.length
     }
   }
 }

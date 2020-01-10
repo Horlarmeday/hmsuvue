@@ -360,6 +360,151 @@
           <div class="kt-portlet__head">
             <div class="kt-portlet__head-label">
               <h3 class="kt-portlet__head-title">
+                Dependants
+              </h3>
+            </div>
+          </div>
+          <div class="kt-portlet__body">
+            <div class="tab-content">
+              <div class="tab-pane active" id="kt_widget4_tab1_content">
+                <div class="dt-responsive table-responsive">
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>S/N</th>
+                        <th>Dependant Name</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody v-if="dependants.length == 0">
+                      <tr>
+                        <td colspan="9" align="center">
+                          No Registered Dependants
+                        </td>
+                      </tr>
+                    </tbody>
+                    <tbody>
+                      <tr
+                        v-for="(dependant, index) in dependants"
+                        :key="dependant._id"
+                      >
+                        <td>
+                          {{ index + 1 }}
+                        </td>
+
+                        <td>
+                          <router-link to="#">
+                            {{ dependant.name }}
+                          </router-link>
+                        </td>
+
+                        <td>
+                          <label
+                            v-if="dependant.admissionStatus == 'Addmitted'"
+                            class="kt-badge kt-badge--danger kt-badge--inline kt-badge--pill"
+                            >{{ dependant.admissionStatus }}</label
+                          >
+                          <label
+                            v-if="dependant.admissionStatus == 'Discharged'"
+                            class="kt-badge kt-badge--dark kt-badge--inline kt-badge--pill"
+                            >{{ dependant.admissionStatus }}</label
+                          >
+                          <label
+                            v-if="dependant.admissionStatus == 'Normal'"
+                            class="kt-badge kt-badge--info kt-badge--inline kt-badge--pill"
+                            >{{ dependant.admissionStatus }}</label
+                          >
+                        </td>
+                        <td>
+                          <button
+                            v-if="dependant.triages.length < 1"
+                            class="btn btn-light kt-font-dark"
+                          >
+                            No triage
+                          </button>
+                          <button
+                            v-if="
+                              dependant.triages.length > 0 &&
+                                !dependant.triages[dependant.triages.length - 1]
+                                  .seen
+                            "
+                            class="btn btn-dark btn-sm mr-3"
+                            @click="sendToDoctor(dependant)"
+                          >
+                            Send to Doctor
+                          </button>
+
+                          <button
+                            v-else-if="
+                              dependant.triages.length > 0 &&
+                                dependant.triages[dependant.triages.length - 1]
+                                  .seen
+                            "
+                            class="btn btn-dark btn-sm mr-3"
+                            disabled
+                          >
+                            Sent
+                          </button>
+
+                          <router-link
+                            :to="dependant.dependanttriageurl"
+                            class="btn btn-success btn-sm mr-3"
+                          >
+                            Create Triage
+                          </router-link>
+
+                          <button
+                            v-if="!admitdependantloading"
+                            class="btn btn-danger btn-sm"
+                            @click="admitDependant(dependant)"
+                          >
+                            Admit
+                          </button>
+                          <button
+                            v-if="
+                              admitdependantloading &&
+                                patient._id == currentPatient._id
+                            "
+                            class="btn btn-brand btn-sm kt-spinner kt-spinner--right 
+                      kt-spinner--sm kt-spinner--light btn-elevate float-right"
+                            disabled
+                          >
+                            Addmitting...
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <b-pagination
+                  class="float-right"
+                  v-model="currentPage"
+                  :per-page="7"
+                  :total-rows="drows"
+                  first-text="First"
+                  prev-text="Prev"
+                  next-text="Next"
+                  last-text="Last"
+                ></b-pagination>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--end:: Widgets/New Users-->
+      </div>
+    </div>
+    <!--End::Section-->
+
+    <!--Begin::Section-->
+    <div class="row">
+      <div class="col-xl-6">
+        <!--begin:: Widgets/New Users-->
+        <div class="kt-portlet kt-portlet--tabs kt-portlet--height-fluid">
+          <div class="kt-portlet__head">
+            <div class="kt-portlet__head-label">
+              <h3 class="kt-portlet__head-title">
                 AnteNatal Patients
               </h3>
             </div>
@@ -466,11 +611,6 @@
 
         <!--end:: Widgets/New Users-->
       </div>
-    </div>
-    <!--End::Section-->
-
-    <!--Begin::Section-->
-    <div class="row">
       <div class="col-xl-6">
         <!--begin:: Widgets/New Users-->
         <div class="kt-portlet kt-portlet--tabs kt-portlet--height-fluid">
@@ -602,6 +742,7 @@ export default {
   data() {
     return {
       patients: [],
+      dependants: [],
       appointments: [],
       totalPatients: '',
       triagesCount: '',
@@ -609,12 +750,16 @@ export default {
       appointmentCount: '',
       patientId: '',
       currentPatient: '',
+      currentDependant: '',
       currentAdmitPatient: '',
       loading: false,
       admitpatientloading: false,
+      admitdependantloading: false,
       landingPageUrl: '/dashboard/nurse',
       sendtodoctorUrl: '/triage/send/to/doctor',
+      sendtodependantUrl: '/triage/senddependant/to/doctor',
       admitpatientUrl: '/patient/admit/patient',
+      admitdependantUrl: '/dependant/admit/dependant',
       imageurl: 'http://localhost:3000/static/uploads/',
       input: '',
 
@@ -643,6 +788,7 @@ export default {
         )
         .then(response => {
           this.appointments = response.data.data.appointments
+          this.dependants = response.data.data.dependants
           this.patients = response.data.data.patients
           this.totalPatients = response.data.data.patientCount
           this.triagesCount = response.data.data.triagesCount
@@ -656,10 +802,16 @@ export default {
 
           let patients = this.patients
           let appointments = this.appointments
+          let dependants = this.dependants
 
           for (let i = 0; i < patients.length; i++) {
             patients[i].url = '/patient/' + patients[i]._id
             patients[i].triageurl = '/triage/' + patients[i]._id
+          }
+
+          for (let i = 0; i < dependants.length; i++) {
+            dependants[i].dependanttriageurl =
+              '/create-dependant-triage/' + dependants[i]._id
           }
 
           for (let i = 0; i < appointments.length; i++) {
@@ -704,6 +856,33 @@ export default {
           this.handleError(error)
         })
     },
+    sendToDoctor(dependant) {
+      this.loading = true
+      this.currentDependant = dependant
+      const data = {
+        dependanttriageId: dependant.triages[dependant.triages.length - 1]._id
+      }
+      axios
+        .post(this.sendtodependantUrl, data)
+        .then(response => {
+          this.dependants = response.data.data.dependants
+          this.loading = false
+          let dependants = this.dependants
+
+          for (let i = 0; i < dependants.length; i++) {
+            dependants[i].dependanttriageurl =
+              '/create-dependant-triage/' + dependants[i]._id
+          }
+          this.$iziToast.success({
+            title: 'Success!',
+            message: response.data.message
+          })
+        })
+        .catch(error => {
+          this.loading = false
+          this.handleError(error)
+        })
+    },
     admitPatient(patient) {
       this.admitpatientloading = true
       this.currentAdmitPatient = patient
@@ -728,6 +907,33 @@ export default {
         })
         .catch(error => {
           this.admitpatientloading = false
+          this.handleError(error)
+        })
+    },
+    admitDependant(dependant) {
+      this.admitdependantloading = true
+      this.currentAdmitPatient = dependant
+      const data = {
+        dependantId: dependant._id
+      }
+      axios
+        .put(this.admitdependantUrl, data)
+        .then(response => {
+          this.admitdependantloading = false
+          this.dependants = response.data.data.dependants
+          let dependants = this.dependants
+
+          for (let i = 0; i < dependants.length; i++) {
+            dependants[i].dependanttriageurl =
+              '/create-dependant-triage/' + dependants[i]._id
+          }
+          this.$iziToast.success({
+            title: 'Success!',
+            message: response.data.message
+          })
+        })
+        .catch(error => {
+          this.admitdependantloading = false
           this.handleError(error)
         })
     },
@@ -762,6 +968,9 @@ export default {
     },
     irows() {
       return this.appointments.length
+    },
+    drows() {
+      return this.dependants.length
     }
   }
 }

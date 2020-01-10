@@ -47,9 +47,9 @@
         >
           <Header />
           <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
-            <Subheader title="Addmitted" />
+            <Subheader title="Patients" />
 
-            <PatientStatusTable title="Addmitted Patients" />
+            <OperationNoteTable title="Operation Notes" />
           </div>
           <!-- <Footer /> -->
         </div>
@@ -64,15 +64,15 @@ import Sidebar from '@/views/layouts/Sidebar.vue'
 import Header from '@/views/layouts/Header.vue'
 import Subheader from '@/views/layouts/Subheader.vue'
 // import Footer from '@/views/layouts/Footer.vue'
-import PatientStatusTable from '@/components/patients/PatientStatusTable.vue'
+import OperationNoteTable from '@/components/theater/OperationNoteTable.vue'
 export default {
-  name: 'addmittedpatients',
+  name: 'booksurgery',
   components: {
     Sidebar,
     Header,
     Subheader,
     // Footer,
-    PatientStatusTable
+    OperationNoteTable
   }
 }
 </script>

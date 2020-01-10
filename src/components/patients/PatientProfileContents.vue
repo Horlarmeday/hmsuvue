@@ -20,82 +20,17 @@
             <div class="kt-portlet__head-label">
               <h3 class="kt-portlet__head-title"></h3>
             </div>
-            <div class="kt-portlet__head-toolbar">
-              <a
-                href="#"
-                class="btn btn-clean btn-sm btn-icon btn-icon-md"
-                data-toggle="dropdown"
-              >
-                <i class="flaticon-more-1"></i>
-              </a>
-              <div
-                class="dropdown-menu dropdown-menu-right dropdown-menu-fit dropdown-menu-md"
-              >
-                <!--begin::Nav-->
-                <ul class="kt-nav">
-                  <li class="kt-nav__head">
-                    Export Options
-                    <i
-                      class="flaticon2-information"
-                      data-toggle="kt-tooltip"
-                      data-placement="right"
-                      title="Click to learn more..."
-                    ></i>
-                  </li>
-                  <li class="kt-nav__separator"></li>
-                  <li class="kt-nav__item">
-                    <a href="#" class="kt-nav__link">
-                      <i class="kt-nav__link-icon flaticon2-drop"></i>
-                      <span class="kt-nav__link-text">Activity</span>
-                    </a>
-                  </li>
-                  <li class="kt-nav__item">
-                    <a href="#" class="kt-nav__link">
-                      <i class="kt-nav__link-icon flaticon2-calendar-8"></i>
-                      <span class="kt-nav__link-text">FAQ</span>
-                    </a>
-                  </li>
-                  <li class="kt-nav__item">
-                    <a href="#" class="kt-nav__link">
-                      <i class="kt-nav__link-icon flaticon2-link"></i>
-                      <span class="kt-nav__link-text">Settings</span>
-                    </a>
-                  </li>
-                  <li class="kt-nav__item">
-                    <a href="#" class="kt-nav__link">
-                      <i class="kt-nav__link-icon flaticon2-new-email"></i>
-                      <span class="kt-nav__link-text">Support</span>
-                      <span class="kt-nav__link-badge">
-                        <span class="kt-badge kt-badge--success">5</span>
-                      </span>
-                    </a>
-                  </li>
-                  <li class="kt-nav__separator"></li>
-                  <li class="kt-nav__foot">
-                    <a class="btn btn-label-danger btn-bold btn-sm" href="#"
-                      >Upgrade plan</a
-                    >
-                    <a
-                      class="btn btn-clean btn-bold btn-sm"
-                      href="#"
-                      data-toggle="kt-tooltip"
-                      data-placement="right"
-                      title="Click to learn more..."
-                      >Learn more</a
-                    >
-                  </li>
-                </ul>
-
-                <!--end::Nav-->
-              </div>
-            </div>
           </div>
           <div class="kt-portlet__body kt-portlet__body--fit-y">
             <!--begin::Widget -->
             <div class="kt-widget kt-widget--user-profile-1">
               <div class="kt-widget__head">
                 <div class="kt-widget__media">
-                  <img v-if="photo" :src="photo" alt="Patient Image" />
+                  <img
+                    v-if="patient.photo"
+                    :src="photo"
+                    alt="Patient Image JPG"
+                  />
                   <img
                     v-else
                     src="../../assets/images/100_1.jpg"
@@ -143,7 +78,12 @@
                   </div>
                 </div>
                 <div class="kt-widget__items">
-                  <a href="#" class="kt-widget__item kt-widget__item--active">
+                  <a
+                    @click="getPatient"
+                    href="#"
+                    class="kt-widget__item"
+                    :class="!patientditsshow ? activeClass : ''"
+                  >
                     <span class="kt-widget__section">
                       <span class="kt-widget__icon">
                         <svg
@@ -183,7 +123,12 @@
                       </span>
                     </span>
                   </a>
-                  <a href="#" class="kt-widget__item ">
+                  <a
+                    @click="getHistory"
+                    href="#"
+                    class="kt-widget__item"
+                    :class="historydits ? activeClass : ''"
+                  >
                     <span class="kt-widget__section">
                       <span class="kt-widget__icon">
                         <svg
@@ -712,7 +657,10 @@
       <!--End:: App Aside-->
 
       <!--Begin:: App Content-->
-      <div class="kt-grid__item kt-grid__item--fluid kt-app__content">
+      <div
+        v-if="!patientditsshow"
+        class="kt-grid__item kt-grid__item--fluid kt-app__content"
+      >
         <div class="row">
           <div class="col-xl-6">
             <!--begin:: Widgets/Last Updates-->
@@ -989,7 +937,7 @@
 
             <!--end:: Widgets/Last Updates-->
           </div>
-          <div class="col-xl-6">
+          <div v-if="patient.insurancetype" class="col-xl-6">
             <!--begin:: Widgets/Tasks -->
             <div class="kt-portlet kt-portlet--tabs kt-portlet--height-fluid">
               <div class="kt-portlet__head">
@@ -1004,14 +952,12 @@
                     role="tablist"
                   >
                     <li class="nav-item">
-                      <a
+                      <router-link
                         class="nav-link active"
-                        data-toggle="tab"
-                        href="#kt_widget2_tab1_content"
-                        role="tab"
+                        :to="patient.createdependant"
                       >
-                        Today
-                      </a>
+                        Add Dependant
+                      </router-link>
                     </li>
                   </ul>
                 </div>
@@ -1197,7 +1143,106 @@
           </div>
         </div>
       </div>
+      <!--End:: App Content-->
 
+      <!--Begin:: App Content-->
+      <div
+        v-if="historydits"
+        class="kt-grid__item kt-grid__item--fluid kt-app__content"
+      >
+        <div class="row">
+          <div class="col-xl-12">
+            <div class="kt-portlet kt-portlet--mobile">
+              <div class="kt-portlet__head kt-portlet__head--lg">
+                <div class="kt-portlet__head-label">
+                  <span class="kt-portlet__head-icon">
+                    <i class="kt-font-brand flaticon2-line-chart"></i>
+                  </span>
+                  <h3 class="kt-portlet__head-title">
+                    History
+                    <small>This is the history table</small>
+                  </h3>
+                </div>
+              </div>
+              <div class="kt-portlet__body">
+                <!--begin: Search Form -->
+                <div
+                  class="kt-form kt-form--label-right kt-margin-t-20 kt-margin-b-10"
+                >
+                  <div class="row align-items-center">
+                    <div class="col-xl-8 order-2 order-xl-1">
+                      <div class="row align-items-center">
+                        <div class="col-md-4 kt-margin-b-20-tablet-and-mobile">
+                          <div class="kt-input-icon kt-input-icon--left">
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Search..."
+                            />
+                            <span
+                              class="kt-input-icon__icon kt-input-icon__icon--left"
+                            >
+                              <span><i class="la la-search"></i></span>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-xl-4 order-1 order-xl-2 kt-align-right">
+                      <div
+                        class="kt-separator kt-separator--border-dashed kt-separator--space-lg d-xl-none"
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!--end: Search Form -->
+              </div>
+              <div class="kt-portlet__body ">
+                <!--begin: Datatable -->
+                <div class="dt-responsive table-responsive">
+                  <table class="table table-striped table-bordered nowrap">
+                    <thead>
+                      <tr>
+                        <th>S/N</th>
+                        <th>Reason for visit</th>
+                        <th>Observations</th>
+                        <th>Diagnosis</th>
+                        <th>Treatment</th>
+                        <th>Created</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-if="histories.length == 0">
+                        <td colspan="9" align="center">No History</td>
+                      </tr>
+                      <tr
+                        v-for="(history, index) in histories"
+                        :key="history._id"
+                      >
+                        <td>
+                          {{ index + 1 }}
+                        </td>
+
+                        <td>{{ history.reasonforvisit }}</td>
+                        <td>{{ history.observations }}</td>
+                        <td>{{ history.diagnosis }}</td>
+                        <td>{{ history.treatment }}</td>
+
+                        <td>
+                          {{ history.createdAt | moment('DD/MM/YYYY, ha') }}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <!--end: Datatable -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <!--End:: App Content-->
     </div>
   </div>
@@ -1211,10 +1256,17 @@ export default {
     return {
       patientUrl: '/patient/',
       patient: '',
+      histories: '',
       photo: '',
       dependants: [],
       imageurl: 'http://localhost:3000/static/uploads/',
-      dependantUrl: '/edit-dependant/'
+      dependantUrl: '/edit-dependant/',
+      historyurl: '/consultation/patient/consultation/',
+      patientditsshow: false,
+      historydits: false,
+      paymentsdits: false,
+
+      activeClass: 'kt-widget__item--active'
     }
   },
   mounted() {
@@ -1230,11 +1282,46 @@ export default {
     },
 
     getPatient() {
+      this.patientditsshow = false
+      this.historydits = false
+      this.isActive = true
       axios
         .get(this.patientUrl + this.$route.params.id)
         .then(response => {
           this.patient = response.data.data
           this.photo = this.imageurl + this.patient.photo
+
+          let patient = this.patient
+
+          patient.createdependant = '/create-dependant/' + patient._id
+        })
+        .catch(error => {
+          this.handleError(error)
+        })
+    },
+
+    getHistory() {
+      this.patientditsshow = true
+      this.historydits = true
+      // this.isActive = true
+      axios
+        .get(this.historyurl + this.$route.params.id)
+        .then(response => {
+          this.histories = response.data.data
+        })
+        .catch(error => {
+          this.handleError(error)
+        })
+    },
+
+    getPayments() {
+      this.patientditsshow = true
+      this.historydits = false
+      this.paymentsdits = true
+      axios
+        .get(this.paymentsurl + this.$route.params.id)
+        .then(response => {
+          this.histories = response.data.data
         })
         .catch(error => {
           this.handleError(error)

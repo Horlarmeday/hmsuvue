@@ -8,8 +8,9 @@
             <i class="kt-font-brand flaticon2-line-chart"></i>
           </span>
           <h3 class="kt-portlet__head-title">
-            Create Treatment Record
-            <small>Create a new treatment record</small>
+            Create Discharge/Transfer Form for {{ patient.firstname }}
+            {{ patient.lastname }}
+            <small>Create a new discharge/transfer record</small>
           </h3>
         </div>
       </div>
@@ -18,92 +19,94 @@
         <div class="row">
           <div class="col-xl-6">
             <div class="form-group">
-              <label>Patient </label>
-              <select v-model="patientId" class="form-control">
-                <option selected disabled>Select</option>
-                <option
-                  v-for="patient in patients"
-                  :key="patient._id"
-                  :value="patient._id"
-                  >{{ patient.firstname }} {{ patient.lastname }}</option
-                >
+              <label>Type </label>
+              <select v-model="input.type" class="form-control">
+                <option disabled>Select</option>
+                <option value="Discharge">Discharge</option>
+                <option value="Death">Death</option>
+                <option value="Referral">Referral</option>
+                <option value="Lama">Lama</option>
+                <option value="Transfer">Transfer</option>
               </select>
-              <span class="form-text text-muted">Please enter patient.</span>
+              <span class="form-text text-muted">Please select type.</span>
             </div>
           </div>
           <div class="col-xl-6">
             <div class="form-group">
-              <label>Drugs</label>
-              <select v-model="drugId" class="form-control">
-                <option selected disabled>Select</option>
-                <option
-                  v-for="drug in drugs"
-                  :key="drug._id"
-                  :value="drug._id"
-                  >{{ drug.name }}</option
-                >
-              </select>
-              <span class="form-text text-muted">Please enter drugs.</span>
+              <label>Date</label>
+              <datetime
+                input-class="form-control"
+                type="date"
+                v-model="input.date"
+              ></datetime>
+              <span class="form-text text-muted">Please select date.</span>
             </div>
           </div>
         </div>
         <div class="row">
           <div class="col-xl-6">
             <div class="form-group">
-              <label>Route</label>
-              <select v-model="route" class="form-control">
-                <option selected>Select</option>
-                <option value="Oral">Oral</option>
-                <option value="IV">IV</option>
-                <option value="IM">IM</option>
-                <option value="SC">SC</option>
-                <option value="SLID">SLID</option>
-                <option value="PR">PR</option>
-                <option value="OCC">OCC</option>
-                <option value="GUTT">GUTT</option>
-                <option value="TOPICAL">TOPICAL</option>
-              </select>
-              <span class="form-text text-muted">Please enter route.</span>
+              <label>Time </label>
+              <datetime
+                input-class="form-control"
+                type="time"
+                v-model="input.time"
+              ></datetime>
+              <span class="form-text text-muted">Please select time .</span>
             </div>
           </div>
           <div class="col-xl-6">
             <div class="form-group">
-              <label>Dosage</label>
+              <label>Conditions of Patient on Discharge</label>
               <input
                 type="text"
                 class="form-control"
-                placeholder="Dosage"
-                v-model="dosage"
-                required
+                v-model="input.comment"
+                placeholder="Optional"
               />
-              <span class="form-text text-muted">Please enter dosage.</span>
+              <span class="form-text text-muted"
+                >Please enter condition of patient.</span
+              >
             </div>
           </div>
-        </div>
-        <div class="row">
           <div class="col-xl-6">
             <div class="form-group">
-              <label>Comments</label>
-              <textarea
-                col="30"
+              <label>Ward</label>
+              <select v-model="input.ward" class="form-control">
+                <option disabled>Select</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Children">Children</option>
+                <option value="Pediatrics">Pediatrics</option>
+                <option value="IE">I&E</option>
+                <option value="Labour">Labour</option>
+              </select>
+              <span class="form-text text-muted">Please select ward.</span>
+            </div>
+          </div>
+          <div v-if="input.type === 'Transfer'" class="col-xl-6">
+            <div class="form-group">
+              <label>Transfer To </label>
+              <input
+                type="text"
                 class="form-control"
-                rows="10"
-                v-model="comment"
-                placeholder="Comment"
-                required
+                v-model="input.transferto"
+                placeholder="Transfer To"
+              />
+              <span class="form-text text-muted"
+                >Please enter where patient is transferred to.</span
               >
-              </textarea>
-              <span class="form-text text-muted">Please enter comments.</span>
             </div>
           </div>
         </div>
+
         <div>
           <button
             v-if="!loading"
-            @click="createTreatment"
+            @click="createDischarge"
             class="btn btn-brand btn-elevate float-right"
           >
-            Create Treatment
+            Create
           </button>
           <button
             v-else
@@ -180,10 +183,6 @@
                 </div>
               </div>
               &nbsp;
-              <a href="#" class="btn btn-brand btn-elevate btn-icon-sm">
-                <i class="la la-plus"></i>
-                New Record
-              </a>
             </div>
           </div>
         </div>
@@ -200,7 +199,6 @@
                       type="text"
                       class="form-control"
                       placeholder="Search..."
-                      id="generalSearch"
                     />
                     <span class="kt-input-icon__icon kt-input-icon__icon--left">
                       <span><i class="la la-search"></i></span>
@@ -208,14 +206,6 @@
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="col-xl-4 order-1 order-xl-2 kt-align-right">
-              <a href="#" class="btn btn-default kt-hidden">
-                <i class="la la-cart-plus"></i> New Order
-              </a>
-              <div
-                class="kt-separator kt-separator--border-dashed kt-separator--space-lg d-xl-none"
-              ></div>
             </div>
           </div>
         </div>
@@ -225,47 +215,55 @@
       <div class="kt-portlet__body ">
         <!--begin: Datatable -->
         <div class="dt-responsive table-responsive">
-          <table class="table table-striped table-bordered nowrap">
+          <table id="mytable" class="table table-striped table-bordered nowrap">
             <thead>
               <tr>
                 <th>S/N</th>
-                <th>Patient Name</th>
-                <th>Drugs</th>
-                <th>Route</th>
-                <th>Dosage</th>
+                <th>Type</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Ward</th>
+                <th>Transfer</th>
                 <th>Comment</th>
-                <th>Nurse</th>
                 <th>Date Created</th>
+                <th>Created By</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-if="treatments.length == 0">
-                <td colspan="9" align="center">No Treatments</td>
+              <tr v-if="discharges.length == 0">
+                <td colspan="15" align="center">No Entries</td>
               </tr>
-              <tr v-for="(treatment, index) in treatments" :key="treatment._id">
+              <tr v-for="(discharge, index) in discharges" :key="discharge._id">
                 <td>
                   {{ index + 1 }}
                 </td>
+                <td>{{ discharge.type }}</td>
+                <td>{{ discharge.date | moment('DD/MM/YYYY') }}</td>
+                <td>{{ discharge.time | moment('h:mma') }}</td>
+                <td>{{ discharge.ward }}</td>
+                <td>{{ discharge.transferto }}</td>
+                <td>{{ discharge.comment }}</td>
+
+                <td>{{ discharge.createdAt | moment('DD/MM/YYYY') }}</td>
                 <td>
-                  <router-link :to="treatment.url">
-                    {{ treatment.patient.firstname }}
-                    {{ treatment.patient.lastname }}
-                  </router-link>
+                  {{ discharge.creator.firstname }}
+                  {{ discharge.creator.lastname }}
                 </td>
-                <td>{{ treatment.drug.name }}</td>
-                <td>{{ treatment.route }}</td>
-                <td>{{ treatment.dosage }}</td>
-                <td>{{ treatment.comment }}</td>
-                <td>
-                  <a href="#">
-                    {{ treatment.creator.firstname }}
-                    {{ treatment.creator.lastname }}
-                  </a>
-                </td>
-                <td>{{ treatment.createdAt | moment('DD/MM/YYYY') }}</td>
               </tr>
             </tbody>
           </table>
+        </div>
+        <div class="card-footer">
+          <b-pagination
+            class="float-right"
+            v-model="currentPage"
+            :per-page="7"
+            :total-rows="irows"
+            first-text="First"
+            prev-text="Prev"
+            next-text="Next"
+            last-text="Last"
+          ></b-pagination>
         </div>
 
         <!--end: Datatable -->
@@ -277,32 +275,39 @@
 
 <script>
 import axios from '../../axios'
+import { Datetime } from 'vue-datetime'
 export default {
-  name: 'treatment',
+  name: 'dischargeform',
   props: {
     title: {
       type: String
     }
   },
+  components: {
+    datetime: Datetime
+  },
   data() {
     return {
-      drugId: '',
-      patientId: '',
-      comment: '',
-      dosage: '',
-      route: '',
-      patients: [],
-      drugs: [],
-      treatments: [],
+      patient: '',
+      discharges: [],
+      input: {
+        date: '',
+        time: '',
+        comment: '',
+        type: '',
+        ward: '',
+        transferto: ''
+      },
 
-      treatmentUrl: '/nurse/nursing/treatment',
-      treatmentPageUrl: '/nurse/nursing/treatmentpage',
+      currentPage: 1,
+      landingpageUrl: '/patient/',
+      dischargeUrl: '/patient/discharge/',
       loading: false
     }
   },
   mounted() {
-    this.getPageData()
-    this.getTreatments()
+    this.getPage()
+    this.getDischarge()
   },
   methods: {
     handleError(error) {
@@ -311,30 +316,14 @@ export default {
         message: error.response.data
       })
     },
-    createTreatment() {
+    createDischarge() {
       this.loading = true
-      const data = {
-        drugId: this.drugId,
-        patientId: this.patientId,
-        comment: this.comment,
-        dosage: this.dosage,
-        route: this.route
-      }
       axios
-        .post(this.treatmentUrl, data)
+        .post(this.dischargeUrl + this.$route.params.id, this.input)
         .then(response => {
-          this.comment = ''
-          this.route = ''
-          this.dosage = ''
-          this.drugId = ''
-          this.patientId = ''
+          this.input = ''
           this.loading = false
-          this.treatments = response.data.data
-          let treatments = this.treatments
-
-          for (let i = 0; i < treatments.length; i++) {
-            treatments[i].url = '/patient/' + treatments[i].patient._id
-          }
+          this.discharges = response.data.data
           this.$iziToast.success({
             title: 'Success!',
             message: response.data.message
@@ -345,34 +334,32 @@ export default {
           this.handleError(error)
         })
     },
-    getPageData() {
+
+    getPage() {
       axios
-        .get(this.treatmentPageUrl)
+        .get(this.landingpageUrl + this.$route.params.id)
         .then(response => {
-          this.patients = response.data.data.patients
-          this.drugs = response.data.data.drugs
+          this.patient = response.data.data
         })
         .catch(error => {
-          this.loading = false
           this.handleError(error)
         })
     },
 
-    getTreatments() {
+    getDischarge() {
       axios
-        .get(this.treatmentUrl)
+        .get(this.dischargeUrl + this.$route.params.id)
         .then(response => {
-          this.treatments = response.data.data
-          let treatments = this.treatments
-
-          for (let i = 0; i < treatments.length; i++) {
-            treatments[i].url = '/patient/' + treatments[i].patient._id
-          }
+          this.discharges = response.data.data
         })
         .catch(error => {
-          this.loading = false
           this.handleError(error)
         })
+    }
+  },
+  computed: {
+    irows() {
+      return this.discharges.length
     }
   }
 }

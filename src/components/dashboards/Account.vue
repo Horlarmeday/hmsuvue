@@ -366,7 +366,7 @@
                         <td>
                           {{ index + 1 }}
                         </td>
-                        <td>
+                        <td v-if="consultation.patient">
                           <router-link
                             :to="consultation.url"
                             class="kt-widget4__username"
@@ -374,6 +374,14 @@
                             {{ consultation.patient.firstname }}
                             {{ consultation.patient.lastname }}
                           </router-link>
+                        </td>
+                        <td v-if="consultation.dependant">
+                          <router-link to="#" class="kt-widget4__username">
+                            {{ consultation.dependant.name }} </router-link
+                          ><small
+                            class="kt-badge kt-badge--danger kt-badge--inline"
+                            >Dependant</small
+                          >
                         </td>
                         <td>
                           <label
@@ -411,14 +419,21 @@
                         </td>
                         <td>
                           <label
-                            v-if="!consultation.testpaid"
+                            v-if="consultation.labtestpaid === 'Pending'"
                             class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill"
                             >Pending</label
                           >
                           <label
-                            v-if="consultation.testpaid"
+                            v-if="consultation.labtestpaid === 'Paid'"
                             class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill"
                             >Paid</label
+                          >
+                          <label
+                            v-if="
+                              consultation.labtestpaid === 'Cleared by NHIS'
+                            "
+                            class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill"
+                            >Cleared by NHIS</label
                           >
                         </td>
                         <td>
@@ -436,7 +451,7 @@
                         </td>
                         <td>
                           <button
-                            v-if="!consultation.testpaid"
+                            v-if="consultation.labtestpaid === 'Pending'"
                             class="btn btn-brand btn-elevate"
                             @click="approveTestPayment(consultation, index)"
                           >
@@ -520,7 +535,7 @@
                         <td>
                           {{ index + 1 }}
                         </td>
-                        <td>
+                        <td v-if="consultation.patient">
                           <router-link
                             :to="consultation.url"
                             class="kt-widget4__username"
@@ -528,6 +543,14 @@
                             {{ consultation.patient.firstname }}
                             {{ consultation.patient.lastname }}
                           </router-link>
+                        </td>
+                        <td v-if="consultation.dependant">
+                          <router-link to="#" class="kt-widget4__username">
+                            {{ consultation.dependant.name }} </router-link
+                          ><small
+                            class="kt-badge kt-badge--danger kt-badge--inline"
+                            >Dependant</small
+                          >
                         </td>
                         <td>
                           <label
@@ -670,7 +693,7 @@
                         <td>
                           {{ index + 1 }}
                         </td>
-                        <td>
+                        <td v-if="consultation.patient">
                           <router-link
                             :to="consultation.url"
                             class="kt-widget4__username"
@@ -678,6 +701,14 @@
                             {{ consultation.patient.firstname }}
                             {{ consultation.patient.lastname }}
                           </router-link>
+                        </td>
+                        <td v-if="consultation.dependant">
+                          <router-link to="#" class="kt-widget4__username">
+                            {{ consultation.dependant.name }} </router-link
+                          ><small
+                            class="kt-badge kt-badge--danger kt-badge--inline"
+                            >Dependant</small
+                          >
                         </td>
                         <td>
                           <label

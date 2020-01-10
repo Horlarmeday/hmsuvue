@@ -89,6 +89,30 @@ const routes = [
       requiresAuth: true
     }
   },
+  {
+    path: '/wardround/:id',
+    name: 'wardround',
+    component: () => import('../views/app/patients/WardRound.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/iochart/:id',
+    name: 'iochart',
+    component: () => import('../views/app/patients/IOChart.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/discharge/:id',
+    name: 'discharge',
+    component: () => import('../views/app/patients/Discharge.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
   // employees routes
   {
     path: '/employee-list',
@@ -469,10 +493,27 @@ const routes = [
     }
   },
   {
+    path: '/dependant/consultation/:id',
+    name: 'editdependantconsultationpage',
+    component: () => import('../views/app/consultations/DependantPage.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
     path: '/triage-patient/:id',
     name: 'triagepatient',
     component: () =>
       import('../views/app/consultations/AttendingToPatient.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/triage-dependant/:id',
+    name: 'triagedependant',
+    component: () =>
+      import('../views/app/consultations/AttendingToDependant.vue'),
     meta: {
       requiresAuth: true
     }
@@ -578,6 +619,14 @@ const routes = [
       requiresAuth: true
     }
   },
+  {
+    path: '/payments',
+    name: 'paymentstable',
+    component: () => import('../views/app/accounts/Payments.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
   // Inventories
   {
     path: '/inpatient-inventory',
@@ -607,6 +656,14 @@ const routes = [
     path: '/nhis-outpatient-inventory',
     name: 'nhisoutpatient',
     component: () => import('../views/app/inventory/NhisOutpatient.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/theater-inventory',
+    name: 'theaterinventory',
+    component: () => import('../views/app/inventory/TheaterInventory.vue'),
     meta: {
       requiresAuth: true
     }
@@ -645,6 +702,14 @@ const routes = [
     }
   },
   {
+    path: '/create-dependant/:id',
+    name: 'createdependant',
+    component: () => import('../views/app/dependant/CreateDependant.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
     path: '/dependant-triages',
     name: 'dependanttriages',
     component: () => import('../views/app/triages/DependantTriages.vue'),
@@ -663,8 +728,58 @@ const routes = [
   },
   {
     path: '/haematology-result/:id',
-    name: 'microbiologyresult',
+    name: 'haematologyresult',
     component: () => import('../views/app/laboratory/Haematology.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/chemical-pathology-result/:id',
+    name: 'chemicalpathologyresult',
+    component: () => import('../views/app/laboratory/ChemicalPathology.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  // Imaging results
+  {
+    path: '/ultrasound-scan-result/:id',
+    name: 'ultrasound',
+    component: () => import('../views/app/imaging/UltraScan.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  // Theater
+  {
+    path: '/book-surgery',
+    name: 'booksurgery',
+    component: () => import('../views/app/theater/BookSurgery.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/operation-note/:id',
+    name: 'operationnote',
+    component: () => import('../views/app/theater/OperationNote.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/operation-notes',
+    name: 'operationnotes',
+    component: () => import('../views/app/theater/OperationNotes.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/operation-drug/:id',
+    name: 'operationdrugs',
+    component: () => import('../views/app/theater/OperationDrugs.vue'),
     meta: {
       requiresAuth: true
     }

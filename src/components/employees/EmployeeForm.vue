@@ -184,6 +184,7 @@
                 <option value="Medical Imaging">Medical Imaging</option>
                 <option value="Finance Officer">Finance Officer</option>
                 <option value="Midwife">Midwife</option>
+                <option value="Theater">Theater</option>
               </select>
               <span class="form-text text-muted">Please select role.</span>
             </div>

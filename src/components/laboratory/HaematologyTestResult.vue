@@ -16,7 +16,7 @@
                         <h1>TEST RESULT</h1>
                       </a>
                       <a href="#">
-                        <img width="50" src="../assets/ms.png" />
+                        <img width="50" src="../../assets/ms.png" />
                       </a>
                     </div>
                     <span class="kt-invoice__desc">
@@ -47,68 +47,78 @@
                     </div>
                   </div>
                 </div>
-                <h4 style="text-align: center">MICROBIOLOGY</h4>
+                <h4 style="text-align: center">HAEMATOLOGY AND SEROLOGY</h4>
                 <!-- Urine -->
                 <div>
                   <hr style="padding: 0 10px" />
                   <h5 class="kt-font-dark" style="text-align: center">
-                    Urine/HVS(Microscopy)
+                    FBC ONE
                   </h5>
                   <div class="kt-invoice__body kt-invoice__body--centered">
                     <div class="table-responsive">
                       <table class="table">
                         <thead>
                           <tr>
-                            <th>TESTS</th>
-                            <th>HVS</th>
-                            <th>URINE</th>
+                            <th>FBC</th>
+                            <th>RESULT</th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr>
-                            <td>Epithelial Cells</td>
+                            <td>WBC</td>
                             <td>80</td>
-                            <td>$40.00</td>
                           </tr>
                           <tr>
-                            <td>PUS Cells</td>
+                            <td>NEU</td>
                             <td>120</td>
-                            <td>$40.00</td>
                           </tr>
                           <tr>
-                            <td>T Vaginalis</td>
+                            <td>MON</td>
                             <td>210</td>
-                            <td>$60.00</td>
                           </tr>
                           <tr>
-                            <td>Yeast Cells</td>
+                            <td>EO</td>
                             <td>210</td>
-                            <td>$60.00</td>
+                          </tr>
+                          <tr>
+                            <td>LYM</td>
+                            <td>210</td>
+                          </tr>
+                          <tr>
+                            <td>BAS</td>
+                            <td>210</td>
                           </tr>
                           <tr>
                             <td>RBC</td>
                             <td>210</td>
-                            <td>$60.00</td>
                           </tr>
                           <tr>
-                            <td>Cast</td>
+                            <td>HGB</td>
                             <td>210</td>
-                            <td>$60.00</td>
                           </tr>
                           <tr>
-                            <td>Crystals</td>
+                            <td>HCT</td>
                             <td>210</td>
-                            <td>$60.00</td>
                           </tr>
                           <tr>
-                            <td>Parasites</td>
+                            <td>MCV</td>
                             <td>210</td>
-                            <td>$60.00</td>
                           </tr>
                           <tr>
-                            <td>Others</td>
+                            <td>MCH</td>
                             <td>210</td>
-                            <td>$60.00</td>
+                          </tr>
+                          <tr>
+                            <td>MCHC</td>
+                            <td>210</td>
+                          </tr>
+                          <tr>
+                            <td>RDW</td>
+                            <td>210</td>
+                          </tr>
+                          <tr>
+                            <td>PLT</td>
+                            <td>210</td>
                           </tr>
                         </tbody>
                       </table>
@@ -120,61 +130,78 @@
                 <div>
                   <hr />
                   <h5 class="kt-font-dark" style="text-align: center">
-                    Urinalysis
+                    FBC TWO
                   </h5>
                   <div class="kt-invoice__body kt-invoice__body--centered">
                     <div class="table-responsive">
                       <table class="table">
                         <thead>
                           <tr>
-                            <th>TESTS</th>
+                            <th>DIFFERENTIAL</th>
                             <th>RESULT</th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr>
-                            <td>Leukocytes</td>
+                            <td>Neutrophils</td>
                             <td>80</td>
                           </tr>
                           <tr>
-                            <td>Protein</td>
+                            <td>Bands(Neutrophilic)</td>
                             <td>120</td>
                           </tr>
                           <tr>
-                            <td>Glucose</td>
+                            <td>Lymphocytes</td>
                             <td>210</td>
                           </tr>
                           <tr>
-                            <td>Blood</td>
+                            <td>Atypical Lymphocytes</td>
                             <td>210</td>
                           </tr>
                           <tr>
-                            <td>PH</td>
+                            <td>Monocytes</td>
                             <td>210</td>
                           </tr>
                           <tr>
-                            <td>Ascorbic Acid</td>
+                            <td>Eosinophils</td>
                             <td>210</td>
                           </tr>
                           <tr>
-                            <td>Urobilinogen</td>
+                            <td>Basophils</td>
                             <td>210</td>
                           </tr>
                           <tr>
-                            <td>Ketones</td>
+                            <th colspan="7">RBC MORPHOLOGY</th>
+                          </tr>
+                          <tr>
+                            <td>Anisocytosis</td>
                             <td>210</td>
                           </tr>
                           <tr>
-                            <td>S.gravity</td>
+                            <td>Microcytosis</td>
                             <td>210</td>
                           </tr>
                           <tr>
-                            <td>Bilirubin</td>
+                            <td>Macrocytosis</td>
                             <td>210</td>
                           </tr>
                           <tr>
-                            <td>Nitrite</td>
+                            <td>Hypochromia</td>
                             <td>210</td>
+                          </tr>
+                          <tr>
+                            <td>Poikliocytosis</td>
+                            <td>210</td>
+                          </tr>
+                          <tr>
+                            <th colspan="7">Morphology terms</th>
+                          </tr>
+                          <tr>
+                            <th>Slight = +</th>
+                            <th>
+                              Moderate = ++
+                              <span class="ml-5">Marked = +++</span>
+                            </th>
                           </tr>
                         </tbody>
                       </table>
@@ -186,7 +213,7 @@
                 <div>
                   <hr />
                   <h5 class="kt-font-dark" style="text-align: center">
-                    Stool Analysis
+                    TESTS
                   </h5>
                   <div class="kt-invoice__body kt-invoice__body--centered">
                     <div class="table-responsive">
@@ -199,27 +226,43 @@
                         </thead>
                         <tbody>
                           <tr>
-                            <td>PUS Cells</td>
+                            <td>PCV (30 - 52%)</td>
                             <td>80</td>
                           </tr>
                           <tr>
-                            <td>RBC</td>
+                            <td>X-Matching</td>
                             <td>120</td>
                           </tr>
                           <tr>
-                            <td>OVA/Cyst</td>
+                            <td>Bleeding Time (3 - 10 min)</td>
                             <td>210</td>
                           </tr>
                           <tr>
-                            <td>Undigested Food Particles</td>
+                            <td>Clotting Time (3 - 10 min)</td>
                             <td>210</td>
                           </tr>
                           <tr>
-                            <td>Schistosoma Ova</td>
+                            <td>Genotype</td>
                             <td>210</td>
                           </tr>
                           <tr>
-                            <td>FOB</td>
+                            <td>Blood Group</td>
+                            <td>210</td>
+                          </tr>
+                          <tr>
+                            <td>Prothrombin Time (11 - 14 sec)</td>
+                            <td>210</td>
+                          </tr>
+                          <tr>
+                            <td>INR (0.8 - 1.1)</td>
+                            <td>210</td>
+                          </tr>
+                          <tr>
+                            <td>RVS</td>
+                            <td>210</td>
+                          </tr>
+                          <tr>
+                            <td>MP</td>
                             <td>210</td>
                           </tr>
                         </tbody>
@@ -232,7 +275,7 @@
                 <div>
                   <hr />
                   <h5 class="kt-font-dark" style="text-align: center">
-                    Culture/Sensitivity Report
+                    Widal Reaction
                   </h5>
                   <div class="kt-invoice__body kt-invoice__body--centered">
                     <h6>Sputum: Ear</h6>
@@ -240,38 +283,40 @@
                       <table class="table">
                         <thead>
                           <tr>
-                            <th>TESTS</th>
-                            <th>RESULT</th>
+                            <th>WIDAL REACTION</th>
+                            <th>O</th>
+                            <th>H</th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr>
-                            <td>Appearance</td>
+                            <td>Salmonella Typhi</td>
+                            <td>80</td>
                             <td>80</td>
                           </tr>
                           <tr>
-                            <td>Pus Cells</td>
+                            <td>S.Paratyphi A</td>
+                            <td>120</td>
                             <td>120</td>
                           </tr>
                           <tr>
                             <td>RBC</td>
                             <td>210</td>
-                          </tr>
-                          <tr>
-                            <td>Cellular Debris</td>
                             <td>210</td>
                           </tr>
                           <tr>
-                            <td>Spermatozoan</td>
+                            <td>S.Paratyphi B</td>
+                            <td>210</td>
                             <td>210</td>
                           </tr>
                           <tr>
-                            <td>Epithelial Cells</td>
+                            <td>S.Paratyphi C</td>
+                            <td>210</td>
                             <td>210</td>
                           </tr>
                           <tr>
-                            <td>Culture</td>
-                            <td>210</td>
+                            <td>Significant Titre</td>
+                            <td colspan="7">>= 1/80</td>
                           </tr>
                         </tbody>
                       </table>
@@ -283,225 +328,41 @@
                 <div>
                   <hr />
                   <h5 class="kt-font-dark" style="text-align: center">
-                    Semen Analysis
+                    Serology Tests
                   </h5>
                   <div class="kt-invoice__body kt-invoice__body--centered">
-                    <h6>
-                      <span class="kt-font-success">Time Produced</span> : Ear
-                      <span class="ml-3 mr-3">|</span>
-                      <span class="kt-font-warning">Time Received</span> : Yes
-                      <span class="ml-3 mr-3">|</span>
-                      <span class="kt-font-brand">Time of Analysis</span> :
-                      Yesrt
-                    </h6>
-                    <h6>
-                      Method of Production: <span class="ml-3">Nothing</span>
-                    </h6>
                     <div class="table-responsive">
                       <table class="table">
                         <thead>
                           <tr>
-                            <th>TESTS</th>
+                            <th>SEROLOGY TESTS</th>
                             <th>RESULT</th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr>
-                            <td>Period of Abstinence</td>
+                            <td>H.Pylori</td>
                             <td>80</td>
                           </tr>
                           <tr>
-                            <td>Colour</td>
+                            <td>RF</td>
                             <td>120</td>
                           </tr>
                           <tr>
-                            <td>RBC</td>
+                            <td>PGT</td>
                             <td>210</td>
                           </tr>
                           <tr>
-                            <td>Viscosity</td>
+                            <td>HBsAg</td>
                             <td>210</td>
                           </tr>
                           <tr>
-                            <td>Liquefaction</td>
+                            <td>HCV</td>
                             <td>210</td>
                           </tr>
                           <tr>
-                            <td>Spillage</td>
+                            <td>VDRL</td>
                             <td>210</td>
-                          </tr>
-                          <tr>
-                            <td>Volume</td>
-                            <td>210</td>
-                          </tr>
-                          <tr>
-                            <td>Odour</td>
-                            <td>210</td>
-                          </tr>
-                          <tr>
-                            <td>PH</td>
-                            <td>210</td>
-                          </tr>
-                          <tr>
-                            <th colspan="7">MICROSCOPY</th>
-                          </tr>
-                          <tr>
-                            <td>Pus Cells</td>
-                            <td>210</td>
-                          </tr>
-                          <tr>
-                            <td>RBC</td>
-                            <td>210</td>
-                          </tr>
-                          <tr>
-                            <td>Cellula Debris</td>
-                            <td>210</td>
-                          </tr>
-                          <tr>
-                            <td>Spermatozoan</td>
-                            <td>210</td>
-                          </tr>
-                          <tr>
-                            <td>Epithelial Cells</td>
-                            <td>210</td>
-                          </tr>
-                          <tr>
-                            <th colspan="7">PERCENTAGE MOTILITY</th>
-                          </tr>
-                          <tr>
-                            <td>Active</td>
-                            <td>210</td>
-                          </tr>
-                          <tr>
-                            <td>Sluggish</td>
-                            <td>210</td>
-                          </tr>
-                          <tr>
-                            <td>Non-Progressive</td>
-                            <td>210</td>
-                          </tr>
-                          <tr>
-                            <td>Dead Cells</td>
-                            <td>210</td>
-                          </tr>
-                          <tr>
-                            <td>Non-Progressive</td>
-                            <td>210</td>
-                          </tr>
-                          <tr>
-                            <th colspan="7">MORPHOLOGY</th>
-                          </tr>
-                          <tr>
-                            <td>% Normal Cells</td>
-                            <td>210</td>
-                          </tr>
-                          <tr>
-                            <td>% Abnormal Cells</td>
-                            <td>210</td>
-                          </tr>
-                          <tr>
-                            <td>Sperm Count</td>
-                            <td>210</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-
-                <!--  Antibiotic Sensitivity -->
-                <div>
-                  <hr style="padding: 0 10px" />
-                  <h5 class="kt-font-dark" style="text-align: center">
-                    Antibiotic Sensitivity
-                  </h5>
-                  <div class="kt-invoice__body kt-invoice__body--centered">
-                    <div class="table-responsive">
-                      <table class="table">
-                        <thead>
-                          <tr>
-                            <th style="text-transform:uppercase">
-                              Antibiotic Sensitivity
-                            </th>
-                            <th>1</th>
-                            <th>2</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>Ciprofloxacin</td>
-                            <td>80</td>
-                            <td>$40.00</td>
-                          </tr>
-                          <tr>
-                            <td>Ampiciline</td>
-                            <td>120</td>
-                            <td>$40.00</td>
-                          </tr>
-                          <tr>
-                            <td>Sparfloxacin</td>
-                            <td>210</td>
-                            <td>$60.00</td>
-                          </tr>
-                          <tr>
-                            <td>Erythromycin</td>
-                            <td>210</td>
-                            <td>$60.00</td>
-                          </tr>
-                          <tr>
-                            <td>Streptomycin</td>
-                            <td>210</td>
-                            <td>$60.00</td>
-                          </tr>
-                          <tr>
-                            <td>Gentamycin</td>
-                            <td>210</td>
-                            <td>$60.00</td>
-                          </tr>
-                          <tr>
-                            <td>Pefloxacin</td>
-                            <td>210</td>
-                            <td>$60.00</td>
-                          </tr>
-                          <tr>
-                            <td>Cotrimoxacole</td>
-                            <td>210</td>
-                            <td>$60.00</td>
-                          </tr>
-                          <tr>
-                            <td>Chloramphenicol</td>
-                            <td>210</td>
-                            <td>$60.00</td>
-                          </tr>
-                          <tr>
-                            <td>Ampiclox</td>
-                            <td>210</td>
-                            <td>$60.00</td>
-                          </tr>
-                          <tr>
-                            <td>Amoxicillin</td>
-                            <td>210</td>
-                            <td>$60.00</td>
-                          </tr>
-                          <tr>
-                            <td>Clavulanic Acid</td>
-                            <td>210</td>
-                            <td>$60.00</td>
-                          </tr>
-                          <tr>
-                            <td>Ofloxacin</td>
-                            <td>210</td>
-                            <td>$60.00</td>
-                          </tr>
-                          <tr>
-                            <td>Cefuroxime</td>
-                            <td>210</td>
-                            <td>$60.00</td>
-                          </tr>
-                          <tr>
-                            <td>Ceftriaxone</td>
-                            <td>210</td>
-                            <td>$60.00</td>
                           </tr>
                         </tbody>
                       </table>
@@ -558,5 +419,5 @@ export default {}
 </script>
 
 <style scoped>
-@import url('../assets/css/labtest.css');
+@import url('../../assets/css/labtest.css');
 </style>

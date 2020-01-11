@@ -798,7 +798,7 @@
                     <td>
                       <input
                         type="text"
-                        v-model="ogtt.sixtymins"
+                        v-model="ogtt.sixtyminsdegree1"
                         class="form-control"
                       />
                     </td>
@@ -1073,13 +1073,27 @@ export default {
       axios
         .get(this.landingPageUrl + this.$route.params.id)
         .then(response => {
-          this.seucranalysis = response.data.data.seucranalysis
-          this.lipiprofile = response.data.data.lipiprofile
-          this.lft = response.data.data.lft
-          this.serum = response.data.data.serum
-          this.analyte = response.data.data.analyte
-          this.glucose = response.data.data.glucose
-          this.ogtt = response.data.data.ogtt
+          if (response.data.data.seucranalysis) {
+            this.seucranalysis = response.data.data.seucranalysis
+          }
+          if (response.data.data.lipiprofile) {
+            this.lipiprofile = response.data.data.lipiprofile
+          }
+          if (response.data.data.lft) {
+            this.lft = response.data.data.lft
+          }
+          if (response.data.data.serum) {
+            this.serum = response.data.data.serum
+          }
+          if (response.data.data.analyte) {
+            this.analyte = response.data.data.analyte
+          }
+          if (response.data.data.glucose) {
+            this.glucose = response.data.data.glucose
+          }
+          if (response.data.data.ogtt) {
+            this.ogtt = response.data.data.ogtt
+          }
         })
         .catch(error => {
           this.handleError(error)

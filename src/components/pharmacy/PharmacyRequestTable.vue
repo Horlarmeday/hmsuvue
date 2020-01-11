@@ -150,9 +150,18 @@
                   {{ index + 1 }}
                 </td>
                 <td>
-                  <router-link :to="consultation.url">
+                  <router-link
+                    v-if="consultation.patient"
+                    :to="consultation.url"
+                  >
                     {{ consultation.patient.firstname }}
                     {{ consultation.patient.lastname }}
+                  </router-link>
+                  <router-link v-if="consultation.dependant" to="#">
+                    {{ consultation.dependant.name }}
+                    <small class="kt-badge kt-badge--danger kt-badge--inline"
+                      >Dependant</small
+                    >
                   </router-link>
                 </td>
                 <td>{{ consultation.reasonforvisit }}</td>
@@ -356,9 +365,18 @@ export default {
 
           let consultations = this.consultations
           for (let i = 0; i < consultations.length; i++) {
-            consultations[i].url = '/patient/' + consultations[i].patient._id
-            consultations[i].consulturl =
-              '/consultation/' + consultations[i]._id
+            if (consultations[i].patient) {
+              consultations[i].url = '/patient/' + consultations[i].patient._id
+            }
+              if (consultations[i].patient) {
+              consultations[i].consulturl =
+                '/consultation/' + consultations[i]._id
+            }
+
+            if (consultations[i].dependant) {
+              consultations[i].dependantconsulturl =
+                '/dependant/consultation/' + consultations[i]._id
+            }
           }
         })
         .catch(error => {

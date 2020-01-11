@@ -256,6 +256,12 @@
                     class="kt-badge kt-badge--warning kt-badge--inline"
                     >{{ staff.role }}</label
                   >
+                  <label
+                    style="background:#ae3ee;color:#000"
+                    v-if="staff.role == 'NHIS'"
+                    class="kt-badge kt-badge--warning kt-badge--inline"
+                    >{{ staff.role }}</label
+                  >
                 </td>
                 <td>
                   <label

@@ -84,6 +84,8 @@
                 class="form-control"
                 v-model="phonenumber"
                 placeholder="Phone Number"
+                maxlength="11"
+                minlength="11"
               />
               <span class="form-text text-muted"
                 >Please enter staff phone number.</span
@@ -185,6 +187,7 @@
                 <option value="Finance Officer">Finance Officer</option>
                 <option value="Midwife">Midwife</option>
                 <option value="Theater">Theater</option>
+                <option value="NHIS">NHIS</option>
               </select>
               <span class="form-text text-muted">Please select role.</span>
             </div>

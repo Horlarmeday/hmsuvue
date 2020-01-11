@@ -919,11 +919,21 @@ export default {
       axios
         .get(this.landingPageUrl + this.$route.params.id)
         .then(response => {
-          this.fbc1 = response.data.data.fbc1
-          this.fbc2 = response.data.data.fbc2
-          this.tests = response.data.data.HStests
-          this.widalreaction = response.data.data.widalreaction
-          this.serologytests = response.data.data.serologytests
+          if (response.data.data.fbc1) {
+            this.fbc1 = response.data.data.fbc1
+          }
+          if (response.data.data.fbc2) {
+            this.fbc2 = response.data.data.fbc2
+          }
+          if (response.data.data.HStests) {
+            this.tests = response.data.data.HStests
+          }
+          if (response.data.data.widalreaction) {
+            this.widalreaction = response.data.data.widalreaction
+          }
+          if (response.data.data.serologytests) {
+            this.serologytests = response.data.data.serologytests
+          }
         })
         .catch(error => {
           this.handleError(error)

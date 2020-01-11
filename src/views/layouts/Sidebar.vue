@@ -2183,9 +2183,9 @@ export default {
       user: ''
     }
   },
+
   mounted() {
     this.scrollbar()
-
     let token = localStorage.getItem('user-token')
     const parseJwt = token => {
       try {

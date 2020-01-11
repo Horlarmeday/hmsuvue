@@ -727,6 +727,14 @@ const routes = [
     }
   },
   {
+    path: '/microbiology-test-result/:id',
+    name: 'microbiologytestresult',
+    component: () => import('../views/app/laboratory/MicrobiologyResult.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
     path: '/haematology-result/:id',
     name: 'haematologyresult',
     component: () => import('../views/app/laboratory/Haematology.vue'),
@@ -735,9 +743,26 @@ const routes = [
     }
   },
   {
+    path: '/haematology-test-result',
+    name: 'haematologytestresult',
+    component: () => import('../views/app/laboratory/HaematologyResult.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
     path: '/chemical-pathology-result/:id',
     name: 'chemicalpathologyresult',
     component: () => import('../views/app/laboratory/ChemicalPathology.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/chemical-pathology-test-result',
+    name: 'chemicaltestpathologyresult',
+    component: () =>
+      import('../views/app/laboratory/ChemicalPathologyResult.vue'),
     meta: {
       requiresAuth: true
     }

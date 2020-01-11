@@ -175,8 +175,18 @@
                   </p>
                 </td>
                 <td v-else>No tests</td>
-                <td>
-                  <router-link to="#">View Result</router-link>
+                <td v-if="consultation.labtestapproved">
+                  <button
+                    data-toggle="modal"
+                    data-target="#kt_modal_2"
+                    class="btn btn-brand"
+                    @click="getResults(consultation)"
+                  >
+                    View Result
+                  </button>
+                </td>
+                <td v-if="!consultation.labtestapproved">
+                  <button class="btn btn-light">No Results Yet</button>
                 </td>
 
                 <td v-if="consultation.imagings.length > 0">
@@ -205,10 +215,17 @@
                 <td v-else>No Drugs</td>
 
                 <td>{{ consultation.updatedAt | moment('DD/MM/YYYY, ha') }}</td>
-                <td>
+                <td v-if="consultation.patient">
                   <router-link
                     class="btn btn-success"
                     :to="consultation.consulturl"
+                    >View</router-link
+                  >
+                </td>
+                <td v-if="consultation.dependant">
+                  <router-link
+                    class="btn btn-success"
+                    :to="consultation.dependantconsulturl"
                     >View</router-link
                   >
                 </td>
@@ -344,6 +361,89 @@
         </div>
         <!--end::Modal-->
 
+        <!--begin::Modal-->
+        <div
+          class="modal fade"
+          id="kt_modal_2"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Test Results</h5>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">
+                <div class="dt-responsive table-responsive">
+                  <table class="table table-striped table-bordered nowrap">
+                    <thead>
+                      <th>S/N</th>
+                      <th>Laboratory</th>
+                      <th>Destination</th>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>1</td>
+                        <td>
+                          Chemical and Pathology
+                        </td>
+                        <td>
+                          <a
+                            target="_blank"
+                            :href="chemicalurl"
+                            class="btn btn-brand btn-sm btn-elevate"
+                          >
+                            View
+                          </a>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>2</td>
+                        <td>
+                          Microbiology
+                        </td>
+                        <td>
+                          <a
+                            target="_blank"
+                            :href="microurl"
+                            class="btn btn-brand btn-sm btn-elevate"
+                          >
+                            View
+                          </a>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>3</td>
+                        <td>
+                          Haematology and Serology
+                        </td>
+                        <td>
+                          <a
+                            target="_blank"
+                            :href="haemaurl"
+                            class="btn btn-brand btn-sm btn-elevate"
+                          >
+                            View
+                          </a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--end::Modal-->
+
         <!--end: Datatable -->
       </div>
     </div>
@@ -372,7 +472,11 @@ export default {
       rows: '',
       meta: '',
       consultationurl: '/consultation',
-      consultationDrugurl: '/consultation/consultation/drugs'
+      consultationDrugurl: '/consultation/consultation/drugs',
+      consultationresulturl: '/laboratory/labtest/result',
+      haemaurl: '',
+      chemicalurl: '',
+      microurl: ''
     }
   },
   mounted() {
@@ -399,10 +503,37 @@ export default {
 
           let consultations = this.consultations
           for (let i = 0; i < consultations.length; i++) {
-            consultations[i].url = '/patient/' + consultations[i].patient._id
-            consultations[i].consulturl =
-              '/consultation/' + consultations[i]._id
+            if (consultations[i].patient) {
+              consultations[i].url = '/patient/' + consultations[i].patient._id
+            }
+
+            if (consultations[i].patient) {
+              consultations[i].consulturl =
+                '/consultation/' + consultations[i]._id
+            }
+
+            if (consultations[i].dependant) {
+              consultations[i].dependantconsulturl =
+                '/dependant/consultation/' + consultations[i]._id
+            }
           }
+        })
+        .catch(error => {
+          this.handleError(error)
+        })
+    },
+    getResults(consultation) {
+      const data = {
+        consultationId: consultation._id
+      }
+      axios
+        .post(this.consultationresulturl, data)
+        .then(response => {
+          this.consultation = response.data.data
+          this.microurl = '/microbiology-test-result/' + this.consultation._id
+          this.haemaurl = '/haematology-test-result/' + this.consultation._id
+          this.chemicalurl =
+            '/chemical-pathology-test-result/' + this.consultation._id
         })
         .catch(error => {
           this.handleError(error)

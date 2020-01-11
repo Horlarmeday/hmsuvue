@@ -1549,12 +1549,24 @@ export default {
       axios
         .get(this.landingPageUrl + this.$route.params.id)
         .then(response => {
-          this.urine = response.data.data.urine
-          this.urinalysis = response.data.data.urinalysis
-          this.stool = response.data.data.stool
-          this.culture = response.data.data.culture
-          this.antibiotic = response.data.data.antibiotic
-          this.semenanalysis = response.data.data.semenanalysis
+          if (response.data.data.urine) {
+            this.urine = response.data.data.urine
+          }
+          if (response.data.data.urinalysis) {
+            this.urinalysis = response.data.data.urinalysis
+          }
+          if (response.data.data.stool) {
+            this.stool = response.data.data.stool
+          }
+          if (response.data.data.culture) {
+            this.culture = response.data.data.culture
+          }
+          if (response.data.data.antibiotic) {
+            this.antibiotic = response.data.data.antibiotic
+          }
+          if (response.data.data.semenanalysis) {
+            this.semenanalysis = response.data.data.semenanalysis
+          }
         })
         .catch(error => {
           this.handleError(error)

@@ -133,8 +133,14 @@
                     Total amount revenue generated
                   </span>
                 </div>
-                <span class="kt-widget24__stats kt-font-success">
+                <span
+                  v-if="totalAmount !== undefined"
+                  class="kt-widget24__stats kt-font-success"
+                >
                   ₦{{ totalAmount | toCurrency }}
+                </span>
+                <span v-else class="kt-widget24__stats kt-font-success">
+                  ₦{{ 0 | toCurrency }}
                 </span>
               </div>
               <div class="progress progress--sm">

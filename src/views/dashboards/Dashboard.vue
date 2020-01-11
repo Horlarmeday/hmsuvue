@@ -61,6 +61,7 @@
             <Laboratory v-else-if="user.role == 'Laboratory'" />
             <Imaging v-else-if="user.role == 'Medical Imaging'" />
             <Theater v-else-if="user.role == 'Theater'" />
+            <NHIS v-else-if="user.role == 'NHIS'" />
           </div>
           <Footer />
         </div>
@@ -87,6 +88,7 @@ import Pharmacy from '@/components/dashboards/Pharmacy.vue'
 import Laboratory from '@/components/dashboards/Laboratory.vue'
 import Imaging from '@/components/dashboards/Imaging.vue'
 import Theater from '@/components/dashboards/Theater.vue'
+import NHIS from '@/components/dashboards/NHIS.vue'
 export default {
   name: 'dashboard',
   components: {
@@ -105,7 +107,8 @@ export default {
     Pharmacy,
     Laboratory,
     Imaging,
-    Theater
+    Theater,
+    NHIS,
   },
   data() {
     return {

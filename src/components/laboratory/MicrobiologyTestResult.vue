@@ -16,7 +16,7 @@
                         <h1>TEST RESULT</h1>
                       </a>
                       <a href="#">
-                        <img width="50" src="../assets/ms.png" />
+                        <img width="50" src="../../assets/ms.png" />
                       </a>
                     </div>
                     <span class="kt-invoice__desc">
@@ -29,27 +29,37 @@
                     <div class="kt-invoice__items">
                       <div class="kt-invoice__item">
                         <span class="kt-invoice__subtitle">DATE</span>
-                        <span class="kt-invoice__text">Dec 12, 2020</span>
+                        <span class="kt-invoice__text">{{
+                          new Date() | moment('dddd, MMMM Do YYYY, h:mma')
+                        }}</span>
                       </div>
                       <div class="kt-invoice__item">
-                        <span class="kt-invoice__subtitle">INVOICE NO.</span>
+                        <span class="kt-invoice__subtitle">HOSPITAL NO</span>
                         <span class="kt-invoice__text">GS 000014</span>
                       </div>
                       <div class="kt-invoice__item">
                         <span class="kt-invoice__subtitle"
                           >PATIENT INFORMATION.</span
                         >
-                        <span class="kt-invoice__text"
-                          >Iris Watson, P.O. Box 283 8562 Fusce RD.<br />Fredrick
-                          Nebraska 20620</span
-                        >
+                        <span
+                          v-if="consultation.patient"
+                          class="kt-invoice__text"
+                          >{{ consultation.patient.firstname }}
+                          {{ consultation.patient.lastname }}<br />
+                        </span>
+                        <span
+                          v-if="consultation.dependant"
+                          class="kt-invoice__text"
+                          >{{ consultation.dependant.name }}
+                          <br />
+                        </span>
                       </div>
                     </div>
                   </div>
                 </div>
                 <h4 style="text-align: center">MICROBIOLOGY</h4>
                 <!-- Urine -->
-                <div>
+                <div v-if="urine">
                   <hr style="padding: 0 10px" />
                   <h5 class="kt-font-dark" style="text-align: center">
                     Urine/HVS(Microscopy)
@@ -67,48 +77,48 @@
                         <tbody>
                           <tr>
                             <td>Epithelial Cells</td>
-                            <td>80</td>
-                            <td>$40.00</td>
+                            <td>{{ urine.epitheliaresult }}</td>
+                            <td>{{ urine.epitheliahsv }}</td>
                           </tr>
                           <tr>
                             <td>PUS Cells</td>
-                            <td>120</td>
-                            <td>$40.00</td>
+                            <td>{{ urine.pusresult }}</td>
+                            <td>{{ urine.pusresult }}</td>
                           </tr>
                           <tr>
                             <td>T Vaginalis</td>
-                            <td>210</td>
-                            <td>$60.00</td>
+                            <td>{{ urine.vaginalisresult }}</td>
+                            <td>{{ urine.vaginalishsv }}</td>
                           </tr>
                           <tr>
                             <td>Yeast Cells</td>
-                            <td>210</td>
-                            <td>$60.00</td>
+                            <td>{{ urine.yeastresult }}</td>
+                            <td>{{ urine.yeasthsv }}</td>
                           </tr>
                           <tr>
                             <td>RBC</td>
-                            <td>210</td>
-                            <td>$60.00</td>
+                            <td>{{ urine.rbcresult }}</td>
+                            <td>{{ urine.rbchsv }}</td>
                           </tr>
                           <tr>
                             <td>Cast</td>
-                            <td>210</td>
-                            <td>$60.00</td>
+                            <td>{{ urine.castresult }}</td>
+                            <td>{{ urine.casthsv }}</td>
                           </tr>
                           <tr>
                             <td>Crystals</td>
-                            <td>210</td>
-                            <td>$60.00</td>
+                            <td>{{ urine.crystalsresult }}</td>
+                            <td>{{ urine.crystalshsv }}</td>
                           </tr>
                           <tr>
                             <td>Parasites</td>
-                            <td>210</td>
-                            <td>$60.00</td>
+                            <td>{{ urine.parasitesresult }}</td>
+                            <td>{{ urine.parasiteshsv }}</td>
                           </tr>
                           <tr>
                             <td>Others</td>
-                            <td>210</td>
-                            <td>$60.00</td>
+                            <td>{{ urine.othersresult }}</td>
+                            <td>{{ urine.othershsv }}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -117,7 +127,7 @@
                 </div>
 
                 <!-- Urinalysis -->
-                <div>
+                <div v-if="urinalysis">
                   <hr />
                   <h5 class="kt-font-dark" style="text-align: center">
                     Urinalysis
@@ -133,48 +143,52 @@
                         </thead>
                         <tbody>
                           <tr>
+                            <td>Appearance</td>
+                            <td>{{ urinalysis.appearance }}</td>
+                          </tr>
+                          <tr>
                             <td>Leukocytes</td>
-                            <td>80</td>
+                            <td>{{ urinalysis.leukocytes }}</td>
                           </tr>
                           <tr>
                             <td>Protein</td>
-                            <td>120</td>
+                            <td>{{ urinalysis.protein }}</td>
                           </tr>
                           <tr>
                             <td>Glucose</td>
-                            <td>210</td>
+                            <td>{{ urinalysis.glucose }}</td>
                           </tr>
                           <tr>
                             <td>Blood</td>
-                            <td>210</td>
+                            <td>{{ urinalysis.blood }}</td>
                           </tr>
                           <tr>
                             <td>PH</td>
-                            <td>210</td>
+                            <td>{{ urinalysis.ph }}</td>
                           </tr>
                           <tr>
                             <td>Ascorbic Acid</td>
-                            <td>210</td>
+                            <td>{{ urinalysis.ascorbicacid }}</td>
                           </tr>
                           <tr>
                             <td>Urobilinogen</td>
-                            <td>210</td>
+                            <td>{{ urinalysis.urobilinogen }}</td>
                           </tr>
                           <tr>
                             <td>Ketones</td>
-                            <td>210</td>
+                            <td>{{ urinalysis.ketones }}</td>
                           </tr>
                           <tr>
                             <td>S.gravity</td>
-                            <td>210</td>
+                            <td>{{ urinalysis.sgravity }}</td>
                           </tr>
                           <tr>
                             <td>Bilirubin</td>
-                            <td>210</td>
+                            <td>{{ urinalysis.bilirubin }}</td>
                           </tr>
                           <tr>
                             <td>Nitrite</td>
-                            <td>210</td>
+                            <td>{{ urinalysis.nitrite }}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -183,7 +197,7 @@
                 </div>
 
                 <!-- Stool Analysis -->
-                <div>
+                <div v-if="stool">
                   <hr />
                   <h5 class="kt-font-dark" style="text-align: center">
                     Stool Analysis
@@ -199,28 +213,32 @@
                         </thead>
                         <tbody>
                           <tr>
+                            <td>Appearance</td>
+                            <td>{{ stool.appearance }}</td>
+                          </tr>
+                          <tr>
                             <td>PUS Cells</td>
-                            <td>80</td>
+                            <td>{{ stool.puscells }}</td>
                           </tr>
                           <tr>
                             <td>RBC</td>
-                            <td>120</td>
+                            <td>{{ stool.rbc }}</td>
                           </tr>
                           <tr>
                             <td>OVA/Cyst</td>
-                            <td>210</td>
+                            <td>{{ stool.ova }}</td>
                           </tr>
                           <tr>
                             <td>Undigested Food Particles</td>
-                            <td>210</td>
+                            <td>{{ stool.food }}</td>
                           </tr>
                           <tr>
                             <td>Schistosoma Ova</td>
-                            <td>210</td>
+                            <td>{{ stool.schistosoma }}</td>
                           </tr>
                           <tr>
                             <td>FOB</td>
-                            <td>210</td>
+                            <td>{{ stool.fob }}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -229,13 +247,15 @@
                 </div>
 
                 <!-- Culture/Sensitivity report -->
-                <div>
+                <div v-if="culture">
                   <hr />
                   <h5 class="kt-font-dark" style="text-align: center">
                     Culture/Sensitivity Report
                   </h5>
                   <div class="kt-invoice__body kt-invoice__body--centered">
-                    <h6>Sputum: Ear</h6>
+                    <h6>
+                      Sputum: <span class="ml-5">{{ culture.sputum }}</span>
+                    </h6>
                     <div class="table-responsive">
                       <table class="table">
                         <thead>
@@ -247,31 +267,31 @@
                         <tbody>
                           <tr>
                             <td>Appearance</td>
-                            <td>80</td>
+                            <td>{{ culture.appearance }}</td>
                           </tr>
                           <tr>
                             <td>Pus Cells</td>
-                            <td>120</td>
+                            <td>{{ culture.puscells }}</td>
                           </tr>
                           <tr>
                             <td>RBC</td>
-                            <td>210</td>
+                            <td>{{ culture.rbc }}</td>
                           </tr>
                           <tr>
                             <td>Cellular Debris</td>
-                            <td>210</td>
+                            <td>{{ culture.celluladebris }}</td>
                           </tr>
                           <tr>
                             <td>Spermatozoan</td>
-                            <td>210</td>
+                            <td>{{ culture.spermatozoan }}</td>
                           </tr>
                           <tr>
                             <td>Epithelial Cells</td>
-                            <td>210</td>
+                            <td>{{ culture.epithelialcells }}</td>
                           </tr>
                           <tr>
                             <td>Culture</td>
-                            <td>210</td>
+                            <td>{{ culture.culture }}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -280,22 +300,25 @@
                 </div>
 
                 <!-- Semen Analysis -->
-                <div>
+                <div v-if="semenanalysis">
                   <hr />
                   <h5 class="kt-font-dark" style="text-align: center">
                     Semen Analysis
                   </h5>
                   <div class="kt-invoice__body kt-invoice__body--centered">
                     <h6>
-                      <span class="kt-font-success">Time Produced</span> : Ear
+                      <span class="kt-font-success">Time Produced</span> :
+                      {{ semenanalysis.tproduced | moment('ha') }}
                       <span class="ml-3 mr-3">|</span>
-                      <span class="kt-font-warning">Time Received</span> : Yes
+                      <span class="kt-font-warning">Time Received</span> :
+                      {{ semenanalysis.treceived | moment('ha') }}
                       <span class="ml-3 mr-3">|</span>
                       <span class="kt-font-brand">Time of Analysis</span> :
-                      Yesrt
+                      {{ semenanalysis.tofanalysis | moment('ha') }}
                     </h6>
                     <h6>
-                      Method of Production: <span class="ml-3">Nothing</span>
+                      Method of Production:
+                      <span class="ml-3">{{ semenanalysis.method }}</span>
                     </h6>
                     <div class="table-responsive">
                       <table class="table">
@@ -308,81 +331,78 @@
                         <tbody>
                           <tr>
                             <td>Period of Abstinence</td>
-                            <td>80</td>
+                            <td>{{ semenanalysis.pabstinence }}</td>
                           </tr>
                           <tr>
                             <td>Colour</td>
-                            <td>120</td>
+                            <td>{{ semenanalysis.colour }}</td>
                           </tr>
-                          <tr>
-                            <td>RBC</td>
-                            <td>210</td>
-                          </tr>
+
                           <tr>
                             <td>Viscosity</td>
-                            <td>210</td>
+                            <td>{{ semenanalysis.viscosity }}</td>
                           </tr>
                           <tr>
                             <td>Liquefaction</td>
-                            <td>210</td>
+                            <td>{{ semenanalysis.liquefaction }}</td>
                           </tr>
                           <tr>
                             <td>Spillage</td>
-                            <td>210</td>
+                            <td>{{ semenanalysis.spillage }}</td>
                           </tr>
                           <tr>
                             <td>Volume</td>
-                            <td>210</td>
+                            <td>{{ semenanalysis.volume }}</td>
                           </tr>
                           <tr>
                             <td>Odour</td>
-                            <td>210</td>
+                            <td>{{ semenanalysis.odour }}</td>
                           </tr>
                           <tr>
                             <td>PH</td>
-                            <td>210</td>
+                            <td>{{ semenanalysis.ph }}</td>
                           </tr>
                           <tr>
                             <th colspan="7">MICROSCOPY</th>
                           </tr>
                           <tr>
                             <td>Pus Cells</td>
-                            <td>210</td>
+                            <td>{{ semenanalysis.puscells }}</td>
                           </tr>
                           <tr>
                             <td>RBC</td>
-                            <td>210</td>
+                            <td>{{ semenanalysis.rbc }}</td>
                           </tr>
                           <tr>
                             <td>Cellula Debris</td>
-                            <td>210</td>
+                            <td>{{ semenanalysis.celluladebris }}</td>
                           </tr>
                           <tr>
                             <td>Spermatozoan</td>
-                            <td>210</td>
+                            <td>{{ semenanalysis.spermatozoan }}</td>
                           </tr>
                           <tr>
                             <td>Epithelial Cells</td>
-                            <td>210</td>
+                            <td>{{ semenanalysis.epithelialcells }}</td>
                           </tr>
                           <tr>
                             <th colspan="7">PERCENTAGE MOTILITY</th>
                           </tr>
                           <tr>
                             <td>Active</td>
-                            <td>210</td>
+                            <td>{{ semenanalysis.active }}</td>
                           </tr>
                           <tr>
                             <td>Sluggish</td>
-                            <td>210</td>
+                            <td>{{ semenanalysis.sluggish }}</td>
                           </tr>
                           <tr>
                             <td>Non-Progressive</td>
-                            <td>210</td>
+                            <td>{{ semenanalysis.nonprogressive }}</td>
                           </tr>
                           <tr>
                             <td>Dead Cells</td>
-                            <td>210</td>
+                            <td>{{ semenanalysis.deadcells }}</td>
                           </tr>
                           <tr>
                             <td>Non-Progressive</td>
@@ -393,15 +413,15 @@
                           </tr>
                           <tr>
                             <td>% Normal Cells</td>
-                            <td>210</td>
+                            <td>{{ semenanalysis.normalcells }}</td>
                           </tr>
                           <tr>
                             <td>% Abnormal Cells</td>
-                            <td>210</td>
+                            <td>{{ semenanalysis.abnormalcells }}</td>
                           </tr>
                           <tr>
                             <td>Sperm Count</td>
-                            <td>210</td>
+                            <td>{{ semenanalysis.spermcount }}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -410,7 +430,7 @@
                 </div>
 
                 <!--  Antibiotic Sensitivity -->
-                <div>
+                <div v-if="antibiotic">
                   <hr style="padding: 0 10px" />
                   <h5 class="kt-font-dark" style="text-align: center">
                     Antibiotic Sensitivity
@@ -430,78 +450,78 @@
                         <tbody>
                           <tr>
                             <td>Ciprofloxacin</td>
-                            <td>80</td>
-                            <td>$40.00</td>
+                            <td>{{ antibiotic.ciprofloxacin1 }}</td>
+                            <td>{{ antibiotic.ciprofloxacin2 }}</td>
                           </tr>
                           <tr>
                             <td>Ampiciline</td>
-                            <td>120</td>
-                            <td>$40.00</td>
+                            <td>{{ antibiotic.ampiciline1 }}</td>
+                            <td>{{ antibiotic.ampiciline2 }}</td>
                           </tr>
                           <tr>
                             <td>Sparfloxacin</td>
-                            <td>210</td>
-                            <td>$60.00</td>
+                            <td>{{ antibiotic.Sparfloxacin1 }}</td>
+                            <td>{{ antibiotic.Sparfloxacin2 }}</td>
                           </tr>
                           <tr>
                             <td>Erythromycin</td>
-                            <td>210</td>
-                            <td>$60.00</td>
+                            <td>{{ antibiotic.Erythromycin1 }}</td>
+                            <td>{{ antibiotic.Erythromycin2 }}</td>
                           </tr>
                           <tr>
                             <td>Streptomycin</td>
-                            <td>210</td>
-                            <td>$60.00</td>
+                            <td>{{ antibiotic.Streptomycin1 }}</td>
+                            <td>{{ antibiotic.Streptomycin2 }}</td>
                           </tr>
                           <tr>
                             <td>Gentamycin</td>
-                            <td>210</td>
-                            <td>$60.00</td>
+                            <td>{{ antibiotic.Gentamycin1 }}</td>
+                            <td>{{ antibiotic.Gentamycin2 }}</td>
                           </tr>
                           <tr>
                             <td>Pefloxacin</td>
-                            <td>210</td>
-                            <td>$60.00</td>
+                            <td>{{ antibiotic.Pefloxacin1 }}</td>
+                            <td>{{ antibiotic.Pefloxacin2 }}</td>
                           </tr>
                           <tr>
                             <td>Cotrimoxacole</td>
-                            <td>210</td>
-                            <td>$60.00</td>
+                            <td>{{ antibiotic.Cotrimoxacole1 }}</td>
+                            <td>{{ antibiotic.Cotrimoxacole2 }}</td>
                           </tr>
                           <tr>
                             <td>Chloramphenicol</td>
-                            <td>210</td>
-                            <td>$60.00</td>
+                            <td>{{ antibiotic.Chloramphenicol1 }}</td>
+                            <td>{{ antibiotic.Chloramphenicol2 }}</td>
                           </tr>
                           <tr>
                             <td>Ampiclox</td>
-                            <td>210</td>
-                            <td>$60.00</td>
+                            <td>{{ antibiotic.Ampiclox1 }}</td>
+                            <td>{{ antibiotic.Ampiclox2 }}</td>
                           </tr>
                           <tr>
                             <td>Amoxicillin</td>
-                            <td>210</td>
-                            <td>$60.00</td>
+                            <td>{{ antibiotic.Amoxicillin1 }}</td>
+                            <td>{{ antibiotic.Amoxicillin2 }}</td>
                           </tr>
                           <tr>
                             <td>Clavulanic Acid</td>
-                            <td>210</td>
-                            <td>$60.00</td>
+                            <td>{{ antibiotic.Clavulanic1 }}</td>
+                            <td>{{ antibiotic.Clavulanic2 }}</td>
                           </tr>
                           <tr>
                             <td>Ofloxacin</td>
-                            <td>210</td>
-                            <td>$60.00</td>
+                            <td>{{ antibiotic.Ofloxacin1 }}</td>
+                            <td>{{ antibiotic.Ofloxacin2 }}</td>
                           </tr>
                           <tr>
                             <td>Cefuroxime</td>
-                            <td>210</td>
-                            <td>$60.00</td>
+                            <td>{{ antibiotic.Cefuroxime1 }}</td>
+                            <td>{{ antibiotic.Cefuroxime2 }}</td>
                           </tr>
                           <tr>
                             <td>Ceftriaxone</td>
-                            <td>210</td>
-                            <td>$60.00</td>
+                            <td>{{ antibiotic.Ceftriaxone1 }}</td>
+                            <td>{{ antibiotic.Ceftriaxone2 }}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -517,14 +537,19 @@
                       <thead>
                         <tr>
                           <th>CHIEF LABORATORIST</th>
-                          <th>DATE ISSUED</th>
+                          <th>DATE APPROVED</th>
                           <th></th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr>
                           <td>----------------------------</td>
-                          <td>Jan 07, 2018</td>
+                          <td>
+                            {{
+                              consultation.labtestapproveddate
+                                | moment('DD/MM/YY, ha')
+                            }}
+                          </td>
                           <td style="font-size: 11px">
                             This test report is effective only with both
                             signature and specialized stamp. <br />
@@ -542,6 +567,17 @@
                     </table>
                   </div>
                 </div>
+                <div class="text-center" style="padding: 20px 0">
+                  <button
+                    v-if="!consultation.labtestapproved"
+                    @click="approveResult"
+                    class="btn btn-success btn-elevate mr-3"
+                  >
+                    Approve Result
+                  </button>
+
+                  <button class="btn btn-brand btn-elevate">Print</button>
+                </div>
               </div>
             </div>
           </div>
@@ -554,9 +590,70 @@
 </template>
 
 <script>
-export default {}
+import axios from '../../axios'
+export default {
+  name: 'microbiologytestresult',
+  data() {
+    return {
+      consultation: '',
+      urine: '',
+      urinalysis: '',
+      stool: '',
+      culture: '',
+      antibiotic: '',
+      semenanalysis: '',
+      landingPageUrl: '/consultation/consultation/drugs/',
+      approveresulturl: '/laboratory/approve/labtest'
+    }
+  },
+  mounted() {
+    this.getMicrobiologyResult()
+  },
+  methods: {
+    handleError(error) {
+      console.log(error.response)
+      this.$iziToast.error({
+        title: 'Error!',
+        message: error.response.data
+      })
+    },
+    getMicrobiologyResult() {
+      axios
+        .get(this.landingPageUrl + this.$route.params.id)
+        .then(response => {
+          this.consultation = response.data.data
+          this.urine = response.data.data.urine
+          this.urinalysis = response.data.data.urinalysis
+          this.stool = response.data.data.stool
+          this.culture = response.data.data.culture
+          this.antibiotic = response.data.data.antibiotic
+          this.semenanalysis = response.data.data.semenanalysis
+        })
+        .catch(error => {
+          this.handleError(error)
+        })
+    },
+    approveResult() {
+      const data = {
+        consultationId: this.consultation._id
+      }
+      axios
+        .post(this.approveresulturl, data)
+        .then(response => {
+          this.consultation = response.data.data
+          this.$iziToast.success({
+            title: 'Success!',
+            message: response.data.message
+          })
+        })
+        .catch(error => {
+          this.handleError(error)
+        })
+    }
+  }
+}
 </script>
 
 <style scoped>
-@import url('../assets/css/labtest.css');
+@import url('../../assets/css/labtest.css');
 </style>

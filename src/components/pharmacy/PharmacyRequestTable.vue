@@ -368,7 +368,7 @@ export default {
             if (consultations[i].patient) {
               consultations[i].url = '/patient/' + consultations[i].patient._id
             }
-              if (consultations[i].patient) {
+            if (consultations[i].patient) {
               consultations[i].consulturl =
                 '/consultation/' + consultations[i]._id
             }

@@ -1,6 +1,6 @@
 // vue.config.js
 module.exports = {
   devServer: {
-    proxy: 'http://127.0.0.1:3000/api/'
+    proxy: process.env.BACKEND_URL
   }
 }

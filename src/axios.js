@@ -32,7 +32,7 @@ axios.interceptors.response.use(
   }
 )
 
-axios.defaults.baseURL = 'http://127.0.0.1:3000/api/'
+axios.defaults.baseURL = process.env.BACKEND_URL
 axios.defaults.headers.common = { 'x-auth-token': token }
 axios.defaults.timeout = 180000
 export default axios

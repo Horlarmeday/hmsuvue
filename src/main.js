@@ -10,6 +10,9 @@ import 'izitoast/dist/css/iziToast.css'
 import 'vue-datetime/dist/vue-datetime.css'
 import 'vue-select/dist/vue-select.css'
 import './vee-validate'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 import { CollapsePlugin, PaginationPlugin, TabsPlugin } from 'bootstrap-vue'
 import { Datetime } from 'vue-datetime'

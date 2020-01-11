@@ -12,6 +12,7 @@
     "axios": "^0.19.0",
     "bootstrap-vue": "^2.1.0",
     "core-js": "^3.3.2",
+    "dotenv": "^8.2.0",
     "izitoast": "^1.4.0",
     "luxon": "^1.21.2",
     "nprogress": "^0.2.0",

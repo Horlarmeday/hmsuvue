@@ -108,7 +108,7 @@ export default {
     Laboratory,
     Imaging,
     Theater,
-    NHIS,
+    NHIS
   },
   data() {
     return {

@@ -32,7 +32,7 @@ axios.interceptors.response.use(
   }
 )
 
-axios.defaults.baseURL = process.env.BACKEND_URL
+axios.defaults.baseURL = process.env.VUE_APP_BACKEND_URL
 axios.defaults.headers.common = { 'x-auth-token': token }
 axios.defaults.timeout = 180000
 export default axios

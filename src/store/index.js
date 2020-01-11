@@ -45,6 +45,7 @@ export default new Vuex.Store({
           method: 'POST'
         })
           .then(response => {
+            console.log(response)
             const token = response.data.token
             const staff = response.data.data
             localStorage.setItem('user-token', token)
@@ -53,6 +54,7 @@ export default new Vuex.Store({
             resolve(response)
           })
           .catch(err => {
+            console.log(err)
             commit('auth_error')
             localStorage.removeItem('user-token')
             reject(err)

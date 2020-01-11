@@ -137,7 +137,6 @@ export default {
         })
         .catch(error => {
           this.loading = false
-          console.log(error.response)
           this.$iziToast.error({
             title: 'Error!',
             message: error.response.data

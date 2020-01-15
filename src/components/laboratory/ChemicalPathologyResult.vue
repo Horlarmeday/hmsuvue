@@ -29,27 +29,37 @@
                     <div class="kt-invoice__items">
                       <div class="kt-invoice__item">
                         <span class="kt-invoice__subtitle">DATE</span>
-                        <span class="kt-invoice__text">Dec 12, 2020</span>
+                        <span class="kt-invoice__text">{{
+                          new Date() | moment('dddd, MMMM Do YYYY, h:mma')
+                        }}</span>
                       </div>
                       <div class="kt-invoice__item">
-                        <span class="kt-invoice__subtitle">INVOICE NO.</span>
+                        <span class="kt-invoice__subtitle">HOSPITAL NO.</span>
                         <span class="kt-invoice__text">GS 000014</span>
                       </div>
                       <div class="kt-invoice__item">
                         <span class="kt-invoice__subtitle"
                           >PATIENT INFORMATION.</span
                         >
-                        <span class="kt-invoice__text"
-                          >Iris Watson, P.O. Box 283 8562 Fusce RD.<br />Fredrick
-                          Nebraska 20620</span
-                        >
+                        <span
+                          v-if="consultation.patient"
+                          class="kt-invoice__text"
+                          >{{ consultation.patient.firstname }}
+                          {{ consultation.patient.lastname }}<br />
+                        </span>
+                        <span
+                          v-if="consultation.dependant"
+                          class="kt-invoice__text"
+                          >{{ consultation.dependant.name }}
+                          <br />
+                        </span>
                       </div>
                     </div>
                   </div>
                 </div>
                 <h4 style="text-align: center">CHEMICAL AND PATHOLOGY</h4>
-                <!-- Urine -->
-                <div>
+                <!-- seucranalysis -->
+                <div v-if="seucranalysis">
                   <hr style="padding: 0 10px" />
                   <h5 class="kt-font-dark" style="text-align: center">
                     S/E/U/Cr
@@ -66,31 +76,28 @@
                         <tbody>
                           <tr>
                             <td>Na+</td>
-                            <td>80</td>
+                            <td>{{ seucranalysis.Na }}</td>
                           </tr>
-                          <tr>
-                            <td>PUS Cells</td>
-                            <td>120</td>
-                          </tr>
+
                           <tr>
                             <td>K+</td>
-                            <td>210</td>
+                            <td>{{ seucranalysis.K }}</td>
                           </tr>
                           <tr>
                             <td>Cl</td>
-                            <td>210</td>
+                            <td>{{ seucranalysis.Cl }}</td>
                           </tr>
                           <tr>
                             <td>HCO₃</td>
-                            <td>210</td>
+                            <td>{{ seucranalysis.HCO }}</td>
                           </tr>
                           <tr>
                             <td>Urea</td>
-                            <td>210</td>
+                            <td>{{ seucranalysis.urea }}</td>
                           </tr>
                           <tr>
                             <td>Cr</td>
-                            <td>210</td>
+                            <td>{{ seucranalysis.Cr }}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -98,8 +105,8 @@
                   </div>
                 </div>
 
-                <!-- Urinalysis -->
-                <div>
+                <!-- lipiprofile -->
+                <div v-if="lipiprofile">
                   <hr />
                   <h5 class="kt-font-dark" style="text-align: center">
                     Lipid Profile
@@ -116,23 +123,23 @@
                         <tbody>
                           <tr>
                             <td>Chol</td>
-                            <td>80</td>
+                            <td>{{ lipiprofile.chol }}</td>
                           </tr>
                           <tr>
                             <td>VLDL</td>
-                            <td>120</td>
+                            <td>{{ lipiprofile.vldl }}</td>
                           </tr>
                           <tr>
                             <td>HDL</td>
-                            <td>210</td>
+                            <td>{{ lipiprofile.hdl }}</td>
                           </tr>
                           <tr>
                             <td>TG</td>
-                            <td>210</td>
+                            <td>{{ lipiprofile.tg }}</td>
                           </tr>
                           <tr>
                             <td>LDL</td>
-                            <td>210</td>
+                            <td>{{ lipiprofile.ldl }}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -140,8 +147,8 @@
                   </div>
                 </div>
 
-                <!-- Stool Analysis -->
-                <div>
+                <!-- lft -->
+                <div v-if="lft">
                   <hr />
                   <h5 class="kt-font-dark" style="text-align: center">
                     LFT
@@ -158,31 +165,31 @@
                         <tbody>
                           <tr>
                             <td>AST</td>
-                            <td>80</td>
+                            <td>{{ lft.ast }}</td>
                           </tr>
                           <tr>
                             <td>ALT</td>
-                            <td>120</td>
+                            <td>{{ lft.alt }}</td>
                           </tr>
                           <tr>
                             <td>ALP</td>
-                            <td>210</td>
+                            <td>{{ lft.alp }}</td>
                           </tr>
                           <tr>
                             <td>TP</td>
-                            <td>210</td>
+                            <td>{{ lft.tp }}</td>
                           </tr>
                           <tr>
                             <td>ALB</td>
-                            <td>210</td>
+                            <td>{{ lft.alb }}</td>
                           </tr>
                           <tr>
                             <td>TB</td>
-                            <td>210</td>
+                            <td>{{ lft.tb }}</td>
                           </tr>
                           <tr>
                             <td>DB</td>
-                            <td>210</td>
+                            <td>{{ lft.db }}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -190,8 +197,8 @@
                   </div>
                 </div>
 
-                <!-- Culture/Sensitivity report -->
-                <div>
+                <!-- serum -->
+                <div v-if="serum">
                   <hr />
                   <h5 class="kt-font-dark" style="text-align: center">
                     Serum
@@ -208,35 +215,35 @@
                         <tbody>
                           <tr>
                             <td>Total Ca2+</td>
-                            <td>80</td>
+                            <td>{{ serum.totatlca2 }}</td>
                           </tr>
                           <tr>
                             <td>Uric Acid</td>
-                            <td>120</td>
+                            <td>{{ serum.uricacid }}</td>
                           </tr>
                           <tr>
                             <td>PO42+</td>
-                            <td>210</td>
+                            <td>{{ serum.po42 }}</td>
                           </tr>
                           <tr>
                             <td>Mg2+</td>
-                            <td>210</td>
+                            <td>{{ serum.mg2 }}</td>
                           </tr>
                           <tr>
                             <td>Iron</td>
-                            <td>210</td>
+                            <td>{{ serum.iron }}</td>
                           </tr>
                           <tr>
                             <td>TIBC</td>
-                            <td>210</td>
+                            <td>{{ serum.tibc }}</td>
                           </tr>
                           <tr>
                             <td>HBa/c</td>
-                            <td>210</td>
+                            <td>{{ serum.hbac }}</td>
                           </tr>
                           <tr>
                             <td>Ionized Ca2+</td>
-                            <td>210</td>
+                            <td>{{ serum.ionizedca2 }}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -244,8 +251,8 @@
                   </div>
                 </div>
 
-                <!-- Semen Analysis -->
-                <div>
+                <!-- analyte-->
+                <div v-if="analyte">
                   <hr />
                   <h5 class="kt-font-dark" style="text-align: center">
                     Analyte
@@ -262,31 +269,31 @@
                         <tbody>
                           <tr>
                             <td>Urine Protein</td>
-                            <td>80</td>
+                            <td>{{ analyte.urineprotein }}</td>
                           </tr>
                           <tr>
                             <td>CSF Glucose</td>
-                            <td>120</td>
+                            <td>{{ analyte.csfglucose }}</td>
                           </tr>
                           <tr>
                             <td>CSF Protein</td>
-                            <td>210</td>
+                            <td>{{ analyte.csfprotein }}</td>
                           </tr>
                           <tr>
                             <td>Ascitic Fluid Glucose</td>
-                            <td>210</td>
+                            <td>{{ analyte.asciticfluid }}</td>
                           </tr>
                           <tr>
                             <td>Ascitic Fluid Total Protein</td>
-                            <td>210</td>
+                            <td>{{ analyte.asciticfluidtotal }}</td>
                           </tr>
                           <tr>
                             <td>CSF Chloride</td>
-                            <td>210</td>
+                            <td>{{ analyte.csfchloride }}</td>
                           </tr>
                           <tr>
                             <td>24 hour Urine Protein</td>
-                            <td>210</td>
+                            <td>{{ analyte.thoururine }}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -294,8 +301,8 @@
                   </div>
                 </div>
 
-                <!--  Antibiotic Sensitivity -->
-                <div>
+                <!--  glucose -->
+                <div v-if="glucose">
                   <hr style="padding: 0 10px" />
                   <h5 class="kt-font-dark" style="text-align: center">
                     Glucose
@@ -314,15 +321,15 @@
                         <tbody>
                           <tr>
                             <td>Fasting Glu.</td>
-                            <td>80</td>
+                            <td>{{ glucose.fastingglu }}</td>
                           </tr>
                           <tr>
                             <td>Random Glu.</td>
-                            <td>120</td>
+                            <td>{{ glucose.randomglu }}</td>
                           </tr>
                           <tr>
                             <td>2hr pp</td>
-                            <td>210</td>
+                            <td>{{ glucose.hrpp }}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -330,8 +337,8 @@
                   </div>
                 </div>
 
-                <!-- Urinalysis -->
-                <div>
+                <!-- ogtt -->
+                <div v-if="ogtt">
                   <hr />
                   <h5 class="kt-font-dark" style="text-align: center">
                     OGTT
@@ -348,15 +355,15 @@
                         <tbody>
                           <tr>
                             <td>0min</td>
-                            <td colspan="7">80</td>
+                            <td colspan="7">{{ ogtt.zeromin }}</td>
                           </tr>
                           <tr>
                             <td>60min</td>
-                            <td colspan="7">120</td>
+                            <td colspan="7">{{ ogtt.sixtymin }}</td>
                           </tr>
                           <tr>
                             <td>120min</td>
-                            <td colspan="7">210</td>
+                            <td colspan="7">{{ ogtt.onetwentymin }}</td>
                           </tr>
                           <tr>
                             <th>Urine</th>
@@ -366,21 +373,21 @@
                           </tr>
                           <tr>
                             <td>Fasting</td>
-                            <td>210</td>
-                            <td>210</td>
-                            <td>210</td>
+                            <td>{{ ogtt.fasting }}</td>
+                            <td>{{ ogtt.fastingdegree1 }}</td>
+                            <td>{{ ogtt.fastingdegree2 }}</td>
                           </tr>
                           <tr>
                             <td>60 Mins</td>
-                            <td>210</td>
-                            <td>210</td>
-                            <td>210</td>
+                            <td>{{ ogtt.sixtymins }}</td>
+                            <td>{{ ogtt.sixtyminsdegree1 }}</td>
+                            <td>{{ ogtt.sixtyminsdegree2 }}</td>
                           </tr>
                           <tr>
                             <td>120 Mins</td>
-                            <td>210</td>
-                            <td>210</td>
-                            <td>210</td>
+                            <td>{{ ogtt.onetwentymins }}</td>
+                            <td>{{ ogtt.onetwentyminsdegree1 }}</td>
+                            <td>{{ ogtt.onetwentyminsdegree2 }}</td>
                           </tr>
                           <tr>
                             <th>Neonate Bilirubin</th>
@@ -395,23 +402,23 @@
                           </tr>
                           <tr>
                             <td>0 - 1 day</td>
-                            <td>210</td>
-                            <td>210</td>
+                            <td>{{ ogtt.zeroto1daytotal }}</td>
+                            <td>{{ ogtt.zeroto1daydirect }}</td>
                           </tr>
                           <tr>
                             <td>2 - 3 days</td>
-                            <td>210</td>
-                            <td>210</td>
+                            <td>{{ ogtt.twoto3daystotal }}</td>
+                            <td>{{ ogtt.twoto3daysdirect }}</td>
                           </tr>
                           <tr>
                             <td>3 - 5 days</td>
-                            <td>210</td>
-                            <td>210</td>
+                            <td>{{ ogtt.threeto5daystotal }}</td>
+                            <td>{{ ogtt.threeto5daysdirect }}</td>
                           </tr>
                           <tr>
                             <td>Above 5 days</td>
-                            <td>210</td>
-                            <td>210</td>
+                            <td>{{ ogtt.above5daystotal }}</td>
+                            <td>{{ ogtt.above5daysdirect }}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -434,7 +441,12 @@
                       <tbody>
                         <tr>
                           <td>----------------------------</td>
-                          <td>Jan 07, 2018</td>
+                          <td>
+                            {{
+                              consultation.labtestapproveddate
+                                | moment('DD/MM/YY, ha')
+                            }}
+                          </td>
                           <td style="font-size: 11px">
                             This test report is effective only with both
                             signature and specialized stamp. <br />
@@ -452,6 +464,17 @@
                     </table>
                   </div>
                 </div>
+                <div class="text-center" style="padding: 20px 0">
+                  <button
+                    v-if="!consultation.labtestapproved"
+                    @click="approveResult"
+                    class="btn btn-success btn-elevate mr-3"
+                  >
+                    Approve Result
+                  </button>
+
+                  <button class="btn btn-brand btn-elevate">Print</button>
+                </div>
               </div>
             </div>
           </div>
@@ -464,7 +487,69 @@
 </template>
 
 <script>
-export default {}
+import axios from '../../axios'
+export default {
+  name: 'ChemicalPathologyResult',
+  data() {
+    return {
+      seucranalysis: '',
+      lipiprofile: '',
+      lft: '',
+      serum: '',
+      analyte: '',
+      glucose: '',
+      ogtt: '',
+      consultation: '',
+      landingPageUrl: '/consultation/consultation/drugs/',
+      approveresulturl: '/laboratory/approve/labtest'
+    }
+  },
+  mounted() {
+    this.getChemicalPathologyResult()
+  },
+  methods: {
+    handleError(error) {
+      console.log(error.response)
+      this.$iziToast.error({
+        title: 'Error!',
+        message: error.response.data
+      })
+    },
+    getChemicalPathologyResult() {
+      axios
+        .get(this.landingPageUrl + this.$route.params.id)
+        .then(response => {
+          this.consultation = response.data.data
+          this.seucranalysis = response.data.data.seucranalysis
+          this.lipiprofile = response.data.data.lipiprofile
+          this.lft = response.data.data.lft
+          this.serum = response.data.data.serum
+          this.analyte = response.data.data.analyte
+          this.ogtt = response.data.data.ogtt
+        })
+        .catch(error => {
+          this.handleError(error)
+        })
+    },
+    approveResult() {
+      const data = {
+        consultationId: this.consultation._id
+      }
+      axios
+        .post(this.approveresulturl, data)
+        .then(response => {
+          this.consultation = response.data.data
+          this.$iziToast.success({
+            title: 'Success!',
+            message: response.data.message
+          })
+        })
+        .catch(error => {
+          this.handleError(error)
+        })
+    }
+  }
+}
 </script>
 
 <style scoped>

@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import { ChatManager, TokenProvider } from '@pusher/chatkit-client'
 
 Vue.use(Vuex)
 
@@ -8,14 +9,16 @@ export default new Vuex.Store({
   state: {
     status: '',
     token: localStorage.getItem('user-token') || '',
-    user: {}
+    user: null,
+    isLoggedInUser: null
   },
   getters: {
     isLoggedIn: state => !!state.token,
     authStatus: state => state.status,
     getUser: state => {
       return state.user
-    }
+    },
+    getPushKitUser: state => state.isLoggedInUser
   },
   mutations: {
     auth_request(state) {
@@ -25,6 +28,10 @@ export default new Vuex.Store({
       state.status = 'success'
       state.token = token
       state.user = staff
+    },
+    pushkit_success(state, pushkitUser) {
+      state.status = 'success'
+      state.isLoggedInUser = pushkitUser
     },
     auth_error(state) {
       state.status = 'error'
@@ -40,21 +47,45 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         commit('auth_request')
         axios({
-          url: `${process.env.VUE_APP_BACKEND_URL}staff/login`,
+          url: `/staff/login`,
           data: user,
           method: 'POST'
         })
           .then(response => {
-            console.log(response)
             const token = response.data.token
-            const staff = response.data.data
+            const user = response.data.data
             localStorage.setItem('user-token', token)
+            const chatManager = new ChatManager({
+              instanceLocator: process.env.VUE_APP_INSTANCE_LOCATOR,
+              userId: user._id,
+              tokenProvider: new TokenProvider({
+                url: process.env.VUE_APP_TOKEN_PROVIDER
+              }),
+              connectionTimeout: 20000
+            })
+            chatManager
+              .connect()
+              .then(currentUser => {
+                console.log('Successful connection', currentUser)
+
+                currentUser.subscribeToRoomMultipart({
+                  roomId: currentUser.rooms[0].id,
+                  hooks: {
+                    onMessage: message => {
+                      console.log('Received message:', message)
+                    }
+                  }
+                })
+                commit('pushkit_success', currentUser)
+              })
+              .catch(err => {
+                console.log('Error on connection', err)
+              })
             axios.defaults.headers.common['x-auth-token'] = token
-            commit('auth_success', token, staff)
+            commit('auth_success', token, user)
             resolve(response)
           })
           .catch(err => {
-            console.log(err)
             commit('auth_error')
             localStorage.removeItem('user-token')
             reject(err)

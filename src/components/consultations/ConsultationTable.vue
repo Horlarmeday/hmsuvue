@@ -198,8 +198,13 @@
                   </p>
                 </td>
                 <td v-else>No Investigations</td>
-                <td>
-                  <router-link to="#">View Result</router-link>
+                <td v-if="consultation.imagingfinish">
+                  <router-link :to="consultation.scantestresulturl"
+                    >View Result</router-link
+                  >
+                </td>
+                <td v-else>
+                  <p>No Result Yet</p>
                 </td>
 
                 <td v-if="consultation.drugs.length > 0">

@@ -270,7 +270,14 @@
                       {{ index + 1 }}
                     </td>
                     <td>
-                      <router-link :to="consultation.url">
+                      <router-link
+                        v-if="consultation.patient"
+                        :to="consultation.url"
+                      >
+                        {{ consultation.patient.firstname }}
+                        {{ consultation.patient.lastname }}
+                      </router-link>
+                      <router-link v-else to="#">
                         {{ consultation.patient.firstname }}
                         {{ consultation.patient.lastname }}
                       </router-link>
@@ -324,6 +331,7 @@
                       <button
                         :disabled="!consultation.imagingpaid"
                         class="btn btn-success"
+                        @click="doneImagingResult(consultation)"
                       >
                         Done
                       </button>
@@ -386,6 +394,7 @@ export default {
       loading: false,
 
       landingPageUrl: '/dashboard/imaging',
+      finishimagingtesturl: '/imaging/finish/imaging/',
       currentPage: 1,
       pageCount: '',
       pageSize: '',
@@ -424,10 +433,29 @@ export default {
           let consultations = this.consultations
 
           for (let i = 0; i < consultations.length; i++) {
-            consultations[i].url = '/patient/' + consultations[i].patient._id
+            if (consultations[i].patient) {
+              consultations[i].url = '/patient/' + consultations[i].patient._id
+            }
             consultations[i].scanurl =
               '/ultrasound-scan-result/' + consultations[i]._id
           }
+        })
+        .catch(error => {
+          this.handleError(error)
+        })
+    },
+    doneImagingResult(consultation) {
+      const data = {
+        consultationId: consultation._id
+      }
+      axios
+        .post(this.finishimagingtesturl, data)
+        .then(response => {
+          this.consultations = response.data.data
+          this.$iziToast.success({
+            title: 'Success!',
+            message: response.data.message
+          })
         })
         .catch(error => {
           this.handleError(error)

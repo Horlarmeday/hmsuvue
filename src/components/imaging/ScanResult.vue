@@ -27,7 +27,12 @@
                       <th>Result</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody
+                    v-if="
+                      patientId.gender === 'Male' ||
+                        dependantId.gender === 'Male'
+                    "
+                  >
                     <tr>
                       <td>1</td>
                       <td>Liver</td>
@@ -129,6 +134,140 @@
                     </tr>
                     <tr>
                       <td>10</td>
+                      <td>Impression</td>
+                      <td>
+                        <input
+                          type="text"
+                          v-model="abdominopelvic.impression"
+                          class="form-control"
+                        />
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tbody v-else>
+                    <tr>
+                      <td>1</td>
+                      <td>Liver</td>
+                      <td>
+                        <input
+                          type="text"
+                          v-model="abdominopelvic.liver"
+                          class="form-control"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>2</td>
+                      <td>Gall Bladder</td>
+                      <td>
+                        <input
+                          type="text"
+                          v-model="abdominopelvic.gallbladder"
+                          class="form-control"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>3</td>
+                      <td>Kidneys/Adrenals</td>
+                      <td>
+                        <input
+                          type="text"
+                          v-model="abdominopelvic.kidneys"
+                          class="form-control"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>4</td>
+                      <td>Spleen</td>
+                      <td>
+                        <input
+                          type="text"
+                          v-model="abdominopelvic.spleen"
+                          class="form-control"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>5</td>
+                      <td>Stomach/Bowels</td>
+                      <td>
+                        <input
+                          type="text"
+                          v-model="abdominopelvic.stomach"
+                          class="form-control"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>6</td>
+                      <td>Uterus</td>
+                      <td>
+                        <input
+                          type="text"
+                          v-model="abdominopelvic.uterus"
+                          class="form-control"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>7</td>
+                      <td>Ovaries</td>
+                      <td>
+                        <input
+                          type="text"
+                          v-model="abdominopelvic.ovaries"
+                          class="form-control"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>8</td>
+                      <td>Adnexa</td>
+                      <td>
+                        <input
+                          type="text"
+                          v-model="abdominopelvic.adnexa"
+                          class="form-control"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>9</td>
+                      <td>Urinary Bladder</td>
+                      <td>
+                        <input
+                          type="text"
+                          v-model="abdominopelvic.urinarybladder"
+                          class="form-control"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>10</td>
+                      <td>POD</td>
+                      <td>
+                        <input
+                          type="text"
+                          v-model="abdominopelvic.pod"
+                          class="form-control"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>11</td>
+                      <td>Cervix</td>
+                      <td>
+                        <input
+                          type="text"
+                          v-model="abdominopelvic.cervix"
+                          class="form-control"
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>12</td>
                       <td>Impression</td>
                       <td>
                         <input
@@ -382,9 +521,66 @@
               </div>
             </b-card-text></b-tab
           >
-          <b-tab class="mb-3" title="Upload Scan"
-            ><b-card-text>Tab contents 3</b-card-text></b-tab
-          >
+          <b-tab class="mb-3" title="Upload Scan">
+            <b-card-text>
+              <div class="container">
+                <form
+                  enctype="multipart/form-data"
+                  novalidate
+                  v-if="isInitial || isSaving"
+                >
+                  <h3>Upload Images</h3>
+                  <div class="dropbox">
+                    <input
+                      type="file"
+                      multiple
+                      :name="uploadFieldName"
+                      :disabled="isSaving"
+                      @change="
+                        filesChange($event.target.name, $event.target.files)
+                        fileCount = $event.target.files.length
+                      "
+                      accept="image/*"
+                      class="input-file"
+                    />
+                    <p v-if="isInitial">
+                      Drag your file(s) here to begin <br />
+                      or click to browse
+                    </p>
+                    <p v-if="isSaving">Uploading {{ fileCount }}</p>
+                  </div>
+                </form>
+                <!--SUCCESS-->
+                <div v-if="isSuccess">
+                  <h2>
+                    Uploaded {{ uploadedFiles.length }} file(s) successfully.
+                  </h2>
+                  <p>
+                    <a href="javascript:void(0)" @click="reset()"
+                      >Upload again</a
+                    >
+                  </p>
+                  <ul class="list-unstyled">
+                    <li v-for="item in uploadedFiles" :key="item">
+                      <img
+                        :src="item.url"
+                        class="img-responsive img-thumbnail"
+                        :alt="item.originalName"
+                      />
+                    </li>
+                  </ul>
+                </div>
+                <!--FAILED-->
+                <div v-if="isFailed">
+                  <h2>Uploaded failed.</h2>
+                  <p>
+                    <a href="javascript:void(0)" @click="reset()">Try again</a>
+                  </p>
+                  <pre>{{ uploadError }}</pre>
+                </div>
+              </div>
+            </b-card-text>
+          </b-tab>
           <b-tab title="Obstetric Scan"
             ><b-card-text>
               <div class="dt-responsive table-responsive">
@@ -653,10 +849,20 @@
 <script>
 import axios from '../../axios'
 import { Datetime } from 'vue-datetime'
+import { BCardText } from 'bootstrap-vue'
+
+const STATUS_INITIAL = 0,
+  STATUS_SAVING = 1,
+  STATUS_SUCCESS = 2,
+  STATUS_FAILED = 3
 export default {
   name: 'ultrasound',
   components: {
-    datetime: Datetime
+    datetime: Datetime,
+    'b-card-text': BCardText
+  },
+  props: {
+    title: String
   },
   data() {
     return {
@@ -720,6 +926,9 @@ export default {
         cervix: '',
         impression: ''
       },
+      patientId: {},
+      dependantId: {},
+      consultation: '',
       abdominoloading: false,
       transvaginalloading: false,
       pelvicloading: false,
@@ -729,18 +938,49 @@ export default {
       updatetransvaginal: '/test/ultrasound/transvaginal/',
       updatepelvic: '/test/ultrasound/pelvic/',
       updateobstetric: '/test/ultrasound/obstetric/',
-      updateupload: '/test/ultrasound/upload/'
+      updateupload: '/test/ultrasound/upload/',
+
+      uploadedFiles: [],
+      uploadError: null,
+      currentStatus: null,
+      uploadFieldName: 'photos',
+      uploadscanphotos: '/imaging/upload/scan/photo/'
     }
   },
+  mounted() {
+    this.getPage()
+    this.reset()
+  },
   methods: {
+    handleError(error) {
+      console.log(error.response)
+      this.$iziToast.error({
+        title: 'Error!',
+        message: error.response.data
+      })
+    },
     getPage() {
       axios
         .get(this.landingPageUrl + this.$route.params.id)
         .then(response => {
-          this.abdominopelvic = response.data.data.abdominopelvic
-          this.transvaginal = response.data.data.transvaginal
-          this.pelvic = response.data.data.pelvic
-          this.obstetric = response.data.data.obstetric
+          if (response.data.data.abdominopelvic) {
+            this.abdominopelvic = response.data.data.abdominopelvic
+          }
+          if (response.data.data.transvaginal) {
+            this.transvaginal = response.data.data.transvaginal
+          }
+          if (response.data.data.pelvic) {
+            this.pelvic = response.data.data.pelvic
+          }
+          if (response.data.data.obstetric) {
+            this.obstetric = response.data.data.obstetric
+          }
+          if (response.data.data.patientId) {
+            this.patientId = response.data.data.patientId
+          }
+          if (response.data.data.dependantId) {
+            this.dependantId = response.data.data.dependantId
+          }
         })
         .catch(error => {
           this.handleError(error)
@@ -813,13 +1053,99 @@ export default {
           this.obstetricloading = false
           this.handleError(error)
         })
+    },
+    reset() {
+      // reset form to initial state
+      this.currentStatus = STATUS_INITIAL
+      this.uploadedFiles = []
+      this.uploadError = null
+    },
+    upload(formData) {
+      return (
+        axios
+          .post(this.uploadscanphotos + this.$route.params.id, formData)
+          // // get data
+          // .then(x => x.data)
+          // add url field
+          .then(x => {
+            this.uploadedFiles = x.data.data.scanPhoto
+          })
+      )
+    },
+    save(formData) {
+      // upload data to the server
+      this.currentStatus = STATUS_SAVING
+      this.upload(formData)
+        // .then(wait(1500)) // DEV ONLY: wait for 1.5s
+        .then(x => {
+          // this.uploadedFiles = [].concat(x)
+          this.currentStatus = STATUS_SUCCESS
+          this.$iziToast.success({
+            title: 'Success!',
+            message: x.data.message
+          })
+        })
+        .catch(err => {
+          this.uploadError = this.handleError(err)
+          this.currentStatus = STATUS_FAILED
+        })
+    },
+    filesChange(fieldName, fileList) {
+      // handle file changes
+      const formData = new FormData()
+      if (!fileList.length) return
+      // append the files to FormData
+      Array.from(Array(fileList.length).keys()).map(x => {
+        formData.append(fieldName, fileList[x], fileList[x].name)
+      })
+      // save it
+      this.save(formData)
+    }
+  },
+  computed: {
+    isInitial() {
+      return this.currentStatus === STATUS_INITIAL
+    },
+    isSaving() {
+      return this.currentStatus === STATUS_SAVING
+    },
+    isSuccess() {
+      return this.currentStatus === STATUS_SUCCESS
+    },
+    isFailed() {
+      return this.currentStatus === STATUS_FAILED
     }
   }
 }
 </script>
 
 <style scoped>
-.nav-item {
-  margin-bottom: 15px;
+form .dropbox {
+  outline: 2px dashed grey; /* the dash box */
+  outline-offset: -10px;
+  background: lightcyan;
+  color: dimgray;
+  padding: 10px 10px;
+  min-height: 200px; /* minimum height */
+  position: relative;
+  cursor: pointer;
+}
+
+form .input-file {
+  opacity: 0; /* invisible but it's there! */
+  width: 100%;
+  height: 250px;
+  position: absolute;
+  cursor: pointer;
+}
+
+form .dropbox:hover {
+  background: lightblue; /* when mouse over to the drop zone, change color */
+}
+
+form .dropbox p {
+  font-size: 1.2em;
+  text-align: center;
+  padding: 50px 0;
 }
 </style>

@@ -74,311 +74,43 @@
                 data-ktmenu-dropdown-timeout="500"
               >
                 <div class="kt-widget__items">
-                  <div class="kt-widget__item">
-                    <span class="kt-userpic kt-userpic--circle">
+                  <div
+                    v-for="staff in staffs"
+                    :key="staff._id"
+                    class="kt-widget__item"
+                  >
+                    <span
+                      v-if="staff.photo"
+                      class="kt-userpic kt-userpic--circle"
+                    >
+                      <img :src="staff.url" alt="staff Image" />
+                    </span>
+                    <span v-else class="kt-userpic kt-userpic--circle">
                       <img src="../../assets/images/100_9.jpg" alt="image" />
                     </span>
                     <div class="kt-widget__info">
                       <div class="kt-widget__section">
-                        <a href="#" class="kt-widget__username">Matt Pears</a>
+                        <a href="#" class="kt-widget__username"
+                          >{{ staff.firstname }} {{ staff.lastname }}</a
+                        >
                         <span
+                          v-if="staff._id === user._id"
                           class="kt-badge kt-badge--success kt-badge--dot"
+                        ></span>
+                        <span
+                          v-else
+                          class="kt-badge kt-badge--danger kt-badge--dot"
                         ></span>
                       </div>
                       <span class="kt-widget__desc">
-                        Head of Development
+                        {{ staff.role }}
                       </span>
                     </div>
                     <div class="kt-widget__action">
-                      <span class="kt-widget__date">36 Mines</span>
+                      <span class="kt-widget__date">36 Mins</span>
                       <span class="kt-badge kt-badge--success kt-font-bold"
                         >7</span
                       >
-                    </div>
-                  </div>
-                  <div class="kt-widget__item">
-                    <span class="kt-userpic kt-userpic--circle">
-                      <img src="../../assets/images/100_11.jpg" alt="image" />
-                    </span>
-                    <div class="kt-widget__info">
-                      <div class="kt-widget__section">
-                        <a href="#" class="kt-widget__username"
-                          >Charlie Stone</a
-                        >
-                        <span
-                          class="kt-badge kt-badge--success kt-badge--dot"
-                        ></span>
-                      </div>
-                      <span class="kt-widget__desc">
-                        Art Director
-                      </span>
-                    </div>
-                    <div class="kt-widget__action">
-                      <span class="kt-widget__date">5 Hours</span>
-                      <span class="kt-badge kt-badge--success kt-font-bold"
-                        >2</span
-                      >
-                    </div>
-                  </div>
-                  <div class="kt-widget__item">
-                    <span class="kt-userpic kt-userpic--circle">
-                      <img src="../../assets/images/100_5.jpg" alt="image" />
-                    </span>
-                    <div class="kt-widget__info">
-                      <div class="kt-widget__section">
-                        <a href="#" class="kt-widget__username">Jason Muller</a>
-                        <span
-                          class="kt-badge kt-badge--success kt-badge--dot"
-                        ></span>
-                      </div>
-                      <span class="kt-widget__desc">
-                        Python Developer
-                      </span>
-                    </div>
-                    <div class="kt-widget__action">
-                      <span class="kt-widget__date">2 Days</span>
-                    </div>
-                  </div>
-                  <div class="kt-widget__item">
-                    <span class="kt-userpic kt-userpic--circle">
-                      <img src="../../assets/images/100_2.jpg" alt="image" />
-                    </span>
-                    <div class="kt-widget__info">
-                      <div class="kt-widget__section">
-                        <a href="#" class="kt-widget__username">Teresa Fox</a>
-                      </div>
-                      <span class="kt-widget__desc">
-                        PR Executive
-                      </span>
-                    </div>
-                    <div class="kt-widget__action">
-                      <span class="kt-widget__date">4 Days</span>
-                    </div>
-                  </div>
-                  <div class="kt-widget__item">
-                    <span class="kt-userpic kt-userpic--circle">
-                      <img src="../../assets/images/100_1.jpg" alt="image" />
-                    </span>
-                    <div class="kt-widget__info">
-                      <div class="kt-widget__section">
-                        <a href="#" class="kt-widget__username"
-                          >Giannis Nelson</a
-                        >
-                      </div>
-                      <span class="kt-widget__desc">
-                        Lead Cowboy
-                      </span>
-                    </div>
-                    <div class="kt-widget__action">
-                      <span class="kt-widget__date">1 Week</span>
-                    </div>
-                  </div>
-                  <div class="kt-widget__item">
-                    <span class="kt-userpic kt-userpic--circle">
-                      <img src="../../assets/images/100_4.jpg" alt="image" />
-                    </span>
-                    <div class="kt-widget__info">
-                      <div class="kt-widget__section">
-                        <a href="#" class="kt-widget__username">Lisa Moss</a>
-                      </div>
-                      <span class="kt-widget__desc">
-                        QA Manager
-                      </span>
-                    </div>
-                    <div class="kt-widget__action">
-                      <span class="kt-widget__date">3 Week</span>
-                    </div>
-                  </div>
-                  <div class="kt-widget__item">
-                    <span class="kt-userpic kt-userpic--circle">
-                      <img src="../../assets/images/100_13.jpg" alt="image" />
-                    </span>
-                    <div class="kt-widget__info">
-                      <div class="kt-widget__section">
-                        <a href="#" class="kt-widget__username">Carles Puyol</a>
-                      </div>
-                      <span class="kt-widget__desc">
-                        Defence Officer
-                      </span>
-                    </div>
-                    <div class="kt-widget__action">
-                      <span class="kt-widget__date">2 Month</span>
-                    </div>
-                  </div>
-                  <div class="kt-widget__item">
-                    <span class="kt-userpic kt-userpic--circle">
-                      <img src="../../assets/images/100_14.jpg" alt="image" />
-                    </span>
-                    <div class="kt-widget__info">
-                      <div class="kt-widget__section">
-                        <a href="#" class="kt-widget__username">Luka Doncic</a>
-                      </div>
-                      <span class="kt-widget__desc">
-                        Dose whatever he wants
-                      </span>
-                    </div>
-                    <div class="kt-widget__action">
-                      <span class="kt-widget__date">1 Year</span>
-                    </div>
-                  </div>
-                  <div class="kt-widget__item">
-                    <span class="kt-userpic kt-userpic--circle">
-                      <img src="../../assets/images/100_14.jpg" alt="image" />
-                    </span>
-                    <div class="kt-widget__info">
-                      <div class="kt-widget__section">
-                        <a href="#" class="kt-widget__username">Luka Doncic</a>
-                      </div>
-                      <span class="kt-widget__desc">
-                        Dose whatever he wants
-                      </span>
-                    </div>
-                    <div class="kt-widget__action">
-                      <span class="kt-widget__date">1 Year</span>
-                    </div>
-                  </div>
-                  <div class="kt-widget__item">
-                    <span class="kt-userpic kt-userpic--circle">
-                      <img src="../../assets/images/100_14.jpg" alt="image" />
-                    </span>
-                    <div class="kt-widget__info">
-                      <div class="kt-widget__section">
-                        <a href="#" class="kt-widget__username">Luka Doncic</a>
-                      </div>
-                      <span class="kt-widget__desc">
-                        Dose whatever he wants
-                      </span>
-                    </div>
-                    <div class="kt-widget__action">
-                      <span class="kt-widget__date">1 Year</span>
-                    </div>
-                  </div>
-                  <div class="kt-widget__item">
-                    <span class="kt-userpic kt-userpic--circle">
-                      <img src="../../assets/images/100_14.jpg" alt="image" />
-                    </span>
-                    <div class="kt-widget__info">
-                      <div class="kt-widget__section">
-                        <a href="#" class="kt-widget__username">Luka Doncic</a>
-                      </div>
-                      <span class="kt-widget__desc">
-                        Dose whatever he wants
-                      </span>
-                    </div>
-                    <div class="kt-widget__action">
-                      <span class="kt-widget__date">1 Year</span>
-                    </div>
-                  </div>
-                  <div class="kt-widget__item">
-                    <span class="kt-userpic kt-userpic--circle">
-                      <img src="../../assets/images/100_14.jpg" alt="image" />
-                    </span>
-                    <div class="kt-widget__info">
-                      <div class="kt-widget__section">
-                        <a href="#" class="kt-widget__username">Luka Doncic</a>
-                      </div>
-                      <span class="kt-widget__desc">
-                        Dose whatever he wants
-                      </span>
-                    </div>
-                    <div class="kt-widget__action">
-                      <span class="kt-widget__date">1 Year</span>
-                    </div>
-                  </div>
-                  <div class="kt-widget__item">
-                    <span class="kt-userpic kt-userpic--circle">
-                      <img src="../../assets/images/100_14.jpg" alt="image" />
-                    </span>
-                    <div class="kt-widget__info">
-                      <div class="kt-widget__section">
-                        <a href="#" class="kt-widget__username">Luka Doncic</a>
-                      </div>
-                      <span class="kt-widget__desc">
-                        Dose whatever he wants
-                      </span>
-                    </div>
-                    <div class="kt-widget__action">
-                      <span class="kt-widget__date">1 Year</span>
-                    </div>
-                  </div>
-                  <div class="kt-widget__item">
-                    <span class="kt-userpic kt-userpic--circle">
-                      <img src="../../assets/images/100_14.jpg" alt="image" />
-                    </span>
-                    <div class="kt-widget__info">
-                      <div class="kt-widget__section">
-                        <a href="#" class="kt-widget__username">Luka Doncic</a>
-                      </div>
-                      <span class="kt-widget__desc">
-                        Dose whatever he wants
-                      </span>
-                    </div>
-                    <div class="kt-widget__action">
-                      <span class="kt-widget__date">1 Year</span>
-                    </div>
-                  </div>
-                  <div class="kt-widget__item">
-                    <span class="kt-userpic kt-userpic--circle">
-                      <img src="../../assets/images/100_14.jpg" alt="image" />
-                    </span>
-                    <div class="kt-widget__info">
-                      <div class="kt-widget__section">
-                        <a href="#" class="kt-widget__username">Luka Doncic</a>
-                      </div>
-                      <span class="kt-widget__desc">
-                        Dose whatever he wants
-                      </span>
-                    </div>
-                    <div class="kt-widget__action">
-                      <span class="kt-widget__date">1 Year</span>
-                    </div>
-                  </div>
-                  <div class="kt-widget__item">
-                    <span class="kt-userpic kt-userpic--circle">
-                      <img src="../../assets/images/100_14.jpg" alt="image" />
-                    </span>
-                    <div class="kt-widget__info">
-                      <div class="kt-widget__section">
-                        <a href="#" class="kt-widget__username">Luka Doncic</a>
-                      </div>
-                      <span class="kt-widget__desc">
-                        Dose whatever he wants
-                      </span>
-                    </div>
-                    <div class="kt-widget__action">
-                      <span class="kt-widget__date">1 Year</span>
-                    </div>
-                  </div>
-                  <div class="kt-widget__item">
-                    <span class="kt-userpic kt-userpic--circle">
-                      <img src="../../assets/images/100_14.jpg" alt="image" />
-                    </span>
-                    <div class="kt-widget__info">
-                      <div class="kt-widget__section">
-                        <a href="#" class="kt-widget__username">Luka Doncic</a>
-                      </div>
-                      <span class="kt-widget__desc">
-                        Dose whatever he wants
-                      </span>
-                    </div>
-                    <div class="kt-widget__action">
-                      <span class="kt-widget__date">1 Year</span>
-                    </div>
-                  </div>
-                  <div class="kt-widget__item">
-                    <span class="kt-userpic kt-userpic--circle">
-                      <img src="../../assets/images/100_14.jpg" alt="image" />
-                    </span>
-                    <div class="kt-widget__info">
-                      <div class="kt-widget__section">
-                        <a href="#" class="kt-widget__username">Luka Doncic</a>
-                      </div>
-                      <span class="kt-widget__desc">
-                        Dose whatever he wants
-                      </span>
-                    </div>
-                    <div class="kt-widget__action">
-                      <span class="kt-widget__date">1 Year</span>
                     </div>
                   </div>
                 </div>
@@ -511,126 +243,41 @@
                 class="kt-scroll kt-scroll--pull"
               >
                 <div class="kt-chat__messages">
-                  <div class="kt-chat__message">
+                  <div
+                    v-for="message in messages"
+                    :key="message.user._id"
+                    class="kt-chat__message"
+                    :class="[
+                      message.user._id === currentUser._id
+                        ? 'kt-chat__message--right'
+                        : ''
+                    ]"
+                  >
                     <div class="kt-chat__user">
-                      <span
-                        class="kt-userpic kt-userpic--circle kt-userpic--sm"
+                      <a
+                        v-if="message.user._id === currentUser._id"
+                        href="#"
+                        class="kt-chat__username"
                       >
-                        <img src="../../assets/images/100_1.jpg" alt="image" />
-                      </span>
-                      <a href="#" class="kt-chat__username">Jason Muller</a>
-                      <span class="kt-chat__datetime">2 Hours</span>
-                    </div>
-                    <div class="kt-chat__text kt-bg-light-success">
-                      How likely are you to recommend our company <br />to your
-                      friends and family?
-                    </div>
-                  </div>
-                  <div class="kt-chat__message kt-chat__message--right">
-                    <div class="kt-chat__user">
-                      <span class="kt-chat__datetime">30 Seconds</span>
-                      <a href="#" class="kt-chat__username">You</a>
-                      <span
-                        class="kt-userpic kt-userpic--circle kt-userpic--sm"
+                        You</a
                       >
-                        <img src="../../assets/images/100_9.jpg" alt="image" />
-                      </span>
-                    </div>
-                    <div class="kt-chat__text kt-bg-light-brand">
-                      Hey there, we’re just writing to let you know <br />that
-                      you’ve been subscribed to a repository on GitHub.
-                    </div>
-                  </div>
-                  <div class="kt-chat__message">
-                    <div class="kt-chat__user">
-                      <span
-                        class="kt-userpic kt-userpic--circle kt-userpic--sm"
+                      <a v-else href="#" class="kt-chat__username"
+                        >{{ message.user.firstname }}
+                        {{ message.user.lastname }}</a
                       >
-                        <img src="../../assets/images/100_1.jpg" alt="image" />
-                      </span>
-                      <a href="#" class="kt-chat__username">Jason Muller</a>
-                      <span class="kt-chat__datetime">30 Seconds</span>
+                      <span class="kt-chat__datetime">{{
+                        new Date() | moment('from', 'now')
+                      }}</span>
                     </div>
-                    <div class="kt-chat__text kt-bg-light-success">
-                      Ok, Understood!
-                    </div>
-                  </div>
-                  <div class="kt-chat__message kt-chat__message--right">
-                    <div class="kt-chat__user">
-                      <span class="kt-chat__datetime">Just Now</span>
-                      <a href="#" class="kt-chat__username">You</a>
-                      <span
-                        class="kt-userpic kt-userpic--circle kt-userpic--sm"
-                      >
-                        <img src="../../assets/images/100_9.jpg" alt="image" />
-                      </span>
-                    </div>
-                    <div class="kt-chat__text kt-bg-light-brand">
-                      You’ll receive notifications for all issues, pull
-                      requests!
-                    </div>
-                  </div>
-                  <div class="kt-chat__message">
-                    <div class="kt-chat__user">
-                      <span
-                        class="kt-userpic kt-userpic--circle kt-userpic--sm"
-                      >
-                        <img src="../../assets/images/100_1.jpg" alt="image" />
-                      </span>
-                      <a href="#" class="kt-chat__username">Jason Muller</a>
-                      <span class="kt-chat__datetime">2 Hours</span>
-                    </div>
-                    <div class="kt-chat__text kt-bg-light-success">
-                      You were automatically
-                      <b class="kt-font-brand">subscribed</b> <br />because
-                      you’ve been given access to the repository
-                    </div>
-                  </div>
-                  <div class="kt-chat__message kt-chat__message--right">
-                    <div class="kt-chat__user">
-                      <span class="kt-chat__datetime">30 Seconds</span>
-                      <a href="#" class="kt-chat__username">You</a>
-                      <span
-                        class="kt-userpic kt-userpic--circle kt-userpic--sm"
-                      >
-                        <img src="../../assets/images/100_9.jpg" alt="image" />
-                      </span>
-                    </div>
-                    <div class="kt-chat__text kt-bg-light-brand">
-                      You can unwatch this repository immediately <br />by
-                      clicking here:
-                      <a href="#" class="kt-font-bold kt-link"
-                        >https://github.com</a
-                      >
-                    </div>
-                  </div>
-                  <div class="kt-chat__message">
-                    <div class="kt-chat__user">
-                      <span
-                        class="kt-userpic kt-userpic--circle kt-userpic--sm"
-                      >
-                        <img src="../../assets/images/100_1.jpg" alt="image" />
-                      </span>
-                      <a href="#" class="kt-chat__username">Jason Muller</a>
-                      <span class="kt-chat__datetime">30 Seconds</span>
-                    </div>
-                    <div class="kt-chat__text kt-bg-light-success">
-                      Discover what students who viewed Learn Figma - UI/UX
-                      Design <br />Essential Training also viewed
-                    </div>
-                  </div>
-                  <div class="kt-chat__message kt-chat__message--right">
-                    <div class="kt-chat__user">
-                      <span class="kt-chat__datetime">Just Now</span>
-                      <a href="#" class="kt-chat__username">You</a>
-                      <span
-                        class="kt-userpic kt-userpic--circle kt-userpic--sm"
-                      >
-                        <img src="../../assets/images/100_9.jpg" alt="image" />
-                      </span>
-                    </div>
-                    <div class="kt-chat__text kt-bg-light-brand">
-                      Most purchased Business courses during this sale!
+                    <div
+                      class="kt-chat__text"
+                      :class="
+                        message.user._id === currentUser._id
+                          ? 'kt-bg-light-success'
+                          : 'kt-bg-light-brand'
+                      "
+                    >
+                      {{ message.message }}
                     </div>
                   </div>
                 </div>
@@ -640,6 +287,8 @@
               <div class="kt-chat__input">
                 <div class="kt-chat__editor">
                   <textarea
+                    @keyup="onKeyUp"
+                    v-model="message"
                     style="height: 50px"
                     placeholder="Type here..."
                   ></textarea>
@@ -652,6 +301,7 @@
                   </div>
                   <div class="kt_chat__actions">
                     <button
+                      @click="sendMessage"
                       type="button"
                       class="btn btn-brand btn-md btn-upper btn-bold kt-chat__reply"
                     >
@@ -676,11 +326,28 @@
 
 <script>
 import PerfectScrollbar from 'perfect-scrollbar'
+import { mapState } from 'vuex'
+// import axios from '../../axios'
 export default {
   name: 'chat',
+  data() {
+    return {
+      user: '',
+      message: '',
+      count: 0,
+      currentUser: '',
+      staffs: [],
+      messages: [],
+      activeContact: '',
+      staffsUrl: '/staff/staffs',
+      imageurl: 'http://localhost:3000/static/uploads/'
+    }
+  },
   mounted() {
     this.scrollbar()
     this.scroll()
+    this.getCurrentUser()
+    this.getStaffs()
   },
   methods: {
     scrollbar() {
@@ -700,7 +367,56 @@ export default {
         minScrollbarLength: 10
       })
       scroll.update()
+    },
+    sendMessage() {
+      // this will emit a socket event of type `function`
+      // this.$socket.emit('message', {
+      //   user: this.currentUser,
+      //   message: this.message
+      // })
+      // this.message = '' // empty the message bar
+    },
+    onKeyUp(event) {
+      if (event.keyCode === 13) {
+        this.sendMessage()
+      }
+    },
+    getCurrentUser() {
+      let token = localStorage.getItem('user-token')
+      const parseJwt = token => {
+        try {
+          return JSON.parse(atob(token.split('.')[1]))
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      const currentUser = parseJwt(token)
+      this.currentUser = currentUser
+      // this.$socket.emit('connected', this.currentUser)
+    },
+    getStaffs() {
+      const user = this.isLoggedInUser
+      this.staffs = user.rooms.map(user => {
+        const users = user.userStore.users
+        return users
+      })
+      // axios
+      //   .get(this.staffsUrl)
+      //   .then(response => {
+      //     this.staffs = response.data.data
+
+      //     let staffs = this.staffs
+      //     for (let i = 0; i < staffs.length; i++) {
+      //       staffs[i].url = this.imageurl + staffs[i].photo
+      //     }
+      //   })
+      //   .catch(error => {
+      //     this.handleError(error)
+      //   })
     }
+  },
+  computed: {
+    ...mapState(['isLoggedInUser'])
   }
 }
 </script>

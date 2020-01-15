@@ -743,7 +743,7 @@ const routes = [
     }
   },
   {
-    path: '/haematology-test-result',
+    path: '/haematology-test-result/:id',
     name: 'haematologytestresult',
     component: () => import('../views/app/laboratory/HaematologyResult.vue'),
     meta: {
@@ -759,7 +759,7 @@ const routes = [
     }
   },
   {
-    path: '/chemical-pathology-test-result',
+    path: '/chemical-pathology-test-result/:id',
     name: 'chemicaltestpathologyresult',
     component: () =>
       import('../views/app/laboratory/ChemicalPathologyResult.vue'),
@@ -772,6 +772,14 @@ const routes = [
     path: '/ultrasound-scan-result/:id',
     name: 'ultrasound',
     component: () => import('../views/app/imaging/UltraScan.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/ultrasound-scan-test-result/:id',
+    name: 'scantestresult',
+    component: () => import('../views/app/imaging/ScanTestResult.vue'),
     meta: {
       requiresAuth: true
     }

@@ -134,6 +134,7 @@
                 <th>Diagnosis</th>
                 <th>Imaging Test</th>
                 <th>Imaging Result</th>
+                <th>Status</th>
                 <th>Created</th>
               </tr>
             </thead>
@@ -168,11 +169,36 @@
                   </p>
                 </td>
                 <td v-else>No Investigations</td>
+                <td v-if="consultation.imagingfinish">
+                  <router-link :to="consultation.scantestresulturl"
+                    >View Result</router-link
+                  >
+                </td>
+                <td v-else>
+                  <p>No Result Yet</p>
+                </td>
                 <td>
-                  <router-link to="#">View Result</router-link>
+                  <label
+                    v-if="consultation.imagingfinish"
+                    class="kt-badge kt-badge--success kt-badge--inline"
+                    >Completed</label
+                  >
+                  <label
+                    v-else
+                    class="kt-badge kt-badge--warning kt-badge--inline"
+                    >Pending</label
+                  >
                 </td>
 
                 <td>{{ consultation.updatedAt | moment('DD/MM/YYYY, ha') }}</td>
+                <td>
+                  <router-link
+                    :to="consultation.scanurl"
+                    class="btn btn-brand btn-elevated btn-sm mr-2"
+                  >
+                    View
+                  </router-link>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -249,7 +275,14 @@ export default {
 
           let consultations = this.consultations
           for (let i = 0; i < consultations.length; i++) {
-            consultations[i].url = '/patient/' + consultations[i].patient._id
+            if (consultations[i].patient) {
+              consultations[i].url = '/patient/' + consultations[i].patient._id
+            }
+            consultations[i].scanurl =
+              '/ultrasound-scan-result/' + consultations[i]._id
+
+            consultations[i].scantestresulturl =
+              '/ultrasound-scan-test-result/' + consultations[i]._id
           }
         })
         .catch(error => {

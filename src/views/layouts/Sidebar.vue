@@ -1681,6 +1681,24 @@
                       ></router-link
                     >
                   </li>
+                  <li
+                    class="kt-menu__item kt-menu__item--submenu"
+                    data-ktmenu-submenu-toggle="hover"
+                    aria-haspopup="true"
+                  >
+                    <router-link
+                      to="/create-staff-chatkit-account"
+                      class="kt-menu__link"
+                      style="padding-left: 40px;height: 40px;color:#9899ac;"
+                      ><i
+                        style="flex: 0 0 15px"
+                        class="kt-menu__link-bullet kt-menu__link-bullet--dot"
+                        ><span>-</span></i
+                      ><span class="kt-menu__link-text"
+                        >Create Chatkit Account</span
+                      ></router-link
+                    >
+                  </li>
                 </ul>
               </b-collapse>
             </li>

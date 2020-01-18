@@ -157,8 +157,18 @@
               <label>Department</label>
               <select class="form-control" v-model="department">
                 <option disabled selected>Select Department</option>
-                <option value="Consulting">Consulting </option>
+                <option value="Consultation">Consultation </option>
                 <option value="Doctor">Doctor</option>
+                <option value="Records">Records</option>
+                <option value="ICU">ICU</option>
+                <option value="Nurse Station">Nurse Station</option>
+                <option value="Payment">Payment</option>
+                <option value="Pharmacy">Pharmacy</option>
+                <option value="Lab">Lab</option>
+                <option value="Imaging">Imaging</option>
+                <option value="Store">Store</option>
+                <option value="Health Insurance">Health Insurance</option>
+                <option value="Reception">Reception</option>
               </select>
               <span class="form-text text-muted"
                 >Please select department.</span

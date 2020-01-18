@@ -247,6 +247,7 @@
                     <th>Patient Name</th>
                     <th>Age</th>
                     <th>Phone Number</th>
+                    <th>Payment Status</th>
                     <th>Registered By</th>
                     <th>Date Registered</th>
                     <th>Status</th>
@@ -267,6 +268,11 @@
                       <router-link :to="patient.url">
                         {{ patient.firstname }} {{ patient.lastname }}
                       </router-link>
+                      <label
+                        v-if="patient.retainershipname"
+                        class="kt-badge kt-badge--success kt-badge--inline"
+                        >{{ patient.retainershipname.name }}</label
+                      >
                     </td>
                     <td>
                       {{ patient.birthday | moment('from', 'now', true) }}
@@ -274,6 +280,19 @@
                     <td>
                       {{ patient.phonenumber }}
                     </td>
+                    <td>
+                      <label
+                        v-if="patient.paid"
+                        class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill"
+                        >Paid</label
+                      >
+                      <label
+                        v-if="!patient.paid"
+                        class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill"
+                        >Pending</label
+                      >
+                    </td>
+
                     <td>
                       <router-link v-if="patient.creator" to="#">
                         {{ patient.creator.firstname }}

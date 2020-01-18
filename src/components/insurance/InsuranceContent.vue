@@ -203,7 +203,7 @@
             </thead>
             <tbody>
               <tr v-if="insurances.length == 0">
-                <td colspan="9" align="center">No Imaging</td>
+                <td colspan="9" align="center">No Insurances</td>
               </tr>
               <tr v-for="(insurance, index) in insurances" :key="insurance._id">
                 <td>
@@ -241,7 +241,7 @@
                     Deleting...
                   </button> -->
                   <router-link :to="insurance.url" class="btn btn-brand"
-                    >Create HMO</router-link
+                    >Create/View HMOs</router-link
                   >
                 </td>
               </tr>

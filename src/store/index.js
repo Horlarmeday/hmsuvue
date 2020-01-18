@@ -15,9 +15,8 @@ export default new Vuex.Store({
   getters: {
     isLoggedIn: state => !!state.token,
     authStatus: state => state.status,
-    getUser: state => {
-      return state.user
-    },
+    getUser: state => state.user,
+
     getPushKitUser: state => state.isLoggedInUser
   },
   mutations: {
@@ -68,14 +67,6 @@ export default new Vuex.Store({
               .then(currentUser => {
                 console.log('Successful connection', currentUser)
 
-                currentUser.subscribeToRoomMultipart({
-                  roomId: currentUser.rooms[0].id,
-                  hooks: {
-                    onMessage: message => {
-                      console.log('Received message:', message)
-                    }
-                  }
-                })
                 commit('pushkit_success', currentUser)
               })
               .catch(err => {

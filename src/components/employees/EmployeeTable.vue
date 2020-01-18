@@ -337,7 +337,7 @@ export default {
     return {
       staffs: [],
       staffsUrl: '/staff',
-      imageurl: 'http://localhost:3000/static/uploads/',
+      imageurl: '/static/uploads/',
       input: '',
 
       currentPage: 1,

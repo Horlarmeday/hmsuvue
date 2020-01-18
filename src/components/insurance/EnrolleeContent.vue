@@ -9,11 +9,11 @@
           </span>
           <h3 class="kt-portlet__head-title">
             Create
-            <!-- <span
-              style="font-weight: 700"
+            <span
+              style="font-weight: 700;font-size:12px"
               class="kt-badge kt-badge--success kt-badge--inline"
-              >{{ hmoname }}</span
-            > -->
+              >{{ hmoname.name }}</span
+            >
             Enrollee
             <small>Create a new enrollee record</small>
           </h3>
@@ -274,14 +274,17 @@ export default {
       name: '',
       enrolleeId: '',
       enrollees: [],
+      hmoname: '',
       currentEnrollee: '',
       enrolleeUrl: '/admin/enrollee/',
+      currentHMOurl: '/admin/current/hmo/',
       loading: false,
       deletedata: false
     }
   },
   mounted() {
     this.getEnrollees()
+    this.getCurrentHMO()
   },
   methods: {
     handleError(error) {
@@ -319,6 +322,17 @@ export default {
         .get(this.enrolleeUrl + this.$route.params.id)
         .then(response => {
           this.enrollees = response.data.data
+        })
+        .catch(error => {
+          this.handleError(error)
+        })
+    },
+
+    getCurrentHMO() {
+      axios
+        .get(this.currentHMOurl + this.$route.params.id)
+        .then(response => {
+          this.hmoname = response.data.data
         })
         .catch(error => {
           this.handleError(error)

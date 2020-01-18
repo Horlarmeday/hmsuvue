@@ -164,6 +164,7 @@
                 <th>Gender</th>
                 <th>Registered By</th>
                 <th>Status</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -195,6 +196,11 @@
                   <router-link :to="patient.url">
                     {{ patient.firstname }} {{ patient.lastname }}
                   </router-link>
+                  <label
+                    v-if="patient.retainershipname"
+                    class="kt-badge kt-badge--success kt-badge--inline"
+                    >{{ patient.retainershipname.name }}</label
+                  >
                 </td>
                 <td>{{ patient.birthday | moment('DD/MM/YYYY') }}</td>
                 <td>{{ patient.birthday | moment('from', 'now', true) }}</td>
@@ -230,6 +236,13 @@
                     v-if="patient.admissionStatus == 'Normal'"
                     class="kt-badge kt-badge--info kt-badge--inline kt-badge--pill"
                     >{{ patient.admissionStatus }}</label
+                  >
+                </td>
+                <td>
+                  <router-link
+                    class="btn btn-brand btn-success btn-sm"
+                    :to="patient.editurl"
+                    >Edit</router-link
                   >
                 </td>
               </tr>
@@ -281,7 +294,7 @@ export default {
       rows: '',
       meta: '',
       patientsUrl: '/patient/',
-      imageurl: 'http://localhost:3000/static/uploads/'
+      imageurl: '/static/uploads/'
     }
   },
   mounted() {
@@ -307,6 +320,7 @@ export default {
           let patients = this.patients
           for (let i = 0; i < patients.length; i++) {
             patients[i].photourl = this.imageurl + patients[i].photo
+            patients[i].editurl = '/edit-patient/' + patients[i]._id
           }
           for (let i = 0; i < patients.length; i++) {
             patients[i].url = this.patientsUrl + patients[i]._id

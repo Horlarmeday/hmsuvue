@@ -524,20 +524,16 @@
           <b-tab class="mb-3" title="Upload Scan">
             <b-card-text>
               <div class="container">
-                <form
-                  enctype="multipart/form-data"
-                  novalidate
-                  v-if="isInitial || isSaving"
-                >
+                <form v-if="isInitial || isSaving">
                   <h3>Upload Images</h3>
                   <div class="dropbox">
                     <input
                       type="file"
                       multiple
-                      :name="uploadFieldName"
+                      ref="file"
                       :disabled="isSaving"
                       @change="
-                        filesChange($event.target.name, $event.target.files)
+                        save()
                         fileCount = $event.target.files.length
                       "
                       accept="image/*"
@@ -563,9 +559,9 @@
                   <ul class="list-unstyled">
                     <li v-for="item in uploadedFiles" :key="item">
                       <img
-                        :src="item.url"
+                        :src="item"
                         class="img-responsive img-thumbnail"
-                        :alt="item.originalName"
+                        alt="Scan photo"
                       />
                     </li>
                   </ul>
@@ -941,6 +937,7 @@ export default {
       updateupload: '/test/ultrasound/upload/',
 
       uploadedFiles: [],
+      fileList: [],
       uploadError: null,
       currentStatus: null,
       uploadFieldName: 'photos',
@@ -1060,47 +1057,75 @@ export default {
       this.uploadedFiles = []
       this.uploadError = null
     },
-    upload(formData) {
-      return (
-        axios
-          .post(this.uploadscanphotos + this.$route.params.id, formData)
-          // // get data
-          // .then(x => x.data)
-          // add url field
-          .then(x => {
-            this.uploadedFiles = x.data.data.scanPhoto
-          })
-      )
-    },
-    save(formData) {
+    // upload(formData) {
+    //   return (
+    //     axios
+    //       .post(this.uploadscanphotos + this.$route.params.id, formData)
+    //       // // get data
+    //       // .then(x => x.data)
+    //       // add url field
+    //       .then(x => {
+    //         this.uploadedFiles = x.data.data.scanPhoto
+    //       })
+    //   )
+    // },
+    save() {
+      this.fileList = this.$refs.file.files
+      if (!this.fileList.length) {
+        this.$iziToast.error({
+          title: 'Error!',
+          message: 'Please choose photos'
+        })
+        return
+      }
       // upload data to the server
       this.currentStatus = STATUS_SAVING
-      this.upload(formData)
-        // .then(wait(1500)) // DEV ONLY: wait for 1.5s
-        .then(x => {
-          // this.uploadedFiles = [].concat(x)
+      let formData = new FormData()
+      formData.append('file', this.fileList)
+      axios
+        .post(this.uploadscanphotos + this.$route.params.id, formData)
+        .then(response => {
           this.currentStatus = STATUS_SUCCESS
+          this.uploadedFiles = response.data.data.scanPhoto
+          // let uploadedFiles = this.uploadedFiles
+          // for (let i = 0; i < uploadedFiles.length; i++) {
+
+          // }
           this.$iziToast.success({
             title: 'Success!',
-            message: x.data.message
+            message: response.data.message
           })
         })
-        .catch(err => {
-          this.uploadError = this.handleError(err)
+        .catch(error => {
+          this.uploadError = this.handleError(error)
           this.currentStatus = STATUS_FAILED
         })
-    },
-    filesChange(fieldName, fileList) {
-      // handle file changes
-      const formData = new FormData()
-      if (!fileList.length) return
-      // append the files to FormData
-      Array.from(Array(fileList.length).keys()).map(x => {
-        formData.append(fieldName, fileList[x], fileList[x].name)
-      })
-      // save it
-      this.save(formData)
+
+      // this.upload(formData)
+      //   // .then(wait(1500)) // DEV ONLY: wait for 1.5s
+      //   .then(x => {
+      //     // this.uploadedFiles = [].concat(x)
+
+      //     this.$iziToast.success({
+      //       title: 'Success!',
+      //       message: x.data.message
+      //     })
+      //   })
+      //   .catch(err => {
+
+      //   })
     }
+    // filesChange(fieldName, fileList) {
+    //   // handle file changes
+    //   const formData = new FormData()
+    //   if (!fileList.length) return
+    //   // append the files to FormData
+    //   Array.from(Array(fileList.length).keys()).map(x => {
+    //     formData.append(fieldName, fileList[x], fileList[x].name)
+    //   })
+    //   // save it
+    //   this.save(formData)
+    // }
   },
   computed: {
     isInitial() {

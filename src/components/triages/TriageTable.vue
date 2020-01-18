@@ -268,12 +268,10 @@ export default {
           this.triages = response.data.data
           let triages = this.triages
           for (let i = 0; i < triages.length; i++) {
-            triages[i].url = '/patient/' + triages[i].patient._id
+            if (triages[i].patient) {
+              triages[i].url = '/patient/' + triages[i].patient._id
+            }
           }
-          //   let triages = this.triages
-          //   for (let i = 0; i < patients.length; i++) {
-          //     triages[i].url = this.imageurl + patients[i].photo
-          //   }
         })
         .catch(error => {
           this.handleError(error)

@@ -9,11 +9,11 @@
           </span>
           <h3 class="kt-portlet__head-title">
             Create
-            <!-- <span
-              style="font-weight: 700"
+            <span
+              style="font-weight: 700;font-size:15px"
               class="kt-badge kt-badge--success kt-badge--inline"
-              >{{ hmoname }}</span
-            > -->
+              >{{ insurancetype.name }}</span
+            >
             HMO
             <small>Create a new hmo</small>
           </h3>
@@ -231,7 +231,7 @@
                 <td>{{ hmo.createdAt | moment('DD/MM/YYYY') }}</td>
                 <td>
                   <router-link class="btn btn-brand mr-3" :to="hmo.url"
-                    >Create Enrollee</router-link
+                    >Create/View Enrollees</router-link
                   >
                   <button
                     v-if="!deletedata && hmo._id !== currentHmo._id"
@@ -277,13 +277,16 @@ export default {
       hmoname: '',
       hmos: [],
       currentHmo: '',
+      insurancetype: '',
       hmoUrl: '/admin/hmo/',
+      currentInsuranceurl: '/admin/current/insurance/',
       loading: false,
       deletedata: false
     }
   },
   mounted() {
     this.getHmos()
+    this.getCurrentInsurance()
   },
   methods: {
     handleError(error) {
@@ -304,7 +307,11 @@ export default {
           this.name = ''
           this.description = ''
           this.loading = false
-          this.hmos = response.data.data
+          this.hmos = response.data.data.reverse()
+          let hmos = this.hmos
+          for (let i = 0; i < hmos.length; i++) {
+            hmos[i].url = '/enrollee/' + hmos[i]._id
+          }
           this.$iziToast.success({
             title: 'Success!',
             message: response.data.message
@@ -320,11 +327,22 @@ export default {
       axios
         .get(this.hmoUrl + this.$route.params.id)
         .then(response => {
-          this.hmos = response.data.data
+          this.hmos = response.data.data.reverse()
           let hmos = this.hmos
           for (let i = 0; i < hmos.length; i++) {
             hmos[i].url = '/enrollee/' + hmos[i]._id
           }
+        })
+        .catch(error => {
+          this.handleError(error)
+        })
+    },
+
+    getCurrentInsurance() {
+      axios
+        .get(this.currentInsuranceurl + this.$route.params.id)
+        .then(response => {
+          this.insurancetype = response.data.data
         })
         .catch(error => {
           this.handleError(error)

@@ -133,14 +133,8 @@
                     Total amount revenue generated
                   </span>
                 </div>
-                <span
-                  v-if="totalAmount !== undefined"
-                  class="kt-widget24__stats kt-font-success"
-                >
+                <span class="kt-widget24__stats kt-font-success">
                   ₦{{ totalAmount | toCurrency }}
-                </span>
-                <span v-else class="kt-widget24__stats kt-font-success">
-                  ₦{{ 0 | toCurrency }}
                 </span>
               </div>
               <div class="progress progress--sm">
@@ -444,6 +438,9 @@ export default {
           this.payments = response.data.data.payments
           this.totalPatients = response.data.data.patientCount
           this.triagesCount = response.data.data.triagesCount
+          if (response.data.data.totalAmount === undefined) {
+            this.totalAmount = 0
+          }
           this.totalAmount = response.data.data.totalAmount
           this.appointmentCount = response.data.data.appointmentCount
           let patients = this.patients

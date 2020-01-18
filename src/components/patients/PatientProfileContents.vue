@@ -50,7 +50,7 @@
                   </div>
                   <div class="kt-widget__action">
                     <button type="button" class="btn btn-info btn-sm">
-                      chat</button
+                      Snap Photo</button
                     >&nbsp;
                     <button type="button" class="btn btn-success btn-sm">
                       follow
@@ -82,7 +82,7 @@
                     @click="getPatient"
                     href="#"
                     class="kt-widget__item"
-                    :class="!patientditsshow ? activeClass : ''"
+                    :class="patientditsshow ? activeClass : ''"
                   >
                     <span class="kt-widget__section">
                       <span class="kt-widget__icon">
@@ -167,7 +167,12 @@
                       </span>
                     </span>
                   </a>
-                  <a href="#" class="kt-widget__item ">
+                  <a
+                    @click="getPayments"
+                    :class="paymentsdits ? activeClass : ''"
+                    href="#"
+                    class="kt-widget__item "
+                  >
                     <span class="kt-widget__section">
                       <span class="kt-widget__icon">
                         <svg
@@ -211,7 +216,12 @@
                       </span>
                     </span>
                   </a>
-                  <a href="#" class="kt-widget__item ">
+                  <a
+                    @click="getAppointments"
+                    :class="appointmentsdits ? activeClass : ''"
+                    href="#"
+                    class="kt-widget__item "
+                  >
                     <span class="kt-widget__section">
                       <span class="kt-widget__icon">
                         <svg
@@ -266,7 +276,12 @@
                       >5</span
                     >
                   </a>
-                  <a href="#" class="kt-widget__item ">
+                  <a
+                    @click="getTriages"
+                    :class="triagesdits ? activeClass : ''"
+                    href="#"
+                    class="kt-widget__item "
+                  >
                     <span class="kt-widget__section">
                       <span class="kt-widget__icon">
                         <svg
@@ -310,59 +325,13 @@
                       </span>
                     </span>
                   </a>
-                  <a href="#" class="kt-widget__item" data-placement="right">
-                    <span class="kt-widget__section">
-                      <span class="kt-widget__icon">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          xmlns:xlink="http://www.w3.org/1999/xlink"
-                          width="24px"
-                          height="24px"
-                          viewBox="0 0 24 24"
-                          version="1.1"
-                          class="kt-svg-icon"
-                        >
-                          <g
-                            stroke="none"
-                            stroke-width="1"
-                            fill="none"
-                            fill-rule="evenodd"
-                          >
-                            <rect
-                              id="bound"
-                              x="0"
-                              y="0"
-                              width="24"
-                              height="24"
-                            />
-                            <rect
-                              id="Rectangle-7-Copy"
-                              fill="#000000"
-                              x="2"
-                              y="5"
-                              width="19"
-                              height="4"
-                              rx="1"
-                            />
-                            <rect
-                              id="Rectangle-7-Copy-4"
-                              fill="#000000"
-                              opacity="0.3"
-                              x="2"
-                              y="11"
-                              width="19"
-                              height="10"
-                              rx="1"
-                            />
-                          </g>
-                        </svg>
-                      </span>
-                      <span class="kt-widget__desc">
-                        Visits
-                      </span>
-                    </span>
-                  </a>
-                  <a href="#" class="kt-widget__item" data-placement="right">
+                  <a
+                    @click="getMedications"
+                    :class="medicationdits ? activeClass : ''"
+                    href="#"
+                    class="kt-widget__item"
+                    data-placement="right"
+                  >
                     <span class="kt-widget__section">
                       <span class="kt-widget__icon">
                         <svg
@@ -411,12 +380,14 @@
                       </span>
                       <span href="#" class="kt-widget__desc">Medications</span>
                     </span>
-                    <span
-                      class="kt-badge kt-badge--unified-brand kt-badge--inline kt-badge--bolder"
-                      >new</span
-                    >
                   </a>
-                  <a href="#" class="kt-widget__item" data-placement="right">
+                  <a
+                    @click="getTests"
+                    :class="testdits ? activeClass : ''"
+                    href="#"
+                    class="kt-widget__item"
+                    data-placement="right"
+                  >
                     <span class="kt-widget__section">
                       <span class="kt-widget__icon">
                         <svg
@@ -461,6 +432,64 @@
                       </span>
                       <span class="kt-widget__desc">
                         Laboratory Tests
+                      </span>
+                    </span>
+                  </a>
+                  <a
+                    @click="getImagings"
+                    :class="imagingdits ? activeClass : ''"
+                    href="#"
+                    class="kt-widget__item"
+                    data-placement="right"
+                  >
+                    <span class="kt-widget__section">
+                      <span class="kt-widget__icon">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          xmlns:xlink="http://www.w3.org/1999/xlink"
+                          width="24px"
+                          height="24px"
+                          viewBox="0 0 24 24"
+                          version="1.1"
+                          class="kt-svg-icon"
+                        >
+                          <g
+                            stroke="none"
+                            stroke-width="1"
+                            fill="none"
+                            fill-rule="evenodd"
+                          >
+                            <rect
+                              id="bound"
+                              x="0"
+                              y="0"
+                              width="24"
+                              height="24"
+                            />
+                            <rect
+                              id="Rectangle-7-Copy"
+                              fill="#000000"
+                              x="2"
+                              y="5"
+                              width="19"
+                              height="4"
+                              rx="1"
+                            />
+                            <rect
+                              id="Rectangle-7-Copy-4"
+                              fill="#000000"
+                              opacity="0.3"
+                              x="2"
+                              y="11"
+                              width="19"
+                              height="10"
+                              rx="1"
+                            />
+                          </g>
+                        </svg>
+                      </span>
+                      <span class="kt-widget__desc">
+                        Imaging
                       </span>
                     </span>
                   </a>
@@ -658,7 +687,7 @@
 
       <!--Begin:: App Content-->
       <div
-        v-if="!patientditsshow"
+        v-if="patientditsshow"
         class="kt-grid__item kt-grid__item--fluid kt-app__content"
       >
         <div class="row">
@@ -986,10 +1015,24 @@
                       href="#"
                       class="kt-widget4__title kt-widget4__title--light"
                     >
+                      HMO Name
+                    </a>
+                    <span class="kt-widget4__number">{{
+                      patient.retainershipname.name
+                    }}</span>
+                  </div>
+                  <div class="kt-widget4__item">
+                    <span class="kt-widget4__icon">
+                      <i class="flaticon-pie-chart-1 kt-font-info"></i>
+                    </span>
+                    <a
+                      href="#"
+                      class="kt-widget4__title kt-widget4__title--light"
+                    >
                       Enrollee Name
                     </a>
                     <span class="kt-widget4__number">{{
-                      patient.enrollees
+                      patient.enrollees.name
                     }}</span>
                   </div>
                   <div class="kt-widget4__item">
@@ -1225,12 +1268,774 @@
                         </td>
 
                         <td>{{ history.reasonforvisit }}</td>
-                        <td>{{ history.observations }}</td>
+                        <td>{{ history.observation }}</td>
                         <td>{{ history.diagnosis }}</td>
                         <td>{{ history.treatment }}</td>
 
                         <td>
                           {{ history.createdAt | moment('DD/MM/YYYY, ha') }}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <!--end: Datatable -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--End:: App Content-->
+
+      <!--Begin:: App Content-->
+      <div
+        v-if="paymentsdits"
+        class="kt-grid__item kt-grid__item--fluid kt-app__content"
+      >
+        <div class="row">
+          <div class="col-xl-12">
+            <div class="kt-portlet kt-portlet--mobile">
+              <div class="kt-portlet__head kt-portlet__head--lg">
+                <div class="kt-portlet__head-label">
+                  <span class="kt-portlet__head-icon">
+                    <i class="kt-font-brand flaticon2-line-chart"></i>
+                  </span>
+                  <h3 class="kt-portlet__head-title">
+                    Payments
+                    <small>This is the payment table</small>
+                  </h3>
+                </div>
+              </div>
+              <div class="kt-portlet__body">
+                <!--begin: Search Form -->
+                <div
+                  class="kt-form kt-form--label-right kt-margin-t-20 kt-margin-b-10"
+                >
+                  <div class="row align-items-center">
+                    <div class="col-xl-8 order-2 order-xl-1">
+                      <div class="row align-items-center">
+                        <div class="col-md-4 kt-margin-b-20-tablet-and-mobile">
+                          <div class="kt-input-icon kt-input-icon--left">
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Search..."
+                            />
+                            <span
+                              class="kt-input-icon__icon kt-input-icon__icon--left"
+                            >
+                              <span><i class="la la-search"></i></span>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-xl-4 order-1 order-xl-2 kt-align-right">
+                      <div
+                        class="kt-separator kt-separator--border-dashed kt-separator--space-lg d-xl-none"
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!--end: Search Form -->
+              </div>
+              <div class="kt-portlet__body ">
+                <!--begin: Datatable -->
+                <div class="dt-responsive table-responsive">
+                  <table class="table table-striped table-bordered nowrap">
+                    <thead>
+                      <tr>
+                        <th>S/N</th>
+                        <th>Amount Paid</th>
+                        <th>Payment For</th>
+                        <th>Mode of Payment</th>
+                        <th>Date Paid</th>
+                        <th>Status</th>
+                        <th>Created By</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-if="payments.length == 0">
+                        <td colspan="15" align="center">No Payments</td>
+                      </tr>
+                      <tr
+                        v-for="(payment, index) in payments"
+                        :key="payment._id"
+                      >
+                        <td>
+                          {{ index + 1 }}
+                        </td>
+
+                        <td>{{ payment.amount }}</td>
+                        <td v-if="payment.drugs.length > 0">
+                          <p v-for="drug in payment.drugs" :key="drug._id">
+                            {{ drug.name }}
+                          </p>
+                        </td>
+                        <td v-if="payment.tests.length > 0">
+                          <p v-for="test in payment.tests" :key="test._id">
+                            {{ test.name }}
+                          </p>
+                        </td>
+                        <td v-if="payment.investigations.length > 0">
+                          <p
+                            v-for="image in payment.investigations"
+                            :key="image._id"
+                          >
+                            {{ image.name }}
+                          </p>
+                        </td>
+                        <td v-if="payment.services.length > 0">
+                          <p
+                            v-for="service in payment.services"
+                            :key="service._id"
+                          >
+                            {{ service.name }}
+                          </p>
+                        </td>
+                        <td v-if="payment.type">
+                          <p>
+                            {{ payment.type }}
+                          </p>
+                        </td>
+                        <td>{{ payment.modeofpayment }}</td>
+                        <td>
+                          {{ payment.createdAt | moment('DD/MM/YYYY, ha') }}
+                        </td>
+
+                        <td>
+                          <label
+                            v-if="payment.paid"
+                            class="kt-badge kt-badge--success kt-badge--inline"
+                            >Paid</label
+                          >
+                          <label
+                            v-if="!payment.paid"
+                            class="kt-badge kt-badge--danger kt-badge--inline"
+                            >Unpaid</label
+                          >
+                        </td>
+                        <td>
+                          <a href="#">
+                            {{ payment.creator.firstname }}
+                            {{ payment.creator.lastname }}
+                          </a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <!--end: Datatable -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--End:: App Content-->
+
+      <!--Begin:: App Content-->
+      <div
+        v-if="appointmentsdits"
+        class="kt-grid__item kt-grid__item--fluid kt-app__content"
+      >
+        <div class="row">
+          <div class="col-xl-12">
+            <div class="kt-portlet kt-portlet--mobile">
+              <div class="kt-portlet__head kt-portlet__head--lg">
+                <div class="kt-portlet__head-label">
+                  <span class="kt-portlet__head-icon">
+                    <i class="kt-font-brand flaticon2-line-chart"></i>
+                  </span>
+                  <h3 class="kt-portlet__head-title">
+                    Appointments
+                    <small>This is the appointments table</small>
+                  </h3>
+                </div>
+              </div>
+              <div class="kt-portlet__body">
+                <!--begin: Search Form -->
+                <div
+                  class="kt-form kt-form--label-right kt-margin-t-20 kt-margin-b-10"
+                >
+                  <div class="row align-items-center">
+                    <div class="col-xl-8 order-2 order-xl-1">
+                      <div class="row align-items-center">
+                        <div class="col-md-4 kt-margin-b-20-tablet-and-mobile">
+                          <div class="kt-input-icon kt-input-icon--left">
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Search..."
+                            />
+                            <span
+                              class="kt-input-icon__icon kt-input-icon__icon--left"
+                            >
+                              <span><i class="la la-search"></i></span>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-xl-4 order-1 order-xl-2 kt-align-right">
+                      <div
+                        class="kt-separator kt-separator--border-dashed kt-separator--space-lg d-xl-none"
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!--end: Search Form -->
+              </div>
+              <div class="kt-portlet__body ">
+                <!--begin: Datatable -->
+                <div class="dt-responsive table-responsive">
+                  <table class="table table-striped table-bordered nowrap">
+                    <thead>
+                      <tr>
+                        <th>S/N</th>
+                        <th>Appointment ID</th>
+                        <th>Examiner</th>
+                        <th>Type</th>
+                        <th>Department</th>
+                        <th>Appointment Date</th>
+                        <th>Appointment Time</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th>Created By</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-if="appointments.length == 0">
+                        <td colspan="15" align="center">No Appointments</td>
+                      </tr>
+                      <tr
+                        v-for="(appointment, index) in appointments"
+                        :key="appointment._id"
+                      >
+                        <td>
+                          {{ index + 1 }}
+                        </td>
+                        <td>{{ appointment.uniqueid }}</td>
+                        <td>
+                          <a href="#">
+                            {{ appointment.examiner.firstname }}
+                            {{ appointment.examiner.lastname }}
+                          </a>
+                        </td>
+                        <td>{{ appointment.type }}</td>
+                        <td>{{ appointment.department }}</td>
+                        <td>
+                          {{
+                            appointment.appointmentdate | moment('DD/MM/YYYY')
+                          }}
+                        </td>
+                        <td>
+                          {{ appointment.appointmenttime | moment('h:mma') }}
+                        </td>
+
+                        <td>
+                          <label
+                            v-if="appointment.taken"
+                            class="kt-badge kt-badge--success kt-badge--inline"
+                            >Attended</label
+                          >
+                          <label
+                            v-if="!appointment.taken"
+                            class="kt-badge kt-badge--warning kt-badge--inline"
+                            >Pending</label
+                          >
+                        </td>
+                        <td>
+                          {{ appointment.createdAt | moment('DD/MM/YYYY, ha') }}
+                        </td>
+                        <td>
+                          <a href="#">
+                            {{ appointment.creator.firstname }}
+                            {{ appointment.creator.lastname }}
+                          </a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <!--end: Datatable -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--End:: App Content-->
+
+      <!--Begin:: App Content-->
+      <div
+        v-if="triagesdits"
+        class="kt-grid__item kt-grid__item--fluid kt-app__content"
+      >
+        <div class="row">
+          <div class="col-xl-12">
+            <div class="kt-portlet kt-portlet--mobile">
+              <div class="kt-portlet__head kt-portlet__head--lg">
+                <div class="kt-portlet__head-label">
+                  <span class="kt-portlet__head-icon">
+                    <i class="kt-font-brand flaticon2-line-chart"></i>
+                  </span>
+                  <h3 class="kt-portlet__head-title">
+                    Triages
+                    <small>This is the triages table</small>
+                  </h3>
+                </div>
+              </div>
+              <div class="kt-portlet__body">
+                <!--begin: Search Form -->
+                <div
+                  class="kt-form kt-form--label-right kt-margin-t-20 kt-margin-b-10"
+                >
+                  <div class="row align-items-center">
+                    <div class="col-xl-8 order-2 order-xl-1">
+                      <div class="row align-items-center">
+                        <div class="col-md-4 kt-margin-b-20-tablet-and-mobile">
+                          <div class="kt-input-icon kt-input-icon--left">
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Search..."
+                            />
+                            <span
+                              class="kt-input-icon__icon kt-input-icon__icon--left"
+                            >
+                              <span><i class="la la-search"></i></span>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-xl-4 order-1 order-xl-2 kt-align-right">
+                      <div
+                        class="kt-separator kt-separator--border-dashed kt-separator--space-lg d-xl-none"
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!--end: Search Form -->
+              </div>
+              <div class="kt-portlet__body ">
+                <!--begin: Datatable -->
+                <div class="dt-responsive table-responsive">
+                  <table class="table table-striped table-bordered nowrap">
+                    <thead>
+                      <tr>
+                        <th>S/N</th>
+                        <th>Weight (kg)</th>
+                        <th>Height (m)</th>
+                        <th>BMI (kg/m^2)</th>
+                        <th>RVS (rvs)</th>
+                        <th>Pulse (b/min)</th>
+                        <th>Respiration (c/min)</th>
+                        <th>Temperature (°C)</th>
+                        <th>Systolic (mmHg)</th>
+                        <th>Diastolic (mmHg)</th>
+                        <th>Muac (muac)</th>
+                        <th>SPO2 (%)</th>
+                        <th>Creator</th>
+                        <th>Created</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-if="triages.length == 0">
+                        <td colspan="15" align="center">No triages</td>
+                      </tr>
+                    </tbody>
+                    <tbody v-for="(triage, index) in triages" :key="triage._id">
+                      <tr v-if="triage.patient">
+                        <td>
+                          {{ index + 1 }}
+                        </td>
+
+                        <td>{{ triage.weight }}</td>
+                        <td>
+                          {{ triage.height }}
+                        </td>
+
+                        <td>{{ triage.bmi }}</td>
+                        <td>{{ triage.rvs }}</td>
+                        <td>{{ triage.pulse }}</td>
+                        <td>{{ triage.respiration }}</td>
+                        <td>{{ triage.temperature }}</td>
+                        <td>{{ triage.systolic }}</td>
+                        <td>{{ triage.diastolic }}</td>
+                        <td>
+                          <label
+                            v-if="triage.muac == 'Green'"
+                            class="kt-badge kt-badge--success kt-badge--inline"
+                            >Green</label
+                          >
+                          <label
+                            v-if="triage.muac == 'Yellow'"
+                            class="kt-badge kt-badge--warning kt-badge--inline"
+                            >Yellow</label
+                          >
+                          <label
+                            v-if="triage.muac == 'red'"
+                            class="kt-badge kt-badge--danger kt-badge--inline"
+                            >Red</label
+                          >
+                        </td>
+
+                        <td>{{ triage.spo2 }}</td>
+                        <td>
+                          <a href="#">
+                            {{ triage.creator.firstname }}
+                            {{ triage.creator.lastname }}
+                          </a>
+                        </td>
+                        <td>
+                          {{ triage.createdAt | moment('dd, MM Do YYYY') }}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <!--end: Datatable -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--End:: App Content-->
+
+      <!--Begin:: App Content-->
+      <div
+        v-if="medicationdits"
+        class="kt-grid__item kt-grid__item--fluid kt-app__content"
+      >
+        <div class="row">
+          <div class="col-xl-12">
+            <div class="kt-portlet kt-portlet--mobile">
+              <div class="kt-portlet__head kt-portlet__head--lg">
+                <div class="kt-portlet__head-label">
+                  <span class="kt-portlet__head-icon">
+                    <i class="kt-font-brand flaticon2-line-chart"></i>
+                  </span>
+                  <h3 class="kt-portlet__head-title">
+                    Medications
+                    <small>This is the medications table</small>
+                  </h3>
+                </div>
+              </div>
+              <div class="kt-portlet__body">
+                <!--begin: Search Form -->
+                <div
+                  class="kt-form kt-form--label-right kt-margin-t-20 kt-margin-b-10"
+                >
+                  <div class="row align-items-center">
+                    <div class="col-xl-8 order-2 order-xl-1">
+                      <div class="row align-items-center">
+                        <div class="col-md-4 kt-margin-b-20-tablet-and-mobile">
+                          <div class="kt-input-icon kt-input-icon--left">
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Search..."
+                            />
+                            <span
+                              class="kt-input-icon__icon kt-input-icon__icon--left"
+                            >
+                              <span><i class="la la-search"></i></span>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-xl-4 order-1 order-xl-2 kt-align-right">
+                      <div
+                        class="kt-separator kt-separator--border-dashed kt-separator--space-lg d-xl-none"
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!--end: Search Form -->
+              </div>
+              <div class="kt-portlet__body ">
+                <!--begin: Datatable -->
+                <div class="dt-responsive table-responsive">
+                  <table class="table table-striped table-bordered nowrap">
+                    <thead>
+                      <tr>
+                        <th>S/N</th>
+                        <th>Drugs</th>
+                        <th>Starting</th>
+                        <th>Unit Dose</th>
+                        <th>Frequency</th>
+                        <th>Duration</th>
+                        <th>Quantity</th>
+                        <th>Dispense Total</th>
+                        <th>Total Price</th>
+                        <th>Status</th>
+                        <th>PrescribedBy</th>
+                        <th>Notes</th>
+                      </tr>
+                    </thead>
+                    <tbody v-if="drugs.length == 0">
+                      <tr>
+                        <td colspan="9" align="center">No Drugs</td>
+                      </tr>
+                    </tbody>
+                    <tbody v-for="(drug, index) in drugs" :key="drug._id">
+                      <tr>
+                        <td>
+                          {{ index + 1 }}
+                        </td>
+                        <td>{{ drug.drug.name }}</td>
+                        <td>
+                          {{ drug.startingdate | moment('DD/MM/YYYY') }}
+                        </td>
+                        <td>{{ drug.unitdose }}</td>
+                        <td>{{ drug.strength }}</td>
+                        <td>
+                          {{ drug.duration }}
+                        </td>
+                        <td>
+                          {{ drug.quantity }}
+                        </td>
+                        <td>
+                          {{ drug.quantitytodispense }}
+                        </td>
+                        <td>
+                          {{ drug.totalprice }}
+                        </td>
+                        <td>
+                          <label
+                            v-if="drug.dispense"
+                            class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill"
+                            >Dispensed</label
+                          >
+                          <label
+                            v-else
+                            class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill"
+                            >Pending</label
+                          >
+                        </td>
+                        <td>
+                          <a v-if="drug.examiner" href="#">
+                            {{ drug.examiner.firstname }}
+                            {{ drug.examiner.lastname }}
+                          </a>
+                          <a v-else href="#">None</a>
+                        </td>
+                        <td>
+                          {{ drug.notes }}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <!--end: Datatable -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--End:: App Content-->
+
+      <!--Begin:: App Content-->
+      <div
+        v-if="testdits"
+        class="kt-grid__item kt-grid__item--fluid kt-app__content"
+      >
+        <div class="row">
+          <div class="col-xl-12">
+            <div class="kt-portlet kt-portlet--mobile">
+              <div class="kt-portlet__head kt-portlet__head--lg">
+                <div class="kt-portlet__head-label">
+                  <span class="kt-portlet__head-icon">
+                    <i class="kt-font-brand flaticon2-line-chart"></i>
+                  </span>
+                  <h3 class="kt-portlet__head-title">
+                    Laboratory Tests
+                    <small>This is the tests table</small>
+                  </h3>
+                </div>
+              </div>
+              <div class="kt-portlet__body">
+                <!--begin: Search Form -->
+                <div
+                  class="kt-form kt-form--label-right kt-margin-t-20 kt-margin-b-10"
+                >
+                  <div class="row align-items-center">
+                    <div class="col-xl-8 order-2 order-xl-1">
+                      <div class="row align-items-center">
+                        <div class="col-md-4 kt-margin-b-20-tablet-and-mobile">
+                          <div class="kt-input-icon kt-input-icon--left">
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Search..."
+                            />
+                            <span
+                              class="kt-input-icon__icon kt-input-icon__icon--left"
+                            >
+                              <span><i class="la la-search"></i></span>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-xl-4 order-1 order-xl-2 kt-align-right">
+                      <div
+                        class="kt-separator kt-separator--border-dashed kt-separator--space-lg d-xl-none"
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!--end: Search Form -->
+              </div>
+              <div class="kt-portlet__body ">
+                <!--begin: Datatable -->
+                <div class="dt-responsive table-responsive">
+                  <table class="table table-striped table-bordered nowrap">
+                    <thead>
+                      <tr>
+                        <th>S/N</th>
+                        <th>Test</th>
+                        <th>Laboratory</th>
+                        <th>Price (₦)</th>
+                        <th>Date Created</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-if="tests.length == 0">
+                        <td colspan="9" align="center">No Requested Tests</td>
+                      </tr>
+                      <tr v-for="(test, index) in tests" :key="test._id">
+                        <td>
+                          {{ index + 1 }}
+                        </td>
+                        <td>
+                          {{ test.test.name }}
+                        </td>
+                        <td>
+                          {{ test.test.laboratory }}
+                        </td>
+                        <td>
+                          {{ test.test.price }}
+                        </td>
+                        <td>
+                          {{
+                            test.dateRequested
+                              | moment('ddd, MMM Do YYYY, h:mm a')
+                          }}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <!--end: Datatable -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--End:: App Content-->
+
+      <!--Begin:: App Content-->
+      <div
+        v-if="imagingdits"
+        class="kt-grid__item kt-grid__item--fluid kt-app__content"
+      >
+        <div class="row">
+          <div class="col-xl-12">
+            <div class="kt-portlet kt-portlet--mobile">
+              <div class="kt-portlet__head kt-portlet__head--lg">
+                <div class="kt-portlet__head-label">
+                  <span class="kt-portlet__head-icon">
+                    <i class="kt-font-brand flaticon2-line-chart"></i>
+                  </span>
+                  <h3 class="kt-portlet__head-title">
+                    Imaging
+                    <small>This is the imaging table</small>
+                  </h3>
+                </div>
+              </div>
+              <div class="kt-portlet__body">
+                <!--begin: Search Form -->
+                <div
+                  class="kt-form kt-form--label-right kt-margin-t-20 kt-margin-b-10"
+                >
+                  <div class="row align-items-center">
+                    <div class="col-xl-8 order-2 order-xl-1">
+                      <div class="row align-items-center">
+                        <div class="col-md-4 kt-margin-b-20-tablet-and-mobile">
+                          <div class="kt-input-icon kt-input-icon--left">
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Search..."
+                            />
+                            <span
+                              class="kt-input-icon__icon kt-input-icon__icon--left"
+                            >
+                              <span><i class="la la-search"></i></span>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-xl-4 order-1 order-xl-2 kt-align-right">
+                      <div
+                        class="kt-separator kt-separator--border-dashed kt-separator--space-lg d-xl-none"
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!--end: Search Form -->
+              </div>
+              <div class="kt-portlet__body ">
+                <!--begin: Datatable -->
+                <div class="dt-responsive table-responsive">
+                  <table class="table table-striped table-bordered nowrap">
+                    <thead>
+                      <tr>
+                        <th>S/N</th>
+                        <th>Investigations</th>
+                        <th>Price (₦)</th>
+                        <th>Date Created</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-if="imagings.length == 0">
+                        <td colspan="9" align="center">
+                          No Requested Investigations
+                        </td>
+                      </tr>
+                      <tr
+                        v-for="(imaging, index) in imagings"
+                        :key="imaging._id"
+                      >
+                        <td>
+                          {{ index + 1 }}
+                        </td>
+                        <td>
+                          {{ imaging.investigation.name }}
+                        </td>
+                        <td>
+                          {{ imaging.investigation.price }}
+                        </td>
+                        <td>
+                          {{
+                            imaging.dateRequested
+                              | moment('ddd, MMM Do YYYY, h:mm a')
+                          }}
                         </td>
                       </tr>
                     </tbody>
@@ -1256,15 +2061,32 @@ export default {
     return {
       patientUrl: '/patient/',
       patient: '',
-      histories: '',
+      histories: [],
       photo: '',
       dependants: [],
+      payments: [],
+      appointments: [],
+      triages: [],
+      drugs: [],
+      tests: [],
+      imagings: [],
       imageurl: 'http://localhost:3000/static/uploads/',
       dependantUrl: '/edit-dependant/',
       historyurl: '/consultation/patient/consultation/',
-      patientditsshow: false,
+      medicationurl: '/consultation/patient/drugs/',
+      testsurl: '/consultation/patient/tests/',
+      imagingurl: '/consultation/patient/imaging/',
+      patientpaymentUrl: '/account/patient/',
+      appointmentUrl: '/appointment/patient/',
+      triageUrl: '/triage/patient/',
+      patientditsshow: true,
       historydits: false,
       paymentsdits: false,
+      appointmentsdits: false,
+      triagesdits: false,
+      medicationdits: false,
+      testdits: false,
+      imagingdits: false,
 
       activeClass: 'kt-widget__item--active'
     }
@@ -1282,9 +2104,14 @@ export default {
     },
 
     getPatient() {
-      this.patientditsshow = false
+      this.patientditsshow = true
       this.historydits = false
-      this.isActive = true
+      this.paymentsdits = false
+      this.appointmentsdits = false
+      this.triagesdits = false
+      this.medicationdits = false
+      this.testdits = false
+      this.imagingdits = false
       axios
         .get(this.patientUrl + this.$route.params.id)
         .then(response => {
@@ -1301,9 +2128,14 @@ export default {
     },
 
     getHistory() {
-      this.patientditsshow = true
       this.historydits = true
-      // this.isActive = true
+      this.patientditsshow = false
+      this.paymentsdits = false
+      this.appointmentsdits = false
+      this.triagesdits = false
+      this.medicationdits = false
+      this.testdits = false
+      this.imagingdits = false
       axios
         .get(this.historyurl + this.$route.params.id)
         .then(response => {
@@ -1315,13 +2147,121 @@ export default {
     },
 
     getPayments() {
-      this.patientditsshow = true
-      this.historydits = false
       this.paymentsdits = true
+      this.historydits = false
+      this.patientditsshow = false
+      this.appointmentsdits = false
+      this.triagesdits = false
+      this.medicationdits = false
+      this.testdits = false
+      this.imagingdits = false
       axios
-        .get(this.paymentsurl + this.$route.params.id)
+        .get(this.patientpaymentUrl + this.$route.params.id)
         .then(response => {
-          this.histories = response.data.data
+          this.payments = response.data.data
+        })
+        .catch(error => {
+          this.handleError(error)
+        })
+    },
+
+    getAppointments() {
+      this.appointmentsdits = true
+      this.patientditsshow = false
+      this.historydits = false
+      this.paymentsdits = false
+      this.triagesdits = false
+      this.medicationdits = false
+      this.testdits = false
+      this.imagingdits = false
+      axios
+        .get(this.appointmentUrl + this.$route.params.id)
+        .then(response => {
+          this.appointments = response.data.data
+        })
+        .catch(error => {
+          this.handleError(error)
+        })
+    },
+
+    getTriages() {
+      this.triagesdits = true
+      this.appointmentsdits = false
+      this.patientditsshow = false
+      this.historydits = false
+      this.paymentsdits = false
+      this.medicationdits = false
+      this.testdits = false
+      this.imagingdits = false
+      axios
+        .get(this.triageUrl + this.$route.params.id)
+        .then(response => {
+          this.triages = response.data.data
+        })
+        .catch(error => {
+          this.handleError(error)
+        })
+    },
+
+    getMedications() {
+      this.medicationdits = true
+      this.triagesdits = false
+      this.appointmentsdits = false
+      this.patientditsshow = false
+      this.historydits = false
+      this.paymentsdits = false
+      this.testdits = false
+      this.imagingdits = false
+      axios
+        .get(this.medicationurl + this.$route.params.id)
+        .then(response => {
+          if (response.data.data[0] === undefined) {
+            this.drugs = []
+          }
+          this.drugs = response.data.data[0]
+        })
+        .catch(error => {
+          this.handleError(error)
+        })
+    },
+    getTests() {
+      this.testdits = true
+      this.medicationdits = false
+      this.triagesdits = false
+      this.appointmentsdits = false
+      this.patientditsshow = false
+      this.historydits = false
+      this.paymentsdits = false
+      this.imagingdits = false
+      axios
+        .get(this.testsurl + this.$route.params.id)
+        .then(response => {
+          if (response.data.data[0] === undefined) {
+            this.tests = []
+          }
+          this.tests = response.data.data[0]
+          console.log(response.data.data[0])
+        })
+        .catch(error => {
+          this.handleError(error)
+        })
+    },
+    getImagings() {
+      this.imagingdits = true
+      this.testdits = false
+      this.medicationdits = false
+      this.triagesdits = false
+      this.appointmentsdits = false
+      this.patientditsshow = false
+      this.historydits = false
+      this.paymentsdits = false
+      axios
+        .get(this.imagingurl + this.$route.params.id)
+        .then(response => {
+          if (response.data.data[0] === undefined) {
+            this.imagings = []
+          }
+          this.imagings = response.data.data[0]
         })
         .catch(error => {
           this.handleError(error)

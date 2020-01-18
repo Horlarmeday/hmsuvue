@@ -56,14 +56,14 @@
                   <option value="Nil">Nil</option>
                   <option value="+ve">+ve</option>
                   <option value="-ve">-ve</option>
+                  <option value="Trait">Trait</option>
                 </select>
               </div>
               <div class="col-5">
                 <select v-model="input.urinalysisGlucose" class="form-control">
                   <option disabled>Select</option>
-                  <option value="Nil">Nil</option>
-                  <option value="+ve">+ve</option>
-                  <option value="-ve">-ve</option>
+                  <option value="Protein">Protein</option>
+                  <option value="Glucose">Glucose</option>
                 </select>
               </div>
             </div>
@@ -101,7 +101,7 @@
               </div>
             </div>
             <div class="form-group row">
-              <label class="col-2 col-form-label">Fundal Height(cm)</label>
+              <label class="col-2 col-form-label">Foetal Height(cm)</label>
               <div class="col-10">
                 <input
                   class="form-control"
@@ -876,11 +876,19 @@ export default {
         .get(this.antenatalpageurl + this.$route.params.id)
         .then(response => {
           this.patient = response.data.data.patient
-          this.drugs = response.data.data.drugs
-          this.labs = response.data.data.labs
-          this.input = response.data.data.anc.presentpregnancy[0]
-          this.clinicalnotes =
-            response.data.data.anc.clinicalnotes[0].clinicalnotes
+          if (response.data.data.drugs) {
+            this.drugs = response.data.data.drugs
+          }
+          if (response.data.data.labs) {
+            this.labs = response.data.data.labs
+          }
+          if (response.data.data.anc.presentpregnancy[0]) {
+            this.input = response.data.data.anc.presentpregnancy[0]
+          }
+          if (response.data.data.anc.clinicalnotes[0].clinicalnotes) {
+            this.clinicalnotes =
+              response.data.data.anc.clinicalnotes[0].clinicalnotes
+          }
         })
         .catch(error => {
           this.handleError(error)

@@ -58,6 +58,22 @@ const routes = [
     }
   },
   {
+    path: '/edit-patient/:id',
+    name: 'editpatient',
+    component: () => import('../views/app/patients/EditPatient.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/create-staff-chatkit-account',
+    name: 'chatkitaccount',
+    component: () => import('../views/app/employees/CreateStaffChatkit.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
     path: '/patients',
     name: 'patients',
     component: Patients,

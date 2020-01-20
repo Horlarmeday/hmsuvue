@@ -156,7 +156,15 @@
               <h4 class="kt-menu__section-text">Custom</h4>
               <i class="kt-menu__section-icon flaticon-more-v2"></i>
             </li>
-            <li class="kt-menu__item">
+            <li
+              class="kt-menu__item"
+              v-if="
+                user.role == 'Super Admin' ||
+                  user.role == 'Nurse' ||
+                  user.role == 'Medical Records' ||
+                  user.role == 'Receptionist'
+              "
+            >
               <b-link v-b-toggle.accordion-1 class="m-1 kt-menu__link">
                 <span class="kt-menu__link-icon">
                   <svg
@@ -717,7 +725,17 @@
                 </ul>
               </b-collapse>
             </li>
-            <li v-if="user.role == 'Super Admin'" class="kt-menu__item">
+            <li
+              v-if="
+                user.role == 'Super Admin' ||
+                  user.role == 'Accountant' ||
+                  user.role == 'Pharmacy Store' ||
+                  user.role == 'Lab Store' ||
+                  user.role == 'Pharmacy' ||
+                  user.role == 'Laboratory'
+              "
+              class="kt-menu__item"
+            >
               <b-link v-b-toggle.accordion-6 class="m-1 kt-menu__link">
                 <span class="kt-menu__link-icon">
                   <svg
@@ -795,6 +813,7 @@
                     >
                   </li>
                   <li
+                    v-if="user.role == 'Accountant'"
                     class="kt-menu__item kt-menu__item--submenu"
                     data-ktmenu-submenu-toggle="hover"
                     aria-haspopup="true"
@@ -867,6 +886,12 @@
                     >
                   </li>
                   <li
+                    v-if="
+                      user.role == 'Pharmacy Store' ||
+                        user.role == 'Lab Store' ||
+                        user.role == 'Pharmacy' ||
+                        user.role == 'Laboratory'
+                    "
                     class="kt-menu__item kt-menu__item--submenu"
                     data-ktmenu-submenu-toggle="hover"
                     aria-haspopup="true"

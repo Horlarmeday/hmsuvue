@@ -294,7 +294,7 @@ export default {
       rows: '',
       meta: '',
       patientsUrl: '/patient/',
-      imageurl: '/static/uploads/'
+      imageurl: 'http://localhost:3000/static/uploads/'
     }
   },
   mounted() {

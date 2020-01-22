@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 import { ChatManager, TokenProvider } from '@pusher/chatkit-client'
+// import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
 
@@ -31,6 +32,7 @@ export default new Vuex.Store({
     pushkit_success(state, pushkitUser) {
       state.status = 'success'
       state.isLoggedInUser = pushkitUser
+      localStorage.setItem('pushkitUser', JSON.stringify(state.isLoggedInUser))
     },
     auth_error(state) {
       state.status = 'error'
@@ -66,7 +68,6 @@ export default new Vuex.Store({
               .connect()
               .then(currentUser => {
                 console.log('Successful connection', currentUser)
-
                 commit('pushkit_success', currentUser)
               })
               .catch(err => {

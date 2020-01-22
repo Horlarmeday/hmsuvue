@@ -10,7 +10,14 @@
         class="kt-grid kt-grid--hor kt-grid--root  kt-login kt-login--v3 kt-login--signin"
         id="kt_login"
       >
-        <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+        <div
+          class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor"
+          :style="{
+            backgroundImage:
+              'url(' + require('@/assets/images/svsh' + '.jpg') + ')'
+          }"
+          style="padding-bottom: 14.6%;background-size:cover"
+        >
           <div class="kt-grid__item kt-grid__item--fluid kt-login__wrapper">
             <div class="kt-login__container">
               <div class="kt-login__logo">
@@ -18,7 +25,10 @@
                   <img src="../../assets/ms.png" />
                 </a>
               </div>
-              <div class="kt-login__signin">
+              <div
+                style="background:#fff;padding: 30px 25px;border-radius:10px"
+                class="kt-login__signin"
+              >
                 <div class="kt-login__head">
                   <h3 class="kt-login__title">Sign In</h3>
                 </div>
@@ -34,7 +44,7 @@
                           class="form-control"
                           type="text"
                           placeholder="Username"
-                          :style="{ backgroundColor: '##b6d3ea30' }"
+                          :style="{ backgroundColor: '#b6d3ea30' }"
                           :state="errors[0] ? false : valid ? true : null"
                           required
                           v-model="username"
@@ -53,7 +63,7 @@
                           class="form-control"
                           type="password"
                           placeholder="Password"
-                          :style="{ backgroundColor: '##b6d3ea30' }"
+                          :style="{ backgroundColor: '#b6d3ea30' }"
                           :state="errors[0] ? false : valid ? true : null"
                           required
                           v-model="password"

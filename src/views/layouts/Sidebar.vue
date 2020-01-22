@@ -890,7 +890,8 @@
                       user.role == 'Pharmacy Store' ||
                         user.role == 'Lab Store' ||
                         user.role == 'Pharmacy' ||
-                        user.role == 'Laboratory'
+                        user.role == 'Laboratory' ||
+                        user.role == 'Super Admin'
                     "
                     class="kt-menu__item kt-menu__item--submenu"
                     data-ktmenu-submenu-toggle="hover"

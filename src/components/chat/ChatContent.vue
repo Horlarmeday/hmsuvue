@@ -62,6 +62,71 @@
                   placeholder="Search"
                   aria-describedby="basic-addon1"
                 />
+                <div class="kt-chat__left">
+                  <!--begin:: Aside Mobile Toggle -->
+                  <button
+                    type="button"
+                    class="btn btn-clean btn-sm btn-icon btn-icon-md kt-hidden-desktop"
+                    id="kt_chat_aside_mobile_toggle"
+                  >
+                    <i class="flaticon2-open-text-book"></i>
+                  </button>
+
+                  <!--end:: Aside Mobile Toggle-->
+                  <div class="dropdown dropdown-inline">
+                    <button
+                      type="button"
+                      class="btn btn-clean btn-sm btn-icon btn-icon-md"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    >
+                      <i class="flaticon-more-1"></i>
+                    </button>
+                    <div
+                      class="dropdown-menu dropdown-menu-fit dropdown-menu-left dropdown-menu-md"
+                    >
+                      <!--begin::Nav-->
+                      <ul class="kt-nav">
+                        <li class="kt-nav__item">
+                          <a
+                            href="#"
+                            data-toggle="modal"
+                            data-target="#kt_modal_2"
+                            class="kt-nav__link"
+                          >
+                            <i class="kt-nav__link-icon flaticon2-group"></i>
+                            <span class="kt-nav__link-text">New Chat</span>
+                          </a>
+                        </li>
+                        <li class="kt-nav__item">
+                          <a href="#" class="kt-nav__link">
+                            <i
+                              class="kt-nav__link-icon flaticon2-open-text-book"
+                            ></i>
+                            <span class="kt-nav__link-text">Contacts</span>
+                          </a>
+                        </li>
+                        <li class="kt-nav__item">
+                          <a href="#" class="kt-nav__link">
+                            <i class="kt-nav__link-icon flaticon2-rocket-1"></i>
+                            <span class="kt-nav__link-text">Groups</span>
+                            <span class="kt-nav__link-badge">
+                              <span
+                                class="kt-badge kt-badge--brand kt-badge--inline"
+                                >new</span
+                              >
+                            </span>
+                          </a>
+                        </li>
+
+                        <li class="kt-nav__separator"></li>
+                      </ul>
+
+                      <!--end::Nav-->
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="kt-widget kt-widget--users kt-mt-20">
@@ -75,26 +140,37 @@
               >
                 <div class="kt-widget__items">
                   <div
-                    v-for="staff in staffs"
-                    :key="staff._id"
-                    class="kt-widget__item"
+                    v-for="room in rooms"
+                    :key="room._id"
+                    class="kt-widget__item current"
+                    style="cursor:pointer"
+                    :class="[
+                      currentRoom && currentRoom.id === room.id ? 'active' : ''
+                    ]"
+                    @click="connectToRoom(room.id)"
                   >
                     <span
-                      v-if="staff.photo"
+                      v-if="room.avatarURL"
                       class="kt-userpic kt-userpic--circle"
                     >
-                      <img :src="staff.url" alt="staff Image" />
+                      <img :src="room.avatarURL" alt="room Image" />
                     </span>
                     <span v-else class="kt-userpic kt-userpic--circle">
                       <img src="../../assets/images/100_9.jpg" alt="image" />
                     </span>
                     <div class="kt-widget__info">
                       <div class="kt-widget__section">
-                        <a href="#" class="kt-widget__username"
-                          >{{ staff.firstname }} {{ staff.lastname }}</a
-                        >
+                        <!-- <a
+                          v-if="room.name === currentUser.name"
+                          href="#"
+                          class="kt-widget__username"
+                          >{{ room.users[1].name }}</a
+                        > -->
+                        <a href="#" class="kt-widget__username">{{
+                          room.name
+                        }}</a>
                         <span
-                          v-if="staff._id === user._id"
+                          v-if="room.id === currentUser.id"
                           class="kt-badge kt-badge--success kt-badge--dot"
                         ></span>
                         <span
@@ -103,7 +179,7 @@
                         ></span>
                       </div>
                       <span class="kt-widget__desc">
-                        {{ staff.role }}
+                        Nurse
                       </span>
                     </div>
                     <div class="kt-widget__action">
@@ -160,14 +236,19 @@
                   </div>
                 </div>
                 <div class="kt-chat__center">
-                  <div class="kt-chat__label">
-                    <a href="#" class="kt-chat__title">Jason Muller</a>
+                  <div v-if="currentRoom" class="kt-chat__label">
+                    <a href="#" class="kt-chat__title">{{
+                      currentRoom.name
+                    }}</a>
                     <span class="kt-chat__status">
                       <span
                         class="kt-badge kt-badge--dot kt-badge--success"
                       ></span>
                       Active
                     </span>
+                  </div>
+                  <div v-else class="kt-chat__label">
+                    <a href="#" class="kt-chat__title">Chat</a>
                   </div>
                 </div>
                 <div class="kt-chat__right">
@@ -245,39 +326,38 @@
                 <div class="kt-chat__messages">
                   <div
                     v-for="message in messages"
-                    :key="message.user._id"
+                    :key="message.id"
                     class="kt-chat__message"
                     :class="[
-                      message.user._id === currentUser._id
+                      message.senderId === currentUser.id
                         ? 'kt-chat__message--right'
                         : ''
                     ]"
                   >
                     <div class="kt-chat__user">
                       <a
-                        v-if="message.user._id === currentUser._id"
+                        v-if="message.senderId === currentUser.id"
                         href="#"
                         class="kt-chat__username"
                       >
                         You</a
                       >
                       <a v-else href="#" class="kt-chat__username"
-                        >{{ message.user.firstname }}
-                        {{ message.user.lastname }}</a
-                      >
+                        >{{ message.sender.name }}
+                      </a>
                       <span class="kt-chat__datetime">{{
-                        new Date() | moment('from', 'now')
+                        message.createdAt | moment('from', 'now')
                       }}</span>
                     </div>
                     <div
                       class="kt-chat__text"
                       :class="
-                        message.user._id === currentUser._id
+                        message.senderId === currentUser.id
                           ? 'kt-bg-light-success'
                           : 'kt-bg-light-brand'
                       "
                     >
-                      {{ message.message }}
+                      {{ message.parts[0].payload.content }}
                     </div>
                   </div>
                 </div>
@@ -288,7 +368,7 @@
                 <div class="kt-chat__editor">
                   <textarea
                     @keyup="onKeyUp"
-                    v-model="message"
+                    v-model="newMessage"
                     style="height: 50px"
                     placeholder="Type here..."
                   ></textarea>
@@ -316,6 +396,75 @@
       </div>
 
       <!--End:: App Content-->
+      <!--begin::Modal-->
+      <div
+        class="modal fade"
+        id="kt_modal_2"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Staffs</h5>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <div class="kt-widget kt-widget--users kt-mt-20">
+                <div
+                  id="kt-users"
+                  class="kt-scroll kt-scroll--pull"
+                  style="height: 682px;overflow: hidden;"
+                  data-ktmenu-vertical="1"
+                  data-ktmenu-scroll="1"
+                  data-ktmenu-dropdown-timeout="500"
+                >
+                  <div class="kt-widget__items">
+                    <div
+                      v-for="staff in staffs"
+                      :key="staff.id"
+                      class="kt-widget__item"
+                      style="cursor:pointer"
+                      @click="createRoom(staff)"
+                    >
+                      <span
+                        v-if="staff.avatarURL"
+                        class="kt-userpic kt-userpic--circle"
+                      >
+                        <img :src="staff.avatarURL" alt="staff Image" />
+                      </span>
+                      <span v-else class="kt-userpic kt-userpic--circle">
+                        <img src="../../assets/images/100_9.jpg" alt="image" />
+                      </span>
+                      <div class="kt-widget__info">
+                        <div class="kt-widget__section">
+                          <a href="#" class="kt-widget__username">{{
+                            staff.name
+                          }}</a>
+                        </div>
+                      </div>
+                      <div class="kt-widget__action">
+                        <span class="kt-widget__date">36 Mins</span>
+                        <span class="kt-badge kt-badge--success kt-font-bold"
+                          >7</span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--end::Modal-->
     </div>
 
     <!--End::App-->
@@ -327,7 +476,8 @@
 <script>
 import PerfectScrollbar from 'perfect-scrollbar'
 import { mapState } from 'vuex'
-// import axios from '../../axios'
+import { ChatManager, TokenProvider } from '@pusher/chatkit-client'
+import axios from '../../axios'
 export default {
   name: 'chat',
   data() {
@@ -338,9 +488,15 @@ export default {
       currentUser: '',
       staffs: [],
       messages: [],
+      rooms: [],
+
+      currentRoom: null,
+      newMessage: '',
+
       activeContact: '',
       staffsUrl: '/staff/staffs',
-      imageurl: 'http://localhost:3000/static/uploads/'
+      imageurl: 'http://localhost:3000/static/uploads/',
+      chatkitusersurl: '/staff/chatkit'
     }
   },
   mounted() {
@@ -348,8 +504,15 @@ export default {
     this.scroll()
     this.getCurrentUser()
     this.getStaffs()
+    this.onAddedToRoom()
   },
   methods: {
+    handleError(error) {
+      this.$iziToast.error({
+        title: 'Error!',
+        message: error.response.data
+      })
+    },
     scrollbar() {
       // let scroll = document.querySelector('#kt_aside_menu');
       // scroll.perfectScrollbar();
@@ -368,20 +531,91 @@ export default {
       })
       scroll.update()
     },
-    sendMessage() {
-      // this will emit a socket event of type `function`
-      // this.$socket.emit('message', {
-      //   user: this.currentUser,
-      //   message: this.message
-      // })
-      // this.message = '' // empty the message bar
+
+    getCurrentUser() {
+      this.currentUser = this.isLoggedInUser
+      console.log(this.currentUser)
     },
+    sendMessage() {
+      const { newMessage, currentUser, currentRoom } = this
+
+      if (newMessage.trim() === '') return
+
+      currentUser.sendMessage({
+        text: newMessage,
+        roomId: `${currentRoom.id}`
+      })
+
+      this.newMessage = ''
+    },
+
     onKeyUp(event) {
       if (event.keyCode === 13) {
         this.sendMessage()
       }
     },
-    getCurrentUser() {
+
+    addSupportStaffToRoom(staff) {
+      const { currentRoom, currentUser } = this
+
+      return currentUser
+        .addUserToRoom({
+          userId: staff,
+          roomId: currentRoom.id
+        })
+        .then(currentRoom => {
+          this.rooms = [...this.rooms, currentRoom]
+        })
+    },
+    // getCurrentUserRooms() {
+    //   const { currentUser } = this
+    //   return currentUser.rooms()
+    // },
+    connectToRoom(id, messageLimit = 100) {
+      this.messages = []
+      const { currentUser } = this
+
+      return currentUser
+        .subscribeToRoomMultipart({
+          roomId: `${id}`,
+          messageLimit,
+          hooks: {
+            onMessage: message => {
+              this.messages = [...this.messages, message]
+            }
+          }
+        })
+        .then(currentRoom => {
+          this.currentRoom = currentRoom
+        })
+    },
+    createRoom(staff) {
+      const { currentUser } = this
+
+      return currentUser
+        .createRoom({
+          name: currentUser.name,
+          private: true
+        })
+        .then(room => {
+          this.connectToRoom(room.id, 0)
+          this.rooms = [...this.rooms, room]
+        })
+        .then(() => this.addSupportStaffToRoom(staff.id))
+        .catch(error => console.log(error))
+    },
+
+    getStaffs() {
+      axios
+        .get(this.chatkitusersurl)
+        .then(response => {
+          this.staffs = response.data.data
+        })
+        .catch(error => {
+          this.handleError(error)
+        })
+    },
+    onAddedToRoom() {
       let token = localStorage.getItem('user-token')
       const parseJwt = token => {
         try {
@@ -390,29 +624,31 @@ export default {
           console.log(error)
         }
       }
-      const currentUser = parseJwt(token)
-      this.currentUser = currentUser
-      // this.$socket.emit('connected', this.currentUser)
-    },
-    getStaffs() {
-      const user = this.isLoggedInUser
-      this.staffs = user.rooms.map(user => {
-        const users = user.userStore.users
-        return users
+      const loggedInUser = parseJwt(token)
+      this.user = loggedInUser
+      const chatManager = new ChatManager({
+        instanceLocator: process.env.VUE_APP_INSTANCE_LOCATOR,
+        userId: this.user._id,
+        tokenProvider: new TokenProvider({
+          url: process.env.VUE_APP_TOKEN_PROVIDER
+        }),
+        connectionTimeout: 20000
       })
-      // axios
-      //   .get(this.staffsUrl)
-      //   .then(response => {
-      //     this.staffs = response.data.data
-
-      //     let staffs = this.staffs
-      //     for (let i = 0; i < staffs.length; i++) {
-      //       staffs[i].url = this.imageurl + staffs[i].photo
-      //     }
-      //   })
-      //   .catch(error => {
-      //     this.handleError(error)
-      //   })
+      chatManager
+        .connect({
+          onAddedToRoom: room => {
+            this.rooms = [...this.rooms, room]
+          }
+        })
+        .then(currentUser => {
+          this.rooms = currentUser.rooms
+          if (this.rooms.length >= 1) {
+            this.connectToRoom(this.rooms[0].id)
+          }
+        })
+        .catch(err => {
+          console.log('Error on connection', err)
+        })
     }
   },
   computed: {
@@ -421,4 +657,12 @@ export default {
 }
 </script>
 
-<style></style>
+<style scoped>
+.current:hover {
+  background: #f1f1f1;
+}
+
+.current .active {
+  background: #f1f1f1;
+}
+</style>

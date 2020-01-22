@@ -151,45 +151,6 @@
                     </span>
                   </div>
                 </div>
-                <div class="col-md-4 kt-margin-b-20-tablet-and-mobile">
-                  <div class="kt-form__group kt-form__group--inline">
-                    <div class="kt-form__label">
-                      <label>Status:</label>
-                    </div>
-                    <div class="kt-form__control">
-                      <select
-                        class="form-control bootstrap-select"
-                        id="kt_form_status"
-                      >
-                        <option value="">All</option>
-                        <option value="1">Pending</option>
-                        <option value="2">Delivered</option>
-                        <option value="3">Canceled</option>
-                        <option value="4">Success</option>
-                        <option value="5">Info</option>
-                        <option value="6">Danger</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-4 kt-margin-b-20-tablet-and-mobile">
-                  <div class="kt-form__group kt-form__group--inline">
-                    <div class="kt-form__label">
-                      <label>Type:</label>
-                    </div>
-                    <div class="kt-form__control">
-                      <select
-                        class="form-control bootstrap-select"
-                        id="kt_form_type"
-                      >
-                        <option value="">All</option>
-                        <option value="1">Online</option>
-                        <option value="2">Retail</option>
-                        <option value="3">Direct</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
             <div class="col-xl-4 order-1 order-xl-2 kt-align-right">
@@ -258,6 +219,14 @@
                   >
                     Deleting...
                   </button>
+                  <button
+                    class="ml-3 btn btn-success btn-md btn-elevate"
+                    data-toggle="modal"
+                    data-target="#kt_modal_3"
+                    @click="getOneGeneric(drug)"
+                  >
+                    Edit
+                  </button>
                 </td>
               </tr>
             </tbody>
@@ -282,6 +251,89 @@
           </button>
         </div>
 
+        <!--begin::Modal-->
+        <div
+          class="modal fade"
+          id="kt_modal_3"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                  Dispense {{ name }}
+                </h5>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">
+                <div class="row">
+                  <div class="col-xl-12">
+                    <div class="form-group">
+                      <label>Generic Name </label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        v-model="generic.name"
+                        placeholder="Generic Name"
+                      />
+                      <span class="form-text text-muted"
+                        >Please enter generic name.</span
+                      >
+                    </div>
+                    <div class="form-group">
+                      <label>Code </label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        v-model="generic.code"
+                        placeholder="Code"
+                      />
+                      <span class="form-text text-muted"
+                        >Please enter generic code.</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button
+                  v-if="!loading"
+                  type="button"
+                  class="btn btn-primary"
+                  @click="updateGeneric"
+                >
+                  Update
+                </button>
+                <button
+                  v-else
+                  class="btn btn-brand kt-spinner kt-spinner--right 
+                      kt-spinner--sm kt-spinner--light btn-elevate float-right"
+                  disabled
+                >
+                  Updating...
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--end::Modal-->
+
         <!--end: Datatable -->
       </div>
     </div>
@@ -303,8 +355,11 @@ export default {
       name: '',
       code: '',
       drugs: [],
+      generic: '',
       currentDrug: '',
       genericUrl: '/pharmacy/generic',
+      genericOneUrl: '/pharmacy/generic/one',
+      updategenericUrl: '/pharmacy/generic/update',
       loading: false,
       deletedata: false,
 
@@ -361,6 +416,38 @@ export default {
           this.rows = this.meta.count
           this.pageSize = this.meta.pageSize
           this.pageCount = this.meta.pageCount
+        })
+        .catch(error => {
+          this.handleError(error)
+        })
+    },
+    getOneGeneric(drug) {
+      const data = {
+        genericId: drug._id
+      }
+      axios
+        .post(this.genericOneUrl, data)
+        .then(response => {
+          this.generic = response.data.data
+        })
+        .catch(error => {
+          this.handleError(error)
+        })
+    },
+
+    updateGeneric() {
+      const data = {
+        genericId: this.generic._id,
+        generic: this.generic
+      }
+      axios
+        .put(this.updategenericUrl, data)
+        .then(response => {
+          this.$iziToast.success({
+            title: 'Success!',
+            message: response.data.message
+          })
+          this.drugs = response.data.data
         })
         .catch(error => {
           this.handleError(error)

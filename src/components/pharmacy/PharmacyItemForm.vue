@@ -421,7 +421,7 @@ export default {
         .post(this.pharmacyitemUrl, this.input)
         .then(response => {
           this.input = ''
-
+          this.loading = false
           this.$iziToast.success({
             title: 'Success!',
             message: response.data.message

@@ -414,13 +414,16 @@ export default {
         message: error.response.data
       })
     },
+    setNull(obj, val) {
+      Object.keys(obj).forEach(k => (obj[k] = val))
+    },
     createItem() {
       this.loading = true
 
       axios
         .post(this.pharmacyitemUrl, this.input)
         .then(response => {
-          this.input = ''
+          this.setNull(this.input, '')
           this.loading = false
           this.$iziToast.success({
             title: 'Success!',

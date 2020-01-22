@@ -198,8 +198,11 @@
                   </p>
                 </td>
                 <td v-else>No Investigations</td>
+
                 <td v-if="consultation.imagingfinish">
-                  <router-link :to="consultation.scantestresulturl"
+                  <router-link
+                    class="btn btn-brand btn-elevate"
+                    :to="consultation.scantestresulturl"
                     >View Result</router-link
                   >
                 </td>
@@ -481,7 +484,10 @@ export default {
       consultationresulturl: '/laboratory/labtest/result',
       haemaurl: '',
       chemicalurl: '',
-      microurl: ''
+      microurl: '',
+      scanurl:
+        process.env.VUE_APP_SCAN_URL ||
+        'http://localhost:3000/static/scanphotos/'
     }
   },
   mounted() {
@@ -521,6 +527,9 @@ export default {
               consultations[i].dependantconsulturl =
                 '/dependant/consultation/' + consultations[i]._id
             }
+
+            consultations[i].scantestresulturl =
+              '/ultrasound-scan-test-result/' + consultations[i]._id
           }
         })
         .catch(error => {

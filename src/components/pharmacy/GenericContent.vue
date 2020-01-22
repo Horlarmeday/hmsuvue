@@ -392,6 +392,7 @@ export default {
         .post(this.genericUrl, data)
         .then(response => {
           this.name = ''
+          this.code = ''
           this.loading = false
           this.drugs = response.data.data
           this.$iziToast.success({

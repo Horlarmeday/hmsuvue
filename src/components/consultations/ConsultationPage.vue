@@ -1560,6 +1560,9 @@ export default {
         message: error.response.data
       })
     },
+    setNull(obj, val) {
+      Object.keys(obj).forEach(k => (obj[k] = val))
+    },
     getPage() {
       axios
         .get(this.consultationpageUrl + this.$route.params.id)
@@ -1651,7 +1654,7 @@ export default {
         .put(this.createimagingtestUrl + this.$route.params.id, this.image)
         .then(response => {
           this.imagingloading = false
-          this.image = ''
+          this.setNull(this.image, '')
           this.consultationImagings = response.data.data.imagings
           this.$iziToast.success({
             title: 'Success!',
@@ -1717,7 +1720,7 @@ export default {
         .put(this.createlabtestUrl + this.$route.params.id, this.test)
         .then(response => {
           this.testloading = false
-          this.test = ''
+          this.setNull(this.test, '')
           this.consultationTests = response.data.data.tests
           this.$iziToast.success({
             title: 'Success!',
@@ -1793,6 +1796,7 @@ export default {
         .put(this.createdrugUrl + this.$route.params.id, this.input)
         .then(response => {
           this.drugloading = false
+          this.setNull(this.input, '')
           this.consultationDrugs = response.data.data.drugs
           this.$iziToast.success({
             title: 'Success!',

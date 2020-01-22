@@ -529,7 +529,6 @@
                   <div class="dropbox">
                     <input
                       type="file"
-                      multiple
                       ref="file"
                       :disabled="isSaving"
                       @change="
@@ -941,7 +940,10 @@ export default {
       uploadError: null,
       currentStatus: null,
       uploadFieldName: 'photos',
-      uploadscanphotos: '/imaging/upload/scan/photo/'
+      uploadscanphotos: '/imaging/upload/scan/photo/',
+      scanurl:
+        process.env.VUE_APP_SCAN_URL ||
+        'http://localhost:3000/static/scanphotos/'
     }
   },
   mounted() {
@@ -1057,21 +1059,10 @@ export default {
       this.uploadedFiles = []
       this.uploadError = null
     },
-    // upload(formData) {
-    //   return (
-    //     axios
-    //       .post(this.uploadscanphotos + this.$route.params.id, formData)
-    //       // // get data
-    //       // .then(x => x.data)
-    //       // add url field
-    //       .then(x => {
-    //         this.uploadedFiles = x.data.data.scanPhoto
-    //       })
-    //   )
-    // },
     save() {
-      this.fileList = this.$refs.file.files
-      if (!this.fileList.length) {
+      this.fileList = this.$refs.file.files[0]
+      console.log(this.fileList)
+      if (this.fileList.length < 1) {
         this.$iziToast.error({
           title: 'Error!',
           message: 'Please choose photos'
@@ -1081,16 +1072,16 @@ export default {
       // upload data to the server
       this.currentStatus = STATUS_SAVING
       let formData = new FormData()
-      formData.append('file', this.fileList)
+      formData.append('files', this.fileList)
       axios
         .post(this.uploadscanphotos + this.$route.params.id, formData)
         .then(response => {
           this.currentStatus = STATUS_SUCCESS
           this.uploadedFiles = response.data.data.scanPhoto
-          // let uploadedFiles = this.uploadedFiles
-          // for (let i = 0; i < uploadedFiles.length; i++) {
-
-          // }
+          let uploadedFiles = this.uploadedFiles
+          for (let i = 0; i < uploadedFiles.length; i++) {
+            uploadedFiles[i].url = this.imageurl + uploadedFiles[i]
+          }
           this.$iziToast.success({
             title: 'Success!',
             message: response.data.message
@@ -1100,32 +1091,7 @@ export default {
           this.uploadError = this.handleError(error)
           this.currentStatus = STATUS_FAILED
         })
-
-      // this.upload(formData)
-      //   // .then(wait(1500)) // DEV ONLY: wait for 1.5s
-      //   .then(x => {
-      //     // this.uploadedFiles = [].concat(x)
-
-      //     this.$iziToast.success({
-      //       title: 'Success!',
-      //       message: x.data.message
-      //     })
-      //   })
-      //   .catch(err => {
-
-      //   })
     }
-    // filesChange(fieldName, fileList) {
-    //   // handle file changes
-    //   const formData = new FormData()
-    //   if (!fileList.length) return
-    //   // append the files to FormData
-    //   Array.from(Array(fileList.length).keys()).map(x => {
-    //     formData.append(fieldName, fileList[x], fileList[x].name)
-    //   })
-    //   // save it
-    //   this.save(formData)
-    // }
   },
   computed: {
     isInitial() {

@@ -2070,7 +2070,9 @@ export default {
       drugs: [],
       tests: [],
       imagings: [],
-      imageurl: 'http://localhost:3000/static/uploads/',
+      imageurl:
+        process.env.VUE_APP_IMAGE_URL ||
+        'http://localhost:3000/static/uploads/',
       dependantUrl: '/edit-dependant/',
       historyurl: '/consultation/patient/consultation/',
       medicationurl: '/consultation/patient/drugs/',

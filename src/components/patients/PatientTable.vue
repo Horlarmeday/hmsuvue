@@ -294,7 +294,8 @@ export default {
       rows: '',
       meta: '',
       patientsUrl: '/patient/',
-      imageurl: 'http://localhost:3000/static/uploads/'
+      imageurl:
+        process.env.VUE_APP_IMAGE_URL || 'http://localhost:3000/static/uploads/'
     }
   },
   mounted() {

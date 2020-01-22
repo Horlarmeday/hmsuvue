@@ -170,7 +170,9 @@
                 </td>
                 <td v-else>No Investigations</td>
                 <td v-if="consultation.imagingfinish">
-                  <router-link :to="consultation.scantestresulturl"
+                  <router-link
+                    class="btn btn-primary btn-elevate"
+                    :to="consultation.scantestresulturl"
                     >View Result</router-link
                   >
                 </td>

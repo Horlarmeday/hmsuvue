@@ -337,7 +337,9 @@ export default {
     return {
       staffs: [],
       staffsUrl: '/staff',
-      imageurl: 'http://localhost:3000/static/uploads/',
+      imageurl:
+        process.env.VUE_APP_IMAGE_URL ||
+        'http://localhost:3000/static/uploads/',
       input: '',
 
       currentPage: 1,

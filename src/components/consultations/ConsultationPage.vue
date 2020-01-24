@@ -512,25 +512,6 @@
                         </span>
                       </div>
                     </div>
-
-                    <div class="col-md-4 kt-margin-b-20-tablet-and-mobile">
-                      <div class="kt-form__group kt-form__group--inline">
-                        <div class="kt-form__label">
-                          <label>Type:</label>
-                        </div>
-                        <div class="kt-form__control">
-                          <select
-                            class="form-control bootstrap-select"
-                            id="kt_form_type"
-                          >
-                            <option value="">All</option>
-                            <option value="1">Online</option>
-                            <option value="2">Retail</option>
-                            <option value="3">Direct</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
                   </div>
                 </div>
                 <div class="col-xl-4 order-1 order-xl-2 kt-align-right">
@@ -1120,25 +1101,6 @@
                         </span>
                       </div>
                     </div>
-
-                    <div class="col-md-4 kt-margin-b-20-tablet-and-mobile">
-                      <div class="kt-form__group kt-form__group--inline">
-                        <div class="kt-form__label">
-                          <label>Type:</label>
-                        </div>
-                        <div class="kt-form__control">
-                          <select
-                            class="form-control bootstrap-select"
-                            id="kt_form_type"
-                          >
-                            <option value="">All</option>
-                            <option value="1">Online</option>
-                            <option value="2">Retail</option>
-                            <option value="3">Direct</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
                   </div>
                 </div>
                 <div class="col-xl-4 order-1 order-xl-2 kt-align-right">
@@ -1283,7 +1245,7 @@
                   <div class="col-10">
                     <input
                       class="form-control"
-                      type="text"
+                      type="number"
                       v-model="price"
                       readonly
                     />
@@ -1374,7 +1336,7 @@
               <div class="col-4">
                 <input
                   class="form-control"
-                  type="text"
+                  type="number"
                   v-model="investigationprice"
                   readonly
                 />

@@ -376,9 +376,30 @@
                           {{ consultation.reasonforvisit }}
                         </td>
                         <td>
-                          <p v-for="test in consultation.tests" :key="test._id">
+                          <label
+                            v-for="(test, index) in consultation.tests"
+                            :key="test._id"
+                            class="kt-checkbox"
+                          >
+                            <input
+                              name="testChecked"
+                              @change="checkTest(consultation, index)"
+                              type="checkbox"
+                            />
                             {{ test.test.name }}
-                          </p>
+
+                            <small
+                              v-if="!test.status"
+                              class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill"
+                              >pending</small
+                            >
+                            <small
+                              v-else
+                              class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill"
+                              >cleared</small
+                            >
+                            <span></span>
+                          </label>
                         </td>
                         <td>
                           <router-link to="#">
@@ -471,6 +492,9 @@ export default {
       landingPageUrl: '/dashboard/nhis',
       clearpaymenturl: '/account/clear/labtest',
       imageurl: 'http://localhost:3000/static/uploads/',
+
+      checktestUrl: '/ajax/change/test/status/true',
+      unchecktestUrl: '/ajax/change/test/status/false',
       input: '',
       photo: '',
 
@@ -520,6 +544,37 @@ export default {
         .catch(error => {
           this.handleError(error)
         })
+    },
+    checkTest(consultation, index) {
+      let isChecked = document.getElementsByName('testChecked')[index].checked
+      const data = {
+        consultationId: consultation._id,
+        index: index
+      }
+
+      if (isChecked === true) {
+        axios
+          .post(this.checktestUrl, data)
+          .then(response => {
+            console.log(true)
+            console.log(response.data.data)
+          })
+          .catch(error => {
+            this.loading = false
+            this.handleError(error)
+          })
+      } else {
+        axios
+          .post(this.unchecktestUrl, data)
+          .then(response => {
+            console.log(false)
+            console.log(response.data.data)
+          })
+          .catch(error => {
+            this.loading = false
+            this.handleError(error)
+          })
+      }
     },
     clearPayment(consultation) {
       this.loading = true

@@ -1001,8 +1001,6 @@ export default {
         index: index
       }
 
-      console.log(index)
-
       if (isChecked === true) {
         axios
           .post(this.checktestUrl, data)

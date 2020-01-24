@@ -830,6 +830,7 @@ export default {
   },
   mounted() {
     this.dashboard()
+    this.ItemPage()
   },
   methods: {
     handleError(error) {
@@ -903,7 +904,8 @@ export default {
       axios
         .put(this.dispenseUrl, data)
         .then(response => {
-          this.items = response.data.data
+          this.items = response.data.data.items
+          this.drug = response.data.data.updatedItem
           this.$iziToast.success({
             title: 'Success!',
             message: response.data.message
@@ -920,7 +922,6 @@ export default {
           this.units = response.data.data.units
           this.departments = response.data.data.departments
           this.staffs = response.data.data.staffs
-          //   console.log(this.drug)
         })
         .catch(error => {
           this.handleError(error)

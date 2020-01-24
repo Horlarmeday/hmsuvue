@@ -134,6 +134,7 @@
                 <th>Diagnosis</th>
                 <th>Imaging Test</th>
                 <th>Imaging Result</th>
+                <th>Scan Images</th>
                 <th>Status</th>
                 <th>Created</th>
               </tr>
@@ -178,6 +179,16 @@
                 </td>
                 <td v-else>
                   <p>No Result Yet</p>
+                </td>
+                <td>
+                  <a
+                    target="_blank"
+                    v-if="consultation.scanPhoto.length > 0"
+                    :href="consultation.scannedphotourl"
+                    class="btn btn-success btn-elevate"
+                    >View</a
+                  >
+                  <span v-else href="#">No Images</span>
                 </td>
                 <td>
                   <label
@@ -285,6 +296,9 @@ export default {
 
             consultations[i].scantestresulturl =
               '/ultrasound-scan-test-result/' + consultations[i]._id
+
+            consultations[i].scannedphotourl =
+              '/ultrasound-scanned-images/' + consultations[i]._id
           }
         })
         .catch(error => {

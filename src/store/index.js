@@ -32,7 +32,6 @@ export default new Vuex.Store({
     pushkit_success(state, pushkitUser) {
       state.status = 'success'
       state.isLoggedInUser = pushkitUser
-      localStorage.setItem('pushkitUser', JSON.stringify(state.isLoggedInUser))
     },
     auth_error(state) {
       state.status = 'error'

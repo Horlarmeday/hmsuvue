@@ -205,6 +205,14 @@
                     :to="consultation.scantestresulturl"
                     >View Result</router-link
                   >
+                  <br />
+                  <a
+                    target="_blank"
+                    :href="consultation.scannedphotourl"
+                    v-if="consultation.scanPhoto.length > 0"
+                    class="btn btn-success btn-sm btn-elevate"
+                    >Scan Photos</a
+                  >
                 </td>
                 <td v-else>
                   <p>No Result Yet</p>
@@ -485,9 +493,7 @@ export default {
       haemaurl: '',
       chemicalurl: '',
       microurl: '',
-      scanurl:
-        process.env.VUE_APP_SCAN_URL ||
-        'http://localhost:3000/static/scanphotos/'
+      scannedphotourl: '/ultrasound-scanned-images/'
     }
   },
   mounted() {
@@ -530,6 +536,9 @@ export default {
 
             consultations[i].scantestresulturl =
               '/ultrasound-scan-test-result/' + consultations[i]._id
+
+            consultations[i].scannedphotourl =
+              '/ultrasound-scanned-images/' + consultations[i]._id
           }
         })
         .catch(error => {

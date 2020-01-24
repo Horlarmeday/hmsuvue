@@ -800,6 +800,14 @@ const routes = [
       requiresAuth: true
     }
   },
+  {
+    path: '/ultrasound-scanned-images/:id',
+    name: 'scannnedphotos',
+    component: () => import('../views/app/imaging/ScanPhotos.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
   // Theater
   {
     path: '/book-surgery',

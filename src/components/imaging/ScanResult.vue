@@ -1080,7 +1080,7 @@ export default {
           this.uploadedFiles = response.data.data.scanPhoto
           let uploadedFiles = this.uploadedFiles
           for (let i = 0; i < uploadedFiles.length; i++) {
-            uploadedFiles[i].url = this.imageurl + uploadedFiles[i]
+            uploadedFiles[i] = this.imageurl + uploadedFiles[i]
           }
           this.$iziToast.success({
             title: 'Success!',

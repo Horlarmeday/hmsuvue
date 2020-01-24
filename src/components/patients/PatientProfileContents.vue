@@ -1085,7 +1085,7 @@
                             <td>
                               <img
                                 v-if="dependant.photo"
-                                width="30"
+                                width="40"
                                 :src="dependant.photourl"
                                 alt="dependant Image"
                               />
@@ -2238,11 +2238,11 @@ export default {
       axios
         .get(this.testsurl + this.$route.params.id)
         .then(response => {
-          if (response.data.data[0] === undefined) {
-            this.tests = []
+          if (response.data.data.length == 0) {
+            this.tests.length == 0
           }
           this.tests = response.data.data[0]
-          console.log(response.data.data[0])
+          console.log(response.data.data)
         })
         .catch(error => {
           this.handleError(error)

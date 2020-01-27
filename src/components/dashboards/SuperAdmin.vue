@@ -260,19 +260,36 @@
                           </a>
                         </td>
                         <td>{{ payment.amount }}</td>
-                        <td>
-                          <span v-if="payment.service">{{
-                            payment.service.name
-                          }}</span>
-                          <span v-if="payment.drugs">{{
-                            payment.drugs.name
-                          }}</span>
-                          <span v-if="payment.investifgations">{{
-                            payment.investifgations.name
-                          }}</span>
-                          <span v-if="payment.tests">{{
-                            payment.tests.name
-                          }}</span>
+                        <td v-if="payment.drugs.length > 0">
+                          <p v-for="drug in payment.drugs" :key="drug._id">
+                            {{ drug.name }}
+                          </p>
+                        </td>
+                        <td v-if="payment.tests.length > 0">
+                          <p v-for="test in payment.tests" :key="test._id">
+                            {{ test.name }}
+                          </p>
+                        </td>
+                        <td v-if="payment.investigations.length > 0">
+                          <p
+                            v-for="image in payment.investigations"
+                            :key="image._id"
+                          >
+                            {{ image.name }}
+                          </p>
+                        </td>
+                        <td v-if="payment.services.length > 0">
+                          <p
+                            v-for="service in payment.services"
+                            :key="service._id"
+                          >
+                            {{ service.name }}
+                          </p>
+                        </td>
+                        <td v-if="payment.type">
+                          <p>
+                            {{ payment.type }}
+                          </p>
                         </td>
                         <td>{{ payment.modeofpayment }}</td>
                         <td>{{ payment.createdAt | moment('DD/MM/YYYY') }}</td>
@@ -356,6 +373,11 @@
                           <div class="kt-widget4__info">
                             <a href="#" class="kt-widget4__username">
                               {{ patient.firstname }} {{ patient.lastname }}
+                              <label
+                                v-if="patient.retainershipname"
+                                class="kt-badge kt-badge--success kt-badge--inline"
+                                >{{ patient.retainershipname.name }}</label
+                              >
                             </a>
                             <p
                               style="color: #a7abc3;font-weight: 400;"

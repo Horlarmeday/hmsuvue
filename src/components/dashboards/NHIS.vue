@@ -334,7 +334,7 @@
                       <tr>
                         <th>S/N</th>
                         <th>Patient Name</th>
-                        <th>Reason for Visit</th>
+                        <!-- <th>Reason for Visit</th> -->
                         <th>Lab Tests</th>
                         <th>Requested By</th>
                         <th>Payment Status</th>
@@ -372,9 +372,9 @@
                             >
                           </router-link>
                         </td>
-                        <td>
+                        <!-- <td>
                           {{ consultation.reasonforvisit }}
-                        </td>
+                        </td> -->
                         <td>
                           <label
                             v-for="(test, index) in consultation.tests"
@@ -428,7 +428,7 @@
                           <button
                             v-if="!loading"
                             class="btn btn-danger btn-sm"
-                            @click="clearPayment(consultation)"
+                            @click="clearPayment(consultation, index)"
                           >
                             Clear Payment
                           </button>
@@ -556,8 +556,7 @@ export default {
         axios
           .post(this.checktestUrl, data)
           .then(response => {
-            console.log(true)
-            console.log(response.data.data)
+            consultation.tests[index].status = response.data.data
           })
           .catch(error => {
             this.loading = false
@@ -567,8 +566,7 @@ export default {
         axios
           .post(this.unchecktestUrl, data)
           .then(response => {
-            console.log(false)
-            console.log(response.data.data)
+            consultation.tests[index].status = response.data.data
           })
           .catch(error => {
             this.loading = false
@@ -576,7 +574,15 @@ export default {
           })
       }
     },
-    clearPayment(consultation) {
+    clearPayment(consultation, index) {
+      let isChecked = document.getElementsByName('testChecked')[index].checked
+      if (isChecked === false) {
+        this.$iziToast.error({
+          title: 'Error!',
+          message: 'Please tick all the checkbox'
+        })
+        return
+      }
       this.loading = true
       this.currentConsultation = consultation
       const data = {

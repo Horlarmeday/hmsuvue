@@ -564,7 +564,7 @@
                 </thead>
                 <tbody>
                   <tr v-if="consultationDrugs.length == 0">
-                    <td colspan="9" align="center">No Prescribed Drugs</td>
+                    <td colspan="15" align="center">No Prescribed Drugs</td>
                   </tr>
                   <tr
                     v-for="(drug, index) in consultationDrugs"
@@ -588,7 +588,12 @@
                     <td>{{ drug.duration }}</td>
                     <td>{{ drug.quantity }}</td>
                     <td>{{ drug.quantitytodispense }}</td>
-                    <td>{{ drug.totalprice }}</td>
+                    <td v-if="drug.drug.name.includes('NHIS')">
+                      {{ drug.totalprice * 0.1 }}
+                    </td>
+                    <td v-else>
+                      {{ drug.totalprice }}
+                    </td>
                     <td>
                       <a v-if="drug.examiner" href="#">
                         {{ drug.examiner.firstname }}

@@ -777,6 +777,7 @@
               <b-collapse id="accordion-6" accordion="my-accordion">
                 <ul class="kt-menu__subnav">
                   <li
+                    v-if="user.role == 'Super Admin'"
                     class="kt-menu__item kt-menu__item--submenu"
                     data-ktmenu-submenu-toggle="hover"
                     aria-haspopup="true"
@@ -795,6 +796,7 @@
                     >
                   </li>
                   <li
+                    v-if="user.role == 'Super Admin'"
                     class="kt-menu__item kt-menu__item--submenu"
                     data-ktmenu-submenu-toggle="hover"
                     aria-haspopup="true"
@@ -832,6 +834,7 @@
                     >
                   </li>
                   <li
+                    v-if="user.role == 'Accountant'"
                     class="kt-menu__item kt-menu__item--submenu"
                     data-ktmenu-submenu-toggle="hover"
                     aria-haspopup="true"
@@ -850,6 +853,7 @@
                     >
                   </li>
                   <li
+                    v-if="user.role == 'Super Admin'"
                     class="kt-menu__item kt-menu__item--submenu"
                     data-ktmenu-submenu-toggle="hover"
                     aria-haspopup="true"
@@ -868,6 +872,7 @@
                     >
                   </li>
                   <li
+                    v-if="user.role == 'Super Admin'"
                     class="kt-menu__item kt-menu__item--submenu"
                     data-ktmenu-submenu-toggle="hover"
                     aria-haspopup="true"

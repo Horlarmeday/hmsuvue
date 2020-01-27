@@ -234,7 +234,7 @@
                   </tr>
                 </tbody>
                 <tbody v-for="(patient, index) in patients" :key="patient._id">
-                  <tr v-if="patient.registration">
+                  <tr>
                     <td>
                       {{ index + 1 }}
                     </td>
@@ -401,10 +401,10 @@
                               class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill"
                               >pending</small
                             >
-                            <span
+                            <small
                               v-else
                               class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill"
-                              >paid</span
+                              >paid</small
                             >
                             <span></span>
                           </label>
@@ -418,22 +418,23 @@
                           <p name="testAmount">{{ consultation.testSum }}</p>
                         </td>
                         <td>
-                          <label
+                          <small
                             v-if="consultation.labtestpaid === 'Pending'"
                             class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill"
-                            >Pending</label
+                            >Pending</small
                           >
-                          <label
+                          <small
                             v-if="consultation.labtestpaid === 'Paid'"
                             class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill"
-                            >Paid</label
+                            >Paid</small
                           >
-                          <label
+                          <small
                             v-if="
                               consultation.labtestpaid === 'Cleared by NHIS'
                             "
+                            style="font-style: 5px"
                             class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill"
-                            >Cleared by NHIS</label
+                            >Cleared</small
                           >
                         </td>
                         <td>
@@ -569,17 +570,22 @@
                               class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill"
                               >pending</small
                             >
-                            <span
+                            <small
                               v-else
                               class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill"
-                              >paid</span
+                              >paid</small
                             >
                             <span></span>
                           </label>
                         </td>
                         <td>
                           <p v-for="drug in consultation.drugs" :key="drug._id">
-                            {{ drug.totalprice }}
+                            <span v-if="drug.drug.name.includes('NHIS')">
+                              {{ drug.totalprice * 0.1 }}
+                            </span>
+                            <span v-else>
+                              {{ drug.totalprice }}
+                            </span>
                           </p>
                         </td>
                         <td>
@@ -727,10 +733,10 @@
                               class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill"
                               >pending</small
                             >
-                            <span
+                            <small
                               v-else
                               class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill"
-                              >paid</span
+                              >paid</small
                             >
                             <span></span>
                           </label>
@@ -917,9 +923,11 @@ export default {
           }
 
           for (let i = 0; i < consultations.length; i++) {
-            consultations[i].url = '/patient/' + consultations[i].patient._id
-            consultations[i].invoiceurl =
-              this.invoiceurl + consultations[i].invoice
+            if (consultations[i].patient) {
+              consultations[i].url = '/patient/' + consultations[i].patient._id
+              consultations[i].invoiceurl =
+                this.invoiceurl + consultations[i].invoice
+            }
           }
         })
         .catch(error => {
@@ -980,9 +988,11 @@ export default {
           let consultations = this.consultations
 
           for (let i = 0; i < consultations.length; i++) {
-            consultations[i].url = '/patient/' + consultations[i]._id
-            consultations[i].invoiceurl =
-              this.invoiceurl + consultations[i].testinvoice
+            if (consultations[i].patient) {
+              consultations[i].url = '/patient/' + consultations[i]._id
+              consultations[i].invoiceurl =
+                this.invoiceurl + consultations[i].testinvoice
+            }
           }
           this.$iziToast.success({
             title: 'Success!',
@@ -1005,8 +1015,7 @@ export default {
         axios
           .post(this.checktestUrl, data)
           .then(response => {
-            console.log(true)
-            console.log(response.data.data)
+            consultation.tests[index].status = response.data.data
           })
           .catch(error => {
             this.loading = false
@@ -1016,8 +1025,7 @@ export default {
         axios
           .post(this.unchecktestUrl, data)
           .then(response => {
-            console.log(false)
-            console.log(response.data.data)
+            consultation.tests[index].status = response.data.data
           })
           .catch(error => {
             this.loading = false
@@ -1054,9 +1062,11 @@ export default {
           let consultations = this.consultations
 
           for (let i = 0; i < consultations.length; i++) {
-            consultations[i].url = '/patient/' + consultations[i]._id
-            consultations[i].invoiceurl =
-              this.invoiceurl + consultations[i].druginvoice
+            if (consultations[i].patient) {
+              consultations[i].url = '/patient/' + consultations[i]._id
+              consultations[i].invoiceurl =
+                this.invoiceurl + consultations[i].druginvoice
+            }
           }
           this.$iziToast.success({
             title: 'Success!',
@@ -1080,7 +1090,7 @@ export default {
         axios
           .post(this.checkdrugUrl, data)
           .then(response => {
-            this.consultations = response.data.data
+            consultation.drugs[index].status = response.data.data
           })
           .catch(error => {
             this.loading = false
@@ -1090,7 +1100,7 @@ export default {
         axios
           .post(this.uncheckdrugUrl, data)
           .then(response => {
-            this.consultations = response.data.data
+            consultation.drugs[index].status = response.data.data
           })
           .catch(error => {
             this.loading = false
@@ -1128,9 +1138,11 @@ export default {
           let consultations = this.consultations
 
           for (let i = 0; i < consultations.length; i++) {
-            consultations[i].url = '/patient/' + consultations[i]._id
-            consultations[i].invoiceurl =
-              this.invoiceurl + consultations[i].imaginginvoice
+            if (consultations[i].patient) {
+              consultations[i].url = '/patient/' + consultations[i]._id
+              consultations[i].invoiceurl =
+                this.invoiceurl + consultations[i].imaginginvoice
+            }
           }
           this.$iziToast.success({
             title: 'Success!',
@@ -1155,7 +1167,7 @@ export default {
         axios
           .post(this.checkimagingUrl, data)
           .then(response => {
-            this.consultations = response.data.data
+            consultation.imagings[index].status = response.data.data
           })
           .catch(error => {
             this.loading = false
@@ -1165,7 +1177,7 @@ export default {
         axios
           .post(this.uncheckimagingUrl, data)
           .then(response => {
-            this.consultations = response.data.data
+            consultation.imagings[index].status = response.data.data
           })
           .catch(error => {
             this.loading = false

@@ -409,8 +409,8 @@ export default {
           let appointments = this.appointments
 
           for (let i = 0; i < appointments.length; i++) {
-            appointments[i].url = '/patient/' + appointments[i]._id
-            appointments[i].smsurl = '/sms/' + appointments[i]._id
+            appointments[i].url = '/patient/' + appointments[i].patient._id
+            appointments[i].smsurl = '/send-sms/' + appointments[i].patient._id
           }
         })
         .catch(error => {

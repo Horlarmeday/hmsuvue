@@ -840,6 +840,23 @@ const routes = [
     meta: {
       requiresAuth: true
     }
+  },
+  // SMS
+  {
+    path: '/send-sms/:id',
+    name: 'sendsms',
+    component: () => import('../views/app/sms/SendSMS.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/sent-sms',
+    name: 'sentsms',
+    component: () => import('../views/app/sms/SentSMS.vue'),
+    meta: {
+      requiresAuth: true
+    }
   }
 ]
 

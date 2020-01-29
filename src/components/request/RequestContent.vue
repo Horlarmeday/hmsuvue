@@ -16,14 +16,26 @@
       <div class="kt-portlet__body">
         <!--begin: Datatable -->
         <div class="row">
-          <div class="col-xl-6">
+          <div v-if="currentUser.role == 'Pharmacy'" class="col-xl-6">
             <div class="form-group">
               <label>Request For </label>
               <v-select
                 v-model="input.genericId"
-                label="name"
+                :getOptionLabel="drugs => drugs.name.name"
                 :reduce="drugs => drugs._id"
                 :options="drugs"
+              ></v-select>
+              <span class="form-text text-muted">Please select item.</span>
+            </div>
+          </div>
+          <div v-if="currentUser.role == 'Laboratory'" class="col-xl-6">
+            <div class="form-group">
+              <label>Request For </label>
+              <v-select
+                v-model="input.labId"
+                label="name"
+                :reduce="labitems => labitems._id"
+                :options="labitems"
               ></v-select>
               <span class="form-text text-muted">Please select item.</span>
             </div>
@@ -31,12 +43,24 @@
           <div class="col-xl-6">
             <div class="form-group">
               <label>Inventory</label>
-              <select v-model="input.inventory" class="form-control">
+              <select
+                v-if="currentUser.role === 'Pharmacy'"
+                v-model="input.inventory"
+                class="form-control"
+              >
                 <option selected disabled>Select</option>
                 <option value="Outpatient Pharmacy">Outpatient Pharmacy</option>
                 <option value="Inpatient Pharmacy">Inpatient Pharmacy</option>
                 <option value="NHIS Outpatient">NHIS Outpatient</option>
                 <option value="NHIS Inpatient">NHIS Inpatient</option>
+              </select>
+              <select
+                v-if="currentUser.role === 'Laboratory'"
+                v-model="input.inventory"
+                class="form-control"
+              >
+                <option selected disabled>Select</option>
+                <option value="Laboratory">Laboratory</option>
               </select>
               <span class="form-text text-muted">Please select inventory.</span>
             </div>
@@ -195,24 +219,6 @@
                     </span>
                   </div>
                 </div>
-                <div class="col-md-4 kt-margin-b-20-tablet-and-mobile">
-                  <div class="kt-form__group kt-form__group--inline">
-                    <div class="kt-form__label">
-                      <label>Type:</label>
-                    </div>
-                    <div class="kt-form__control">
-                      <select
-                        class="form-control bootstrap-select"
-                        id="kt_form_type"
-                      >
-                        <option value="">All</option>
-                        <option value="1">Online</option>
-                        <option value="2">Retail</option>
-                        <option value="3">Direct</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
             <div class="col-xl-4 order-1 order-xl-2 kt-align-right">
@@ -329,17 +335,19 @@ export default {
     return {
       input: {
         genericId: '',
+        labId: '',
         quantity: '',
         inventory: '',
         unit: '',
         comment: ''
       },
       drugs: [],
+      labitems: [],
       requests: [],
       units: [],
 
       createrequesturl: '/staff/make-request',
-      landingpageurl: '/pharmacy/pharmacy/page',
+      landingpageurl: '/staff/requests-page',
       requesturl: '/staff/staffrequests',
       loading: false,
 
@@ -348,12 +356,24 @@ export default {
       pageCount: '',
       pageSize: '',
       rows: '',
-      meta: 3
+      meta: 3,
+      currentUser: ''
     }
   },
   mounted() {
     this.getPage()
     this.getRequests()
+    let token = localStorage.getItem('user-token')
+    const parseJwt = token => {
+      try {
+        return JSON.parse(atob(token.split('.')[1]))
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    const currentUser = parseJwt(token)
+    this.currentUser = currentUser
+    console.log(this.currentUser)
   },
   methods: {
     handleError(error) {
@@ -363,12 +383,15 @@ export default {
         message: error.response.data
       })
     },
+    setNull(obj, val) {
+      Object.keys(obj).forEach(k => (obj[k] = val))
+    },
     createRequest() {
       this.loading = true
       axios
         .post(this.createrequesturl, this.input)
         .then(response => {
-          this.input = ''
+          this.setNull(this.input, '')
           this.requests = response.data.data
           this.loading = false
           this.$iziToast.success({
@@ -381,12 +404,15 @@ export default {
           this.handleError(error)
         })
     },
+
     getPage() {
       axios
         .get(this.landingpageurl)
         .then(response => {
           this.units = response.data.data.units
-          this.drugs = response.data.data.generics
+          this.drugs = response.data.data.pharmitems
+          this.labitems = response.data.data.labitems
+          console.log(this.labitems)
         })
         .catch(error => {
           this.handleError(error)

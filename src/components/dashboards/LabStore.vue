@@ -292,7 +292,7 @@
                       {{ request.createdAt | moment('DD/MM/YYYY, h:ma') }}
                     </td>
                     <td>
-                      <button class="btn btn-success btn-elevate">
+                      <button class="btn btn-success btn-elevate mr-3">
                         Approve
                       </button>
                       <button class="btn btn-danger btn-elevate">

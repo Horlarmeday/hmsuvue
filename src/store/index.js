@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
-import { ChatManager, TokenProvider } from '@pusher/chatkit-client'
+// import { ChatManager, TokenProvider } from '@pusher/chatkit-client'
 // import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
@@ -55,23 +55,24 @@ export default new Vuex.Store({
             const token = response.data.token
             const user = response.data.data
             localStorage.setItem('user-token', token)
-            const chatManager = new ChatManager({
-              instanceLocator: process.env.VUE_APP_INSTANCE_LOCATOR,
-              userId: user._id,
-              tokenProvider: new TokenProvider({
-                url: process.env.VUE_APP_TOKEN_PROVIDER
-              }),
-              connectionTimeout: 20000
-            })
-            chatManager
-              .connect()
-              .then(currentUser => {
-                console.log('Successful connection', currentUser)
-                commit('pushkit_success', currentUser)
-              })
-              .catch(err => {
-                console.log('Error on connection', err)
-              })
+
+            // const chatManager = new ChatManager({
+            //   instanceLocator: process.env.VUE_APP_INSTANCE_LOCATOR,
+            //   userId: user._id,
+            //   tokenProvider: new TokenProvider({
+            //     url: process.env.VUE_APP_TOKEN_PROVIDER
+            //   }),
+            //   connectionTimeout: 20000
+            // })
+            // chatManager
+            //   .connect()
+            //   .then(currentUser => {
+            //     commit('pushkit_success', currentUser)
+            //   })
+            //   .catch(err => {
+            //     console.log('Error on connection', err)
+            //   })
+
             axios.defaults.headers.common['x-auth-token'] = token
             commit('auth_success', token, user)
             resolve(response)

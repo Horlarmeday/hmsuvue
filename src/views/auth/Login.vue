@@ -143,6 +143,7 @@ export default {
         .dispatch('login', { username, password })
         .then(() => {
           this.loading = false
+          console.log('Went through')
           this.$router.push('/dashboard')
         })
         .catch(error => {

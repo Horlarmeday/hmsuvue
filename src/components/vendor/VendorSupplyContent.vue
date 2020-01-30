@@ -109,13 +109,12 @@
           <div class="col-xl-6">
             <div class="form-group">
               <label>Date Supplied</label>
-              <input
+              <datetime
                 type="date"
-                class="form-control"
+                input-class="form-control"
                 v-model="input.datesupplied"
-                placeholder=" Date Supplied"
                 required
-              />
+              ></datetime>
               <span class="form-text text-muted"
                 >Please select date supplied.</span
               >
@@ -140,13 +139,12 @@
           <div class="col-xl-6">
             <div class="form-group">
               <label>Expiry Date</label>
-              <input
+              <datetime
                 type="date"
-                class="form-control"
+                input-class="form-control"
                 v-model="input.expiration"
-                placeholder="Date Supplied"
                 required
-              />
+              ></datetime>
               <span class="form-text text-muted"
                 >Please select expiry date.</span
               >
@@ -320,12 +318,17 @@
 
 <script>
 import axios from '../../axios'
+import { Datetime } from 'vue-datetime'
 export default {
   name: 'supply',
   props: {
     title: {
       type: String
     }
+  },
+  components: {
+    datetime: Datetime
+    // vSelect
   },
   data() {
     return {
@@ -359,12 +362,15 @@ export default {
         message: error.response.data
       })
     },
+    setNull(obj, val) {
+      Object.keys(obj).forEach(k => (obj[k] = val))
+    },
     createSupply() {
       this.loading = true
       axios
         .post(this.supplyUrl, this.input)
         .then(response => {
-          this.input = ''
+          this.setNull(this.input, '')
           this.loading = false
           this.supplies = response.data.data
           this.$iziToast.success({

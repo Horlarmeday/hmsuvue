@@ -1907,7 +1907,10 @@
                 </ul>
               </b-collapse>
             </li>
-            <li v-if="user.role == 'Super Admin'" class="kt-menu__item">
+            <li
+              v-if="user.role == 'Super Admin' || user.role == 'Vendor'"
+              class="kt-menu__item"
+            >
               <b-link v-b-toggle.accordion-14 class="m-1 kt-menu__link">
                 <span class="kt-menu__link-icon">
                   <svg
@@ -1944,6 +1947,7 @@
               <b-collapse id="accordion-14" accordion="my-accordion">
                 <ul class="kt-menu__subnav">
                   <li
+                    v-if="user.role == 'Super Admin'"
                     class="kt-menu__item kt-menu__item--submenu"
                     data-ktmenu-submenu-toggle="hover"
                     aria-haspopup="true"
@@ -1962,6 +1966,7 @@
                     >
                   </li>
                   <li
+                    v-if="user.role == 'Super Admin'"
                     class="kt-menu__item kt-menu__item--submenu"
                     data-ktmenu-submenu-toggle="hover"
                     aria-haspopup="true"

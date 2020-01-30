@@ -36,6 +36,11 @@ const routes = [
     component: Login
   },
   {
+    path: '/vendor/login',
+    name: 'vendorlogin',
+    component: () => import('../views/auth/VendorLogin.vue')
+  },
+  {
     path: '/register',
     name: 'register',
     component: Register
@@ -696,6 +701,22 @@ const routes = [
     path: '/edit-outpatient/:id',
     name: 'editoutpatient',
     component: () => import('../views/app/inventory/EditOutpatient.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/edit-nhisinpatient/:id',
+    name: 'editnhisinpatient',
+    component: () => import('../views/app/inventory/EditNhisInpatient.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/edit-nhisoutpatient/:id',
+    name: 'editnhisoutpatient',
+    component: () => import('../views/app/inventory/EditNhisOutpatient.vue'),
     meta: {
       requiresAuth: true
     }

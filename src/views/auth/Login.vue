@@ -74,10 +74,9 @@
                     </ValidationProvider>
                     <div class="row kt-login__extra">
                       <div class="col">
-                        <label class="kt-checkbox">
-                          <input type="checkbox" name="remember" /> Remember me
-                          <span></span>
-                        </label>
+                        <router-link to="/vendor/login" style="color: #a7abc3;">
+                          Vendor Login
+                        </router-link>
                       </div>
                       <div class="col kt-align-right">
                         <a
@@ -143,7 +142,6 @@ export default {
         .dispatch('login', { username, password })
         .then(() => {
           this.loading = false
-          console.log('Went through')
           this.$router.push('/dashboard')
         })
         .catch(error => {

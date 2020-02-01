@@ -243,6 +243,7 @@
                 <thead>
                   <tr>
                     <th>S/N</th>
+                    <th>Photo</th>
                     <th>Patient ID</th>
                     <th>Patient Name</th>
                     <th>Age</th>
@@ -261,6 +262,22 @@
                   <tr v-for="(patient, index) in patients" :key="patient._id">
                     <td>
                       {{ index + 1 }}
+                    </td>
+                    <td>
+                      <img
+                        v-if="patient.photo"
+                        style="border-radius: 5px"
+                        width="40"
+                        :src="patient.photourl"
+                        alt="Patient Image"
+                      />
+                      <img
+                        style="border-radius: 5px"
+                        v-else
+                        width="40"
+                        src="../../assets/images/100_4.jpg"
+                        alt="patient image"
+                      />
                     </td>
                     <td>{{ patient.patientId }}</td>
 
@@ -384,6 +401,9 @@ export default {
       landingPageUrl: '/dashboard/medical/records',
       filterpatientUrl: '/dashboard/filter/patients',
       admitpatientUrl: '/patient/admit/patient',
+      imageurl:
+        process.env.VUE_APP_IMAGE_URL ||
+        'http://localhost:3000/static/uploads/',
 
       currentPage: 1,
       pageCount: '',
@@ -426,6 +446,7 @@ export default {
           for (let i = 0; i < patients.length; i++) {
             patients[i].url = '/patient/' + patients[i]._id
             patients[i].appointmenturl = '/appointment/' + patients[i]._id
+            patients[i].photourl = this.imageurl + patients[i].photo
           }
         })
         .catch(error => {
@@ -446,7 +467,9 @@ export default {
           for (let i = 0; i < patients.length; i++) {
             patients[i].url = '/patient/' + patients[i]._id
             patients[i].appointmenturl = '/appointment/' + patients[i]._id
+            patients[i].photourl = this.imageurl + patients[i].photo
           }
+
           this.$iziToast.success({
             title: 'Success!',
             message: response.data.message
@@ -471,6 +494,7 @@ export default {
           for (let i = 0; i < patients.length; i++) {
             patients[i].url = '/patient/' + patients[i]._id
             patients[i].triageurl = '/triage/' + patients[i]._id
+            patients[i].photourl = this.imageurl + patients[i].photo
           }
           this.$iziToast.success({
             title: 'Success!',

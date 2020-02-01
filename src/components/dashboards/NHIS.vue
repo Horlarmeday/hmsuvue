@@ -491,7 +491,9 @@ export default {
       loading: false,
       landingPageUrl: '/dashboard/nhis',
       clearpaymenturl: '/account/clear/labtest',
-      imageurl: 'http://localhost:3000/static/uploads/',
+      imageurl:
+        process.env.VUE_APP_IMAGE_URL ||
+        'http://localhost:3000/static/uploads/',
 
       checktestUrl: '/ajax/change/test/status/true',
       unchecktestUrl: '/ajax/change/test/status/false',

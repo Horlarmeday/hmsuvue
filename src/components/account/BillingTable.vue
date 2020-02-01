@@ -87,7 +87,8 @@
                       type="text"
                       class="form-control"
                       placeholder="Search..."
-                      id="generalSearch"
+                      @keyup="getBillings"
+                      v-model="input"
                     />
                     <span class="kt-input-icon__icon kt-input-icon__icon--left">
                       <span><i class="la la-search"></i></span>
@@ -148,7 +149,7 @@
               </tr>
             </tbody>
             <tbody v-for="(billing, index) in billings" :key="billing._id">
-              <tr v-if="billing.services.length > 0">
+              <tr>
                 <td>
                   {{ index + 1 }}
                 </td>
@@ -179,15 +180,8 @@
                 <td>{{ billing.comment }}</td>
                 <td>{{ billing.createdAt | moment('DD/MM/YYYY, h:ma') }}</td>
                 <td>
-                  <button
-                    v-if="!billing.paid"
-                    @click="approveBilling(billing)"
-                    class="btn btn-brand btn-elevate"
-                  >
-                    Approve
-                  </button>
                   <router-link
-                    v-else
+                    v-if="billing.paid"
                     :to="billing.invoiceurl"
                     class="btn btn-success btn-elevate"
                   >
@@ -197,6 +191,24 @@
               </tr>
             </tbody>
           </table>
+        </div>
+        <div class="card-footer">
+          <p class="float-left">Showing {{ pageSize }} of {{ rows }} entries</p>
+          <button
+            class="btn btn-outline-brand btn-sm ml-3 float-right"
+            :disabled="isNextButtonDisabled"
+            @click="pageChangeHandle('next')"
+          >
+            Next →
+          </button>
+
+          <button
+            class="btn btn-outline-brand btn-sm float-right"
+            :disabled="isPreviousButtonDisabled"
+            @click="pageChangeHandle('previous')"
+          >
+            ← Prev
+          </button>
         </div>
 
         <!--end: Datatable -->
@@ -218,9 +230,18 @@ export default {
   data() {
     return {
       billings: [],
-      billingUrl: '/account',
+      billingUrl: '/account/billings',
       approvebillingurl: '/account/approve/billing',
-      pdfurl: 'http://localhost:3000/static/invoices/'
+      pdfurl:
+        process.env.VUE_APP_INVOICE_URL ||
+        'http://localhost:3000/static/invoices/',
+
+      currentPage: 1,
+      pageCount: '',
+      pageSize: '',
+      rows: '',
+      meta: '',
+      input: ''
     }
   },
   mounted() {
@@ -236,10 +257,18 @@ export default {
     },
     getBillings() {
       axios
-        .get(this.billingUrl)
+        .get(
+          `${this.billingUrl}?currentPage=${this.currentPage}&search=${this.input}`
+        )
         .then(response => {
-          this.billings = response.data.data
+          this.billings = response.data.data.billings
+          this.meta = response.data.data.meta
+          this.rows = this.meta.count
+          this.pageSize = this.meta.pageSize
+          this.pageCount = this.meta.pageCount
+
           console.log(this.billings)
+
           let billings = this.billings
           for (let i = 0; i < billings.length; i++) {
             billings[i].url = '/patient/' + billings[i]._id
@@ -258,7 +287,6 @@ export default {
         .post(this.approvebillingurl, data)
         .then(response => {
           this.billings = response.data.data
-          console.log(this.billings)
           let billings = this.billings
           for (let i = 0; i < billings.length; i++) {
             billings[i].url = '/patient/' + billings[i]._id
@@ -272,6 +300,26 @@ export default {
         .catch(error => {
           this.handleError(error)
         })
+    },
+    pageChangeHandle(value) {
+      if (value === 'next') {
+        this.currentPage += 1
+        this.getBillings()
+      } else if (value === 'previous') {
+        this.currentPage -= 1
+        this.getBillings()
+      }
+    }
+  },
+  computed: {
+    isPreviousButtonDisabled() {
+      return this.currentPage === 1
+    },
+    isNextButtonDisabled() {
+      return this.currentPage === this.pageCount
+    },
+    drows() {
+      return this.consultations.length
     }
   }
 }

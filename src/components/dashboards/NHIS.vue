@@ -477,7 +477,7 @@
 import axios from '../../axios'
 
 export default {
-  name: 'nursedasboard',
+  name: 'nhisdasboard',
   data() {
     return {
       patients: [],

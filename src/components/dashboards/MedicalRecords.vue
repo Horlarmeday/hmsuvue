@@ -299,6 +299,11 @@
                     </td>
                     <td>
                       <label
+                        v-if="patient.retainershipname && patient.paid"
+                        class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill"
+                        >Cleared</label
+                      >
+                      <label
                         v-if="patient.paid"
                         class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill"
                         >Paid</label

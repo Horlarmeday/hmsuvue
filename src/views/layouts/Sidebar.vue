@@ -2071,7 +2071,9 @@
             </li>
             <li
               v-if="
-                user.role == 'Super Admin' || user.role == 'Finance Officer'
+                user.role == 'Super Admin' ||
+                  user.role == 'Finance Officer' ||
+                  user.role == 'Accountant'
               "
               class="kt-menu__item"
             >
@@ -2173,6 +2175,10 @@
                     >
                   </li>
                   <li
+                    v-if="
+                      user.role == 'Super Admin' ||
+                        user.role == 'Finance Officer'
+                    "
                     class="kt-menu__item kt-menu__item--submenu"
                     data-ktmenu-submenu-toggle="hover"
                     aria-haspopup="true"

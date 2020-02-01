@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import store from '../store/index'
 // import Home from '../views/Home.vue'
 import Login from '../views/auth/Login.vue'
+import VendorLogin from '../views/auth/VendorLogin.vue'
 import Register from '../views/auth/Register.vue'
 import Dashboard from '../views/dashboards/Dashboard.vue'
 import Patients from '../views/app/patients/Patients.vue'
@@ -38,7 +39,7 @@ const routes = [
   {
     path: '/vendor/login',
     name: 'vendorlogin',
-    component: () => import('../views/auth/VendorLogin.vue')
+    component: VendorLogin
   },
   {
     path: '/register',
@@ -155,6 +156,14 @@ const routes = [
     path: '/make-request',
     name: 'makerequest',
     component: () => import('../views/app/request/MakeRequest.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/request-to-manager',
+    name: 'makerequest',
+    component: () => import('../views/app/request/RequestToManager.vue'),
     meta: {
       requiresAuth: true
     }

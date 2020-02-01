@@ -49,7 +49,7 @@
           <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
             <Subheader title="Patients" />
 
-            <RequestContent title="Requests" />
+            <ManagerRequestContent title="Requests" />
           </div>
           <!-- <Footer /> -->
         </div>
@@ -64,15 +64,15 @@ import Sidebar from '@/views/layouts/Sidebar.vue'
 import Header from '@/views/layouts/Header.vue'
 import Subheader from '@/views/layouts/Subheader.vue'
 // import Footer from '@/views/layouts/Footer.vue'
-import RequestContent from '@/components/request/RequestContent.vue'
+import ManagerRequestContent from '@/components/request/ManagerRequestContent.vue'
 export default {
-  name: 'request',
+  name: 'requesttomanager',
   components: {
     Sidebar,
     Header,
     Subheader,
     // Footer,
-    RequestContent
+    ManagerRequestContent
   }
 }
 </script>

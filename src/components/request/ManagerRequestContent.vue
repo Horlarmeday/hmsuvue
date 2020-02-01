@@ -8,6 +8,101 @@
             <i class="kt-font-brand flaticon2-line-chart"></i>
           </span>
           <h3 class="kt-portlet__head-title">
+            Create Request
+            <small>Create a new request</small>
+          </h3>
+        </div>
+      </div>
+      <div class="kt-portlet__body">
+        <!--begin: Datatable -->
+        <div class="row">
+          <div class="col-xl-12">
+            <div class="form-group">
+              <label>Request For </label>
+              <input
+                type="text"
+                v-model="input.item"
+                class="form-control"
+                readonly
+              />
+              <span class="form-text text-muted">Request item.</span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xl-12">
+            <div class="form-group">
+              <label>Quantity</label>
+              <input
+                type="number"
+                class="form-control"
+                v-model="input.quantity"
+                placeholder="Quantity"
+              />
+              <span class="form-text text-muted">Please enter quantity.</span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xl-12">
+            <div class="form-group">
+              <label>Left Over</label>
+              <input
+                type="number"
+                class="form-control"
+                v-model="input.leftover"
+                placeholder="Left Over"
+              />
+              <span class="form-text text-muted"
+                >Please enter quantity left over.</span
+              >
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xl-12">
+            <div class="form-group">
+              <label>Comments</label>
+              <textarea
+                col="30"
+                class="form-control"
+                rows="10"
+                v-model="input.comment"
+                placeholder="Comment"
+                required
+              >
+              </textarea>
+              <span class="form-text text-muted">Please enter comments.</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <button
+            v-if="!loading"
+            @click="createRequest"
+            class="btn btn-brand btn-elevate float-right"
+          >
+            Create Request
+          </button>
+          <button
+            v-else
+            class="btn btn-brand kt-spinner kt-spinner--right 
+                      kt-spinner--sm kt-spinner--light btn-elevate float-right"
+            disabled
+          >
+            Creating...
+          </button>
+        </div>
+        <!--end: Datatable -->
+      </div>
+    </div>
+    <div class="kt-portlet kt-portlet--mobile">
+      <div class="kt-portlet__head kt-portlet__head--lg">
+        <div class="kt-portlet__head-label">
+          <span class="kt-portlet__head-icon">
+            <i class="kt-font-brand flaticon2-line-chart"></i>
+          </span>
+          <h3 class="kt-portlet__head-title">
             {{ title }} Table
             <small>This is the {{ title }} table</small>
           </h3>
@@ -64,13 +159,6 @@
                 </div>
               </div>
               &nbsp;
-              <router-link
-                to="/create-patient"
-                class="btn btn-brand btn-elevate btn-icon-sm"
-              >
-                <i class="la la-plus"></i>
-                New Patient
-              </router-link>
             </div>
           </div>
         </div>
@@ -87,51 +175,12 @@
                       type="text"
                       class="form-control"
                       placeholder="Search..."
-                      v-model="input"
-                      @keyup="filterPatient"
+                      v-model="text"
+                      @keyup="getRequests"
                     />
                     <span class="kt-input-icon__icon kt-input-icon__icon--left">
                       <span><i class="la la-search"></i></span>
                     </span>
-                  </div>
-                </div>
-                <div class="col-md-4 kt-margin-b-20-tablet-and-mobile">
-                  <div class="kt-form__group kt-form__group--inline">
-                    <div class="kt-form__label">
-                      <label>Status:</label>
-                    </div>
-                    <div class="kt-form__control">
-                      <select
-                        class="form-control bootstrap-select"
-                        id="kt_form_status"
-                      >
-                        <option value="">All</option>
-                        <option value="1">Pending</option>
-                        <option value="2">Delivered</option>
-                        <option value="3">Canceled</option>
-                        <option value="4">Success</option>
-                        <option value="5">Info</option>
-                        <option value="6">Danger</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-4 kt-margin-b-20-tablet-and-mobile">
-                  <div class="kt-form__group kt-form__group--inline">
-                    <div class="kt-form__label">
-                      <label>Type:</label>
-                    </div>
-                    <div class="kt-form__control">
-                      <select
-                        class="form-control bootstrap-select"
-                        id="kt_form_type"
-                      >
-                        <option value="">All</option>
-                        <option value="1">Online</option>
-                        <option value="2">Retail</option>
-                        <option value="3">Direct</option>
-                      </select>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -156,98 +205,49 @@
             <thead>
               <tr>
                 <th>S/N</th>
-                <th>Patient ID</th>
-                <th>Photo</th>
-                <th>Patient Name</th>
-                <th>Birthday</th>
-                <th>Age</th>
-                <th>Religion</th>
-                <th>Address</th>
-                <th>Phone</th>
-                <th>Gender</th>
-                <th>Registered By</th>
+                <th>Item</th>
+                <th>Quantity</th>
+                <th>Comment</th>
                 <th>Status</th>
-                <th>Action</th>
+                <th>Requested By</th>
+                <th>Date Created</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-if="patients.length == 0">
-                <td colspan="9" align="center">No Registered Patients</td>
+              <tr v-if="requests.length == 0">
+                <td colspan="9" align="center">No Requests</td>
               </tr>
-              <tr v-for="(patient, index) in patients" :key="patient._id">
+              <tr v-for="(request, index) in requests" :key="request._id">
                 <td>
                   {{ index + 1 }}
                 </td>
-                <td>{{ patient.patientId }}</td>
+                <td>{{ request.item }}</td>
+                <td>{{ request.quantity }}</td>
+                <td>{{ request.comment }}</td>
                 <td>
-                  <img
-                    v-if="patient.photo"
-                    style="border-radius: 5px"
-                    width="40"
-                    :src="patient.photourl"
-                    alt="Patient Image"
-                  />
-                  <img
-                    style="border-radius: 5px"
-                    v-else
-                    width="40"
-                    src="../../assets/images/100_4.jpg"
-                    alt="patient image"
-                  />
-                </td>
-                <td>
-                  <router-link :to="patient.url">
-                    {{ patient.firstname }} {{ patient.lastname }}
-                  </router-link>
-                  <label
-                    v-if="patient.retainershipname"
-                    class="kt-badge kt-badge--success kt-badge--inline"
-                    >{{ patient.retainershipname.name }}</label
-                  >
-                </td>
-                <td>{{ patient.birthday | moment('DD/MM/YYYY') }}</td>
-                <td>{{ patient.birthday | moment('from', 'now', true) }}</td>
-                <td>{{ patient.religion }}</td>
-                <td>{{ patient.address }}</td>
-                <td>{{ patient.phonenumber }}</td>
-                <td>
-                  <label
-                    v-if="patient.gender == 'Female'"
+                  <span
+                    v-if="request.status == 'granted'"
                     class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill"
-                    >Female</label
+                    >granted</span
                   >
-                  <label
-                    v-else
-                    class="kt-badge kt-badge--primary kt-badge--inline kt-badge--pill"
-                    >Male</label
+                  <span
+                    v-else-if="request.status == 'pending'"
+                    class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill"
+                    >pending</span
                   >
-                </td>
-
-                <td>{{ patient.createdAt | moment('DD/MM/YYYY, h:mm:ss') }}</td>
-                <td>
-                  <label
-                    v-if="patient.admissionStatus == 'Addmitted'"
+                  <span
+                    v-else-if="request.status == 'declined'"
                     class="kt-badge kt-badge--danger kt-badge--inline kt-badge--pill"
-                    >{{ patient.admissionStatus }}</label
-                  >
-                  <label
-                    v-if="patient.admissionStatus == 'Discharged'"
-                    class="kt-badge kt-badge--dark kt-badge--inline kt-badge--pill"
-                    >{{ patient.admissionStatus }}</label
-                  >
-                  <label
-                    v-if="patient.admissionStatus == 'Normal'"
-                    class="kt-badge kt-badge--info kt-badge--inline kt-badge--pill"
-                    >{{ patient.admissionStatus }}</label
+                    >pending</span
                   >
                 </td>
                 <td>
-                  <router-link
-                    class="btn btn-brand btn-success btn-sm"
-                    :to="patient.editurl"
-                    >Edit</router-link
-                  >
+                  <a href="#">
+                    {{ request.creator.firstname }}
+                    {{ request.creator.lastname }}
+                  </a>
                 </td>
+                <td>{{ request.createdAt | moment('DD/MM/YYYY, h:ma') }}</td>
               </tr>
             </tbody>
           </table>
@@ -281,7 +281,7 @@
 <script>
 import axios from '../../axios'
 export default {
-  name: 'patientTable',
+  name: 'makecardrequest',
   props: {
     title: {
       type: String
@@ -289,71 +289,74 @@ export default {
   },
   data() {
     return {
-      patients: [],
+      input: {
+        item: 'Card',
+        leftover: '',
+        quantity: '',
+        comment: ''
+      },
+      drugs: [],
+      labitems: [],
+      requests: [],
+      units: [],
+
+      createrequesturl: '/staff/manager-request',
+      requesturl: '/staff/staff-manager-requests',
+      loading: false,
+
       currentPage: 1,
-      input: '',
+      text: '',
       pageCount: '',
       pageSize: '',
       rows: '',
-      meta: '',
-      patientsUrl: '/patient/',
-      imageurl:
-        process.env.VUE_APP_IMAGE_URL || 'http://localhost:3000/static/uploads/'
+      meta: 3,
+      currentUser: ''
     }
   },
   mounted() {
-    this.getPatients()
+    this.getPage()
   },
   methods: {
     handleError(error) {
+      console.log(error)
       this.$iziToast.error({
         title: 'Error!',
         message: error.response.data
       })
     },
-    getPatients() {
+    setNull(obj, val) {
+      Object.keys(obj).forEach(k => (obj[k] = val))
+    },
+    createRequest() {
+      this.loading = true
       axios
-        .get(`${this.patientsUrl}?currentPage=${this.currentPage}`)
+        .post(this.createrequesturl, this.input)
         .then(response => {
-          this.patients = response.data.data.patients
-          this.meta = response.data.data.meta
-          this.rows = this.meta.count
-          this.pageSize = this.meta.pageSize
-          this.pageCount = this.meta.pageCount
-
-          let patients = this.patients
-          for (let i = 0; i < patients.length; i++) {
-            patients[i].photourl = this.imageurl + patients[i].photo
-            patients[i].editurl = '/edit-patient/' + patients[i]._id
-          }
-          for (let i = 0; i < patients.length; i++) {
-            patients[i].url = this.patientsUrl + patients[i]._id
-          }
+          this.setNull(this.input, '')
+          this.requests = response.data.data
+          this.loading = false
+          this.$iziToast.success({
+            title: 'Success!',
+            message: response.data.message
+          })
         })
         .catch(error => {
+          this.loading = false
           this.handleError(error)
         })
     },
 
-    filterPatient() {
+    getRequests() {
       axios
         .get(
-          `${this.patientsUrl}?currentPage=${this.currentPage}&search=${this.input}`
+          `${this.requesturl}?currentPage=${this.currentPage}&search=${this.text}`
         )
         .then(response => {
-          this.patients = response.data.data.patients
+          this.requests = response.data.data.requests
           this.meta = response.data.data.meta
           this.rows = this.meta.count
           this.pageSize = this.meta.pageSize
           this.pageCount = this.meta.pageCount
-
-          let patients = this.patients
-          for (let i = 0; i < patients.length; i++) {
-            patients[i].photourl = this.imageurl + patients[i].photo
-          }
-          for (let i = 0; i < patients.length; i++) {
-            patients[i].url = this.patientsUrl + patients[i]._id
-          }
         })
         .catch(error => {
           this.handleError(error)
@@ -362,11 +365,10 @@ export default {
     pageChangeHandle(value) {
       if (value === 'next') {
         this.currentPage += 1
-        console.log(this.currentPage)
-        this.getPatients()
+        this.getRequests()
       } else if (value === 'previous') {
         this.currentPage -= 1
-        this.getPatients()
+        this.getRequests()
       }
     }
   },

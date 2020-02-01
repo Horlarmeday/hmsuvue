@@ -121,7 +121,7 @@ export default {
           const token = response.data.token
           localStorage.setItem('user-token', token)
 
-          //   axios.defaults.headers.common['x-auth-token'] = token
+          axios.defaults.headers.common['x-auth-token'] = token
           this.loading = false
           this.$router.push('/dashboard')
         })

@@ -1128,10 +1128,7 @@ export default {
         .then(response => {
           this.loading = false
           this.patient = response.data.data._id
-          this.savedStepFour = false
-          // this.savedStepThree = false
-          // this.savedStepTwo = true
-          this.savedStepOne = true
+          this.$router.push('/patients')
           this.$iziToast.success({
             title: 'Success!',
             message: response.data.message

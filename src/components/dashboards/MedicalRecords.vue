@@ -299,7 +299,7 @@
                     </td>
                     <td>
                       <label
-                        v-if="patient.retainershipname && patient.paid"
+                        v-if="patient.retainershipname && !patient.paid"
                         class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill"
                         >Cleared</label
                       >
@@ -309,7 +309,7 @@
                         >Paid</label
                       >
                       <label
-                        v-if="!patient.paid"
+                        v-if="!patient.retainershipname && !patient.paid"
                         class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill"
                         >Pending</label
                       >

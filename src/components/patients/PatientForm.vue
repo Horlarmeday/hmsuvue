@@ -573,6 +573,23 @@
             </div>
           </div>
         </div>
+        <div v-if="insurance === 'Yes'" class="row">
+          <div class="col-xl-6">
+            <div class="form-group">
+              <label>Plan</label>
+              <select class="form-control" v-model="plan">
+                <option disabled>Select</option>
+                <option value="Classic">Classic</option>
+                <option value="Gold">Gold</option>
+                <option value="Silver">Silver</option>
+                <option value="Platinum">Platinum</option>
+              </select>
+              <span class="form-text text-muted"
+                >Please select retainership plan.</span
+              >
+            </div>
+          </div>
+        </div>
         <hr />
         <h6 v-if="insurance === 'Yes'">Dependants (if any)</h6>
         <small v-if="insurance === 'Yes'" style="color: red"
@@ -925,6 +942,7 @@ export default {
       nhisdependantdob: '',
       nhisdependantgender: '',
       nhisdependantrelationship: '',
+      plan: '',
 
       registration: '',
       consultation: '',
@@ -1095,7 +1113,8 @@ export default {
           retainershipname: this.retainershipname,
           enrollees: this.enrollees,
           enrolleeId: this.enrolleeId,
-          patientId: this.patient
+          patientId: this.patient,
+          plan: this.plan
         }
       }
       axios

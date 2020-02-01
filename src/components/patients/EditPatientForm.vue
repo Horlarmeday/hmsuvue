@@ -452,6 +452,23 @@
             </div>
           </div>
         </div>
+        <div v-if="insurance === 'Yes'" class="row">
+          <div class="col-xl-6">
+            <div class="form-group">
+              <label>Plan</label>
+              <select class="form-control" v-model="patient.plan">
+                <option disabled>Select</option>
+                <option value="Classic">Classic</option>
+                <option value="Gold">Gold</option>
+                <option value="Silver">Silver</option>
+                <option value="Platinum">Platinum</option>
+              </select>
+              <span class="form-text text-muted"
+                >Please select retainership plan.</span
+              >
+            </div>
+          </div>
+        </div>
         <div>
           <button
             v-if="!loading"

@@ -1824,7 +1824,7 @@
               v-if="user.role == 'Super Admin' || user.role == 'Receptionist'"
               class="kt-menu__item"
             >
-              <b-link v-b-toggle.accordion-13 class="m-1 kt-menu__link">
+              <b-link v-b-toggle.accordion-27 class="m-1 kt-menu__link">
                 <span class="kt-menu__link-icon">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -1870,7 +1870,7 @@
                   </svg> </span
                 ><span class="kt-menu__link-text">SMS</span>
               </b-link>
-              <b-collapse id="accordion-13" accordion="my-accordion">
+              <b-collapse id="accordion-27" accordion="my-accordion">
                 <ul class="kt-menu__subnav">
                   <li
                     class="kt-menu__item kt-menu__item--submenu"

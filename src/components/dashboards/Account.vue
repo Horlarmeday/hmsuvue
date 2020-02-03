@@ -287,13 +287,14 @@
                         Approve
                       </button>
 
-                      <router-link
+                      <a
+                        target="_blank"
                         v-else
-                        :to="patient.invoiceurl"
+                        :href="patient.invoiceurl"
                         class="btn btn-success btn-elevate"
                       >
                         Invoice
-                      </router-link>
+                      </a>
                     </td>
                   </tr>
                 </tbody>
@@ -459,13 +460,14 @@
                             Approve
                           </button>
 
-                          <router-link
+                          <a
+                            target="_blank"
                             v-else
-                            :to="consultation.invoiceurl"
+                            :href="consultation.testinvoiceurl"
                             class="btn btn-success btn-elevate"
                           >
                             Invoice
-                          </router-link>
+                          </a>
                         </td>
                       </tr>
                     </tbody>
@@ -625,13 +627,14 @@
                             Approve
                           </button>
 
-                          <router-link
+                          <a
+                            target="_blank"
                             v-else
-                            :to="consultation.invoiceurl"
+                            :href="consultation.druginvoiceurl"
                             class="btn btn-success btn-elevate"
                           >
                             Invoice
-                          </router-link>
+                          </a>
                         </td>
                       </tr>
                     </tbody>
@@ -788,13 +791,14 @@
                             Approve
                           </button>
 
-                          <router-link
+                          <a
+                            target="_blank"
                             v-else
-                            :to="consultation.invoiceurl"
+                            :href="consultation.imaginginvoiceurl"
                             class="btn btn-success btn-elevate"
                           >
                             Invoice
-                          </router-link>
+                          </a>
                         </td>
                       </tr>
                     </tbody>
@@ -925,8 +929,15 @@ export default {
           for (let i = 0; i < consultations.length; i++) {
             if (consultations[i].patient) {
               consultations[i].url = '/patient/' + consultations[i].patient._id
-              consultations[i].invoiceurl =
-                this.invoiceurl + consultations[i].invoice
+              //  Lab test invoice
+              consultations[i].testinvoiceurl =
+                this.invoiceurl + consultations[i].testinvoice
+              // Drug Invoice
+              consultations[i].druginvoiceurl =
+                this.invoiceurl + consultations[i].druginvoice
+              // Imaging invoice
+              consultations[i].imaginginvoiceurl =
+                this.invoiceurl + consultations[i].imaginginvoice
             }
           }
         })
@@ -990,7 +1001,7 @@ export default {
           for (let i = 0; i < consultations.length; i++) {
             if (consultations[i].patient) {
               consultations[i].url = '/patient/' + consultations[i]._id
-              consultations[i].invoiceurl =
+              consultations[i].testinvoiceurl =
                 this.invoiceurl + consultations[i].testinvoice
             }
           }
@@ -1064,7 +1075,7 @@ export default {
           for (let i = 0; i < consultations.length; i++) {
             if (consultations[i].patient) {
               consultations[i].url = '/patient/' + consultations[i]._id
-              consultations[i].invoiceurl =
+              consultations[i].druginvoiceurl =
                 this.invoiceurl + consultations[i].druginvoice
             }
           }
@@ -1140,7 +1151,7 @@ export default {
           for (let i = 0; i < consultations.length; i++) {
             if (consultations[i].patient) {
               consultations[i].url = '/patient/' + consultations[i]._id
-              consultations[i].invoiceurl =
+              consultations[i].imaginginvoiceurl =
                 this.invoiceurl + consultations[i].imaginginvoice
             }
           }

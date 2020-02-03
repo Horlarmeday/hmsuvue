@@ -299,13 +299,14 @@
                   >
                     Approve
                   </button>
-                  <router-link
+                  <a
+                    target="_blank"
                     v-else
-                    :to="billing.invoiceurl"
+                    :href="billing.invoiceurl"
                     class="btn btn-success btn-elevate"
                   >
                     Invoice
-                  </router-link>
+                  </a>
                 </td>
               </tr>
             </tbody>

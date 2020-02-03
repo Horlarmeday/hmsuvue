@@ -180,13 +180,14 @@
                 <td>{{ billing.comment }}</td>
                 <td>{{ billing.createdAt | moment('DD/MM/YYYY, h:ma') }}</td>
                 <td>
-                  <router-link
+                  <a
+                    target="_blank"
                     v-if="billing.paid"
-                    :to="billing.invoiceurl"
+                    :href="billing.invoiceurl"
                     class="btn btn-success btn-elevate"
                   >
                     Invoice
-                  </router-link>
+                  </a>
                 </td>
               </tr>
             </tbody>

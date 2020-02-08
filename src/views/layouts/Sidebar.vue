@@ -1894,7 +1894,11 @@
               </b-collapse>
             </li>
             <li
-              v-if="user.role == 'Super Admin' || user.role == 'Vendor'"
+              v-if="
+                user.role == 'Super Admin' ||
+                  user.role == 'Vendor' ||
+                  user.role == 'Finance Officer'
+              "
               class="kt-menu__item"
             >
               <b-link v-b-toggle.accordion-14 class="m-1 kt-menu__link">

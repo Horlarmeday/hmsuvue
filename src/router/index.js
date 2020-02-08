@@ -162,7 +162,7 @@ const routes = [
   },
   {
     path: '/request-to-manager',
-    name: 'makerequest',
+    name: 'managerrequest',
     component: () => import('../views/app/request/RequestToManager.vue'),
     meta: {
       requiresAuth: true

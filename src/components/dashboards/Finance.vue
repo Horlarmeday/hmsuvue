@@ -7,7 +7,7 @@
     <div class="kt-portlet">
       <div class="kt-portlet__body  kt-portlet__body--fit">
         <div class="row row-no-padding row-col-separator-xl">
-          <div class="col-md-12 col-lg-6 col-xl-3">
+          <div class="col-md-12 col-lg-6 col-xl-4">
             <!--begin::Total Profit-->
             <div class="kt-widget24">
               <div class="kt-widget24__details">
@@ -45,58 +45,20 @@
 
             <!--end::Total Profit-->
           </div>
-          <div class="col-md-12 col-lg-6 col-xl-3">
-            <!--begin::New Feedbacks-->
-            <div class="kt-widget24">
-              <div class="kt-widget24__details">
-                <div class="kt-widget24__info">
-                  <h4 class="kt-widget24__title">
-                    Attended Patient
-                  </h4>
-                  <span class="kt-widget24__desc">
-                    Number of times attended to patients
-                  </span>
-                </div>
-                <span class="kt-widget24__stats kt-font-warning">
-                  {{ triagesCount }}
-                </span>
-              </div>
-              <div class="progress progress--sm">
-                <div
-                  class="progress-bar kt-bg-warning"
-                  role="progressbar"
-                  style="width: 84%;"
-                  aria-valuenow="50"
-                  aria-valuemin="0"
-                  aria-valuemax="100"
-                ></div>
-              </div>
-              <div class="kt-widget24__action">
-                <span class="kt-widget24__change">
-                  Change
-                </span>
-                <span class="kt-widget24__number">
-                  84%
-                </span>
-              </div>
-            </div>
-
-            <!--end::New Feedbacks-->
-          </div>
-          <div class="col-md-12 col-lg-6 col-xl-3">
+          <div class="col-md-12 col-lg-6 col-xl-4">
             <!--begin::New Orders-->
             <div class="kt-widget24">
               <div class="kt-widget24__details">
                 <div class="kt-widget24__info">
                   <h4 class="kt-widget24__title">
-                    Appointments
+                    Finance Officer
                   </h4>
                   <span class="kt-widget24__desc">
-                    Total Number of appointments
+                    Total Number of finance officer
                   </span>
                 </div>
                 <span class="kt-widget24__stats kt-font-danger">
-                  {{ appointmentCount }}
+                  {{ financeCount }}
                 </span>
               </div>
               <div class="progress progress--sm">
@@ -121,7 +83,7 @@
 
             <!--end::New Orders-->
           </div>
-          <div class="col-md-12 col-lg-6 col-xl-3">
+          <div class="col-md-12 col-lg-6 col-xl-4">
             <!--begin::New Users-->
             <div class="kt-widget24">
               <div class="kt-widget24__details">
@@ -167,29 +129,7 @@
 
     <!--Begin::Section-->
     <div class="row">
-      <div class="col-xl-6">
-        <!--begin:: Widgets/Tasks -->
-        <div class="kt-portlet kt-portlet--tabs kt-portlet--height-fluid">
-          <div class="kt-portlet__head">
-            <div class="kt-portlet__head-label">
-              <h3 class="kt-portlet__head-title">
-                Patients
-              </h3>
-            </div>
-          </div>
-          <div class="kt-portlet__body">
-            <vue-apex-charts
-              width="700"
-              type="area"
-              :options="patientoptions"
-              :series="patientseries"
-            ></vue-apex-charts>
-          </div>
-        </div>
-
-        <!--end:: Widgets/Tasks -->
-      </div>
-      <div class="col-xl-6">
+      <div class="col-xl-12">
         <!--begin:: Widgets/Notifications-->
         <div class="kt-portlet kt-portlet--height-fluid">
           <div class="kt-portlet__head">
@@ -201,7 +141,6 @@
           </div>
           <div class="kt-portlet__body">
             <vue-apex-charts
-              width="700"
               type="bar"
               :options="paymentoptions"
               :series="paymentseries"
@@ -216,15 +155,52 @@
 
     <!--Begin::Section-->
     <div class="row">
-      <div class="col-xl-6">
+      <div class="col-xl-12">
         <!--begin:: Widgets/New Users-->
         <div class="kt-portlet kt-portlet--tabs kt-portlet--height-fluid">
           <div class="kt-portlet__head">
             <div class="kt-portlet__head-label">
               <h3 class="kt-portlet__head-title">
-                Recent Payments
+                Payments
               </h3>
             </div>
+          </div>
+          <div class="kt-portlet__body">
+            <!--begin: Search Form -->
+            <div class="kt-form kt-form--label-right">
+              <div class="row align-items-center">
+                <div class="col-xl-8 order-2 order-xl-1">
+                  <div class="row align-items-center">
+                    <div class="col-md-4 kt-margin-b-20-tablet-and-mobile">
+                      <div class="kt-input-icon kt-input-icon--left">
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Search..."
+                          v-model="input"
+                          @keyup="dashboard"
+                        />
+                        <span
+                          class="kt-input-icon__icon kt-input-icon__icon--left"
+                        >
+                          <span><i class="la la-search"></i></span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-xl-4 order-1 order-xl-2 kt-align-right">
+                  <a href="#" class="btn btn-default kt-hidden">
+                    <i class="la la-cart-plus"></i> New Order
+                  </a>
+                  <div
+                    class="kt-separator kt-separator--border-dashed kt-separator--space-lg d-xl-none"
+                  ></div>
+                </div>
+              </div>
+            </div>
+
+            <!--end: Search Form -->
           </div>
           <div class="kt-portlet__body">
             <div class="tab-content">
@@ -254,10 +230,13 @@
                           {{ index + 1 }}
                         </td>
                         <td>
-                          <a href="#" class="kt-widget4__username">
+                          <router-link
+                            :to="payment.url"
+                            class="kt-widget4__username"
+                          >
                             {{ payment.patient.firstname }}
                             {{ payment.patient.lastname }}
-                          </a>
+                          </router-link>
                         </td>
                         <td>{{ payment.amount }}</td>
                         <td v-if="payment.drugs.length > 0">
@@ -309,89 +288,25 @@
                     </tbody>
                   </table>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
+                <div class="card-footer">
+                  <p class="float-left">
+                    Showing {{ pageSize }} of {{ rows }} entries
+                  </p>
+                  <button
+                    class="btn btn-outline-brand btn-sm ml-3 float-right"
+                    :disabled="isNextButtonDisabled"
+                    @click="pageChangeHandle('next')"
+                  >
+                    Next →
+                  </button>
 
-        <!--end:: Widgets/New Users-->
-      </div>
-      <div class="col-xl-6">
-        <!--begin:: Widgets/New Users-->
-        <div class="kt-portlet kt-portlet--tabs kt-portlet--height-fluid">
-          <div class="kt-portlet__head">
-            <div class="kt-portlet__head-label">
-              <h3 class="kt-portlet__head-title">
-                Recent Patients
-              </h3>
-            </div>
-          </div>
-          <div class="kt-portlet__body">
-            <div class="tab-content">
-              <div class="tab-pane active" id="kt_widget4_tab1_content">
-                <div class="dt-responsive table-responsive">
-                  <table class="table table-striped">
-                    <thead>
-                      <tr>
-                        <th>S/N</th>
-                        <th>Image</th>
-                        <th>Patient ID</th>
-                        <th>Patient Name</th>
-                        <th>Phone Number</th>
-                        <th>Date Created</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-if="patients.length == 0">
-                        <td colspan="9" align="center">No Recent Patient</td>
-                      </tr>
-                      <tr
-                        v-for="(patient, index) in patients"
-                        :key="patient._id"
-                      >
-                        <td>
-                          {{ index + 1 }}
-                        </td>
-                        <td>
-                          <div class="kt-widget4__pic kt-widget4__pic--pic">
-                            <img
-                              v-if="patient.photo"
-                              width="40"
-                              :src="patient.photourl"
-                              alt="patient image"
-                            />
-                            <img
-                              v-else
-                              width="40"
-                              src="../../assets/images/100_4.jpg"
-                              alt="patient image"
-                            />
-                          </div>
-                        </td>
-                        <td>{{ patient.patientId }}</td>
-                        <td>
-                          <div class="kt-widget4__info">
-                            <a href="#" class="kt-widget4__username">
-                              {{ patient.firstname }} {{ patient.lastname }}
-                              <label
-                                v-if="patient.retainershipname"
-                                class="kt-badge kt-badge--success kt-badge--inline"
-                                >{{ patient.retainershipname.name }}</label
-                              >
-                            </a>
-                            <p
-                              style="color: #a7abc3;font-weight: 400;"
-                              class="kt-widget4__text"
-                            >
-                              {{ patient.state }}
-                            </p>
-                          </div>
-                        </td>
-                        <td>{{ patient.phonenumber }}</td>
-                        <td>{{ patient.createdAt | moment('DD/MM/YYYY') }}</td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  <button
+                    class="btn btn-outline-brand btn-sm float-right"
+                    :disabled="isPreviousButtonDisabled"
+                    @click="pageChangeHandle('previous')"
+                  >
+                    ← Prev
+                  </button>
                 </div>
               </div>
             </div>
@@ -413,40 +328,34 @@
 import axios from '../../axios'
 import VueApexCharts from 'vue-apexcharts'
 export default {
-  name: 'superadmindasboard',
+  name: 'financeofficerdashboard',
   components: {
     VueApexCharts
   },
   data() {
     return {
-      patients: [],
       payments: [],
       totalPatients: '',
-      triagesCount: '',
+      financeCount: '',
       totalAmount: '',
-      appointmentCount: '',
-      landingPageUrl: '/dashboard/superadmin',
-      patientchartUrl: '/dashboard/patient/aggregation',
+      landingPageUrl: '/dashboard/financeofficer',
       paymentchartUrl: '/dashboard/payment/aggregation',
-      imageurl:
-        process.env.VUE_APP_IMAGE_URL ||
-        'http://localhost:3000/static/uploads/',
-      patientCategories: '',
       paymentCategories: '',
-      patientXaxis: '',
       paymentXaxis: '',
-      patientoptions: {},
       paymentoptions: {},
-      patientseries: [],
-      paymentseries: []
+      paymentseries: [],
+      input: '',
+
+      currentPage: 1,
+      pageCount: '',
+      pageSize: '',
+      rows: '',
+      meta: ''
     }
   },
   mounted() {
     this.dashboard()
-    this.patientsChart()
     this.paymentChart()
-    let example = localStorage.getItem('pushkitUser')
-    console.log('example', example)
   },
   methods: {
     handleError(error) {
@@ -458,61 +367,24 @@ export default {
     },
     dashboard() {
       axios
-        .get(this.landingPageUrl)
+        .get(
+          `${this.landingPageUrl}?currentPage=${this.currentPage}&search=${this.input}`
+        )
         .then(response => {
-          this.patients = response.data.data.patients
           this.payments = response.data.data.payments
           this.totalPatients = response.data.data.patientCount
-          this.triagesCount = response.data.data.triagesCount
-          if (response.data.data.totalAmount === undefined) {
-            this.totalAmount = 0
-          }
+          this.financeCount = response.data.data.financeCount
           this.totalAmount = response.data.data.totalAmount
-          this.appointmentCount = response.data.data.appointmentCount
-          let patients = this.patients
-          for (let i = 0; i < patients.length; i++) {
-            patients[i].photourl = this.imageurl + patients[i].photo
+
+          this.meta = response.data.data.meta
+          this.rows = this.meta.count
+          this.pageSize = this.meta.pageSize
+          this.pageCount = this.meta.pageCount
+
+          let payments = this.payments
+          for (let i = 0; i < payments.length; i++) {
+            payments[i].url = '/patient/' + payments[i].patient._id
           }
-        })
-        .catch(error => {
-          this.handleError(error)
-        })
-    },
-    patientsChart() {
-      axios
-        .get(this.patientchartUrl)
-        .then(response => {
-          this.patientCategories = response.data.data.count
-          this.patientXaxis = response.data.data.months
-          let options = {
-            options: {
-              chart: {
-                id: 'vuechart-example'
-              },
-              xaxis: {
-                name: 'Month',
-                categories: this.patientXaxis,
-                title: {
-                  text: 'Month'
-                }
-              },
-              yaxis: {
-                title: {
-                  text: 'Count'
-                }
-              }
-            }
-          }
-          let series = {
-            series: [
-              {
-                name: 'Registrations',
-                data: this.patientCategories
-              }
-            ]
-          }
-          this.patientoptions = options.options
-          this.patientseries = series.series
         })
         .catch(error => {
           this.handleError(error)
@@ -538,7 +410,9 @@ export default {
           let options = {
             options: {
               chart: {
-                id: 'payment-chart'
+                id: 'payment-chart',
+                width: '100%',
+                height: '400'
               },
               colors: colors,
               plotOptions: {
@@ -578,6 +452,15 @@ export default {
         .catch(error => {
           this.handleError(error)
         })
+    },
+    pageChangeHandle(value) {
+      if (value === 'next') {
+        this.currentPage += 1
+        this.dashboard()
+      } else if (value === 'previous') {
+        this.currentPage -= 1
+        this.dashboard()
+      }
     }
   },
   filters: {
@@ -590,6 +473,14 @@ export default {
       }
       var formatter = new Intl.NumberFormat('en-US').format(value)
       return formatter
+    }
+  },
+  computed: {
+    isPreviousButtonDisabled() {
+      return this.currentPage === 1
+    },
+    isNextButtonDisabled() {
+      return this.currentPage === this.pageCount
     }
   }
 }

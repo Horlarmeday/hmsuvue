@@ -63,6 +63,7 @@
             <Theater v-else-if="user.role == 'Theater'" />
             <NHIS v-else-if="user.role == 'NHIS'" />
             <Vendor v-else-if="user.role == 'Vendor'" />
+            <Finance v-else-if="user.role == 'Finance Officer'" />
           </div>
           <Footer />
         </div>
@@ -91,6 +92,7 @@ import Imaging from '@/components/dashboards/Imaging.vue'
 import Theater from '@/components/dashboards/Theater.vue'
 import NHIS from '@/components/dashboards/NHIS.vue'
 import Vendor from '@/components/dashboards/Vendor.vue'
+import Finance from '@/components/dashboards/Finance.vue'
 export default {
   name: 'dashboard',
   components: {
@@ -111,7 +113,8 @@ export default {
     Imaging,
     Theater,
     NHIS,
-    Vendor
+    Vendor,
+    Finance
   },
   data() {
     return {

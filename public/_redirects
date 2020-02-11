@@ -1,4 +1,4 @@
 # Netlify settings for single-page application
-/api/*   https://hmsu.herokuapp.com/:splat 200
+/api/*   https://hmsu.herokuapp.com/api/:splat 200
 
 /*    /index.html   200

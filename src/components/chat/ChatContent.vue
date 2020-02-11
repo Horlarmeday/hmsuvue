@@ -156,7 +156,7 @@
                       <img :src="room.avatarURL" alt="room Image" />
                     </span>
                     <span v-else class="kt-userpic kt-userpic--circle">
-                      <img src="../../assets/images/100_9.jpg" alt="image" />
+                      <img src="../../assets/images/100_1.jpg" alt="image" />
                     </span>
                     <div class="kt-widget__info">
                       <div class="kt-widget__section">
@@ -441,7 +441,7 @@
                         <img :src="staff.avatarURL" alt="staff Image" />
                       </span>
                       <span v-else class="kt-userpic kt-userpic--circle">
-                        <img src="../../assets/images/100_9.jpg" alt="image" />
+                        <img src="../../assets/images/100_1.jpg" alt="image" />
                       </span>
                       <div class="kt-widget__info">
                         <div class="kt-widget__section">
@@ -534,7 +534,6 @@ export default {
 
     getCurrentUser() {
       this.currentUser = this.isLoggedInUser
-      console.log(this.currentUser)
     },
     sendMessage() {
       const { newMessage, currentUser, currentRoom } = this
@@ -602,7 +601,12 @@ export default {
           this.rooms = [...this.rooms, room]
         })
         .then(() => this.addSupportStaffToRoom(staff.id))
-        .catch(error => console.log(error))
+        .catch(error =>
+          this.$iziToast.error({
+            title: 'Error!',
+            message: error
+          })
+        )
     },
 
     getStaffs() {
@@ -621,7 +625,10 @@ export default {
         try {
           return JSON.parse(atob(token.split('.')[1]))
         } catch (error) {
-          console.log(error)
+          this.$iziToast.error({
+            title: 'Error!',
+            message: error
+          })
         }
       }
       const loggedInUser = parseJwt(token)
@@ -647,7 +654,10 @@ export default {
           }
         })
         .catch(err => {
-          console.log('Error on connection', err)
+          this.$iziToast.error({
+            title: 'Error!',
+            message: err
+          })
         })
     }
   },

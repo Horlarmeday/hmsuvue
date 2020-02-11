@@ -268,8 +268,6 @@ export default {
           this.pageSize = this.meta.pageSize
           this.pageCount = this.meta.pageCount
 
-          console.log(this.billings)
-
           let billings = this.billings
           for (let i = 0; i < billings.length; i++) {
             billings[i].url = '/patient/' + billings[i]._id

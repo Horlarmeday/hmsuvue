@@ -520,7 +520,7 @@
             <img
               class="kt-hidden"
               alt="Pic"
-              src="../../assets/images/300_25.jpg"
+              src="../../assets/images/100_1.jpg"
             />
 
             <!--use below badge element instead the user avatar to display username's first letter(remove kt-hidden class to display it) -->
@@ -547,7 +547,7 @@
               <img
                 class="kt-hidden"
                 alt="Pic"
-                src="../../assets/images/300_25.jpg"
+                src="../../assets/images/100_1.jpg"
               />
 
               <!--use below badge element instead the user avatar to display username's first letter(remove kt-hidden class to display it) -->
@@ -635,7 +635,10 @@ export default {
       try {
         return JSON.parse(atob(token.split('.')[1]))
       } catch (error) {
-        console.log(error)
+        this.$iziToast.error({
+          title: 'Error!',
+          message: error
+        })
       }
     }
     const currentUser = parseJwt(token)

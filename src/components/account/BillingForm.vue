@@ -363,7 +363,6 @@ export default {
   },
   methods: {
     handleError(error) {
-      console.log(error)
       this.$iziToast.error({
         title: 'Error!',
         message: error.response.data
@@ -416,7 +415,6 @@ export default {
         .post(this.getpriceurl, data)
         .then(response => {
           this.input.amount = response.data.data
-          console.log(response.data)
         })
         .catch(error => {
           this.handleError(error)

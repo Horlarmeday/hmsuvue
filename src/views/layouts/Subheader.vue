@@ -79,7 +79,10 @@ export default {
       try {
         return JSON.parse(atob(token.split('.')[1]))
       } catch (error) {
-        console.log(error)
+        this.$iziToast.error({
+          title: 'Error!',
+          message: error
+        })
       }
     }
     this.user = parseJwt(token)

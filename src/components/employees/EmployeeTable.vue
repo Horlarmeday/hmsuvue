@@ -262,6 +262,12 @@
                     class="kt-badge kt-badge--warning kt-badge--inline"
                     >{{ staff.role }}</label
                   >
+                  <label
+                    style="background:#ae3ee;color:#f1fdff"
+                    v-if="staff.role == 'Finance Officer'"
+                    class="kt-badge kt-badge--brand kt-badge--inline"
+                    >{{ staff.role }}</label
+                  >
                 </td>
                 <td>
                   <label

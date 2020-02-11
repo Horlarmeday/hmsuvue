@@ -66,7 +66,7 @@ import Subheader from '@/views/layouts/Subheader.vue'
 // import Footer from '@/views/layouts/Footer.vue'
 import ChatContent from '@/components/chat/ChatContent.vue'
 export default {
-  name: 'appointment',
+  name: 'chat',
   components: {
     Sidebar,
     Header,

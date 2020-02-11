@@ -932,7 +932,6 @@ export default {
         .then(response => {
           this.clinicalnotes = response.data.data.anc.clinicalnotes[0]
           this.clinicalnoteloading = false
-          console.log(this.input)
           this.$iziToast.success({
             title: 'Success!',
             message: response.data.message

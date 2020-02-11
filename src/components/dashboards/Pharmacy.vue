@@ -800,7 +800,6 @@ export default {
   },
   methods: {
     handleError(error) {
-      console.log(error)
       this.$iziToast.error({
         title: 'Error!',
         message: error.response.data
@@ -859,7 +858,6 @@ export default {
       this.currentDrug = drug
       const e = document.getElementsByName('department')[index]
       const depart = e.options[e.selectedIndex].value
-      console.log(depart)
       if (depart === '' || depart === null) {
         this.$iziToast.error({
           title: 'Error!',

@@ -824,7 +824,6 @@ export default {
   },
   methods: {
     handleError(error) {
-      console.log(error.response)
       this.$iziToast.error({
         title: 'Error!',
         message: error.response.data
@@ -876,7 +875,6 @@ export default {
         .then(response => {
           this.item = response.data.data
           this.name = this.item.name
-          //   console.log(this.drug)
         })
         .catch(error => {
           this.handleError(error)
@@ -911,7 +909,6 @@ export default {
           this.units = response.data.data.units
           this.departments = response.data.data.departments
           this.staffs = response.data.data.staffs
-          //   console.log(this.drug)
         })
         .catch(error => {
           this.handleError(error)

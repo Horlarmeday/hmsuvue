@@ -368,16 +368,17 @@ export default {
       try {
         return JSON.parse(atob(token.split('.')[1]))
       } catch (error) {
-        console.log(error)
+        this.$iziToast.error({
+          title: 'Error!',
+          message: error
+        })
       }
     }
     const currentUser = parseJwt(token)
     this.currentUser = currentUser
-    console.log(this.currentUser)
   },
   methods: {
     handleError(error) {
-      console.log(error)
       this.$iziToast.error({
         title: 'Error!',
         message: error.response.data
@@ -412,7 +413,6 @@ export default {
           this.units = response.data.data.units
           this.drugs = response.data.data.pharmitems
           this.labitems = response.data.data.labitems
-          console.log(this.labitems)
         })
         .catch(error => {
           this.handleError(error)

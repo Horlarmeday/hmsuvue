@@ -309,7 +309,6 @@ export default {
         .get(this.itemUrl + this.$route.params.id)
         .then(response => {
           this.item = response.data.data
-          console.log(this.item)
         })
         .catch(error => {
           this.handleError(error)

@@ -443,7 +443,6 @@ export default {
             title: 'Success!',
             message: response.data.message
           })
-          console.log(this.input)
         })
         .catch(error => {
           this.handleError(error)

@@ -952,7 +952,6 @@ export default {
   },
   methods: {
     handleError(error) {
-      console.log(error.response)
       this.$iziToast.error({
         title: 'Error!',
         message: error.response.data
@@ -1061,7 +1060,6 @@ export default {
     },
     save() {
       this.fileList = this.$refs.file.files[0]
-      console.log(this.fileList)
       if (this.fileList.length < 1) {
         this.$iziToast.error({
           title: 'Error!',

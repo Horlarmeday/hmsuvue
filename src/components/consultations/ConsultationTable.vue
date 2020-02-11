@@ -579,7 +579,6 @@ export default {
         .post(this.consultationDrugurl, data)
         .then(response => {
           this.drugs = response.data.data.drugs
-          console.log(this.drugs)
         })
         .catch(error => {
           this.handleError(error)

@@ -423,7 +423,6 @@ export default {
   },
   methods: {
     handleError(error) {
-      console.log(error.response)
       this.$iziToast.error({
         title: 'Error!',
         message: error.response.data
@@ -514,7 +513,6 @@ export default {
     pageChangeHandle(value) {
       if (value === 'next') {
         this.currentPage += 1
-        console.log(this.currentPage)
         this.dashboard()
       } else if (value === 'previous') {
         this.currentPage -= 1

@@ -2256,7 +2256,6 @@ export default {
             this.tests.length == 0
           }
           this.tests = response.data.data[0]
-          console.log(response.data.data)
         })
         .catch(error => {
           this.handleError(error)

@@ -1160,9 +1160,6 @@ export default {
     },
     startCamera() {
       this.toggleVideoShowing()
-
-      // console.log(this.video)
-      // console.log('after initial')
       this.video = this.$refs.video
       this.video.style = 'display:block;width:250px;margin-bottom:20px;'
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {

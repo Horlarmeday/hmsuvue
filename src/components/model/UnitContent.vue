@@ -272,7 +272,6 @@ export default {
     pageChangeHandle(value) {
       if (value === 'next') {
         this.currentPage += 1
-        console.log(this.currentPage)
         this.getUnit()
       } else if (value === 'previous') {
         this.currentPage -= 1

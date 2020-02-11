@@ -1063,7 +1063,6 @@ export default {
   },
   methods: {
     handleError(error) {
-      console.log(error)
       this.$iziToast.error({
         title: 'Error!',
         message: error.response.data

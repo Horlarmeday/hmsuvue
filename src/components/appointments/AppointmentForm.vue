@@ -230,7 +230,6 @@ export default {
         .then(response => {
           this.patients = response.data.data.patients
           this.staffs = response.data.data.examiners
-          console.log(response.data)
         })
         .catch(error => {
           this.handleError(error)

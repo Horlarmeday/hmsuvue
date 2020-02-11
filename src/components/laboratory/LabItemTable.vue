@@ -522,7 +522,6 @@ export default {
         .then(response => {
           this.item = response.data.data
           this.name = this.item.name
-          //   console.log(this.drug)
         })
         .catch(error => {
           this.handleError(error)
@@ -557,7 +556,6 @@ export default {
           this.units = response.data.data.units
           this.departments = response.data.data.departments
           this.staffs = response.data.data.staffs
-          //   console.log(this.drug)
         })
         .catch(error => {
           this.handleError(error)
@@ -573,7 +571,6 @@ export default {
     pageChangeHandle(value) {
       if (value === 'next') {
         this.currentPage += 1
-        console.log(this.currentPage)
         this.getLabItems()
       } else if (value === 'previous') {
         this.currentPage -= 1

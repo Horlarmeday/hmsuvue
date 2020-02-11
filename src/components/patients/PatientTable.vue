@@ -362,7 +362,6 @@ export default {
     pageChangeHandle(value) {
       if (value === 'next') {
         this.currentPage += 1
-        console.log(this.currentPage)
         this.getPatients()
       } else if (value === 'previous') {
         this.currentPage -= 1

@@ -445,12 +445,9 @@ export default {
     this.dashboard()
     this.patientsChart()
     this.paymentChart()
-    let example = localStorage.getItem('pushkitUser')
-    console.log('example', example)
   },
   methods: {
     handleError(error) {
-      console.log(error.response)
       this.$iziToast.error({
         title: 'Error!',
         message: error.response.data

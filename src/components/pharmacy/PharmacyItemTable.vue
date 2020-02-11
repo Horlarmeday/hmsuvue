@@ -561,7 +561,6 @@ export default {
           this.units = response.data.data.units
           this.departments = response.data.data.departments
           this.staffs = response.data.data.staffs
-          //   console.log(this.drug)
         })
         .catch(error => {
           this.handleError(error)

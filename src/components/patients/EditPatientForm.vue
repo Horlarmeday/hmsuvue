@@ -618,7 +618,6 @@ export default {
         .post(this.enrolleeIdUrl, data)
         .then(response => {
           this.patient.enrolleeId = response.data.data.enrolleeId
-          console.log(this.patient.enrolleeId)
         })
         .catch(error => {
           this.handleError(error)

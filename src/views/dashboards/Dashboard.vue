@@ -127,7 +127,10 @@ export default {
       try {
         return JSON.parse(atob(token.split('.')[1]))
       } catch (error) {
-        console.log(error)
+        this.$iziToast.error({
+          title: 'Success!',
+          message: error
+        })
       }
     }
     const currentUser = parseJwt(token)

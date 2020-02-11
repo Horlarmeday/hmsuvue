@@ -560,16 +560,43 @@ export default {
         })
     },
     changeMonth(start, end, current) {
-      console.log('changeMonth', start, end, current)
+      this.$iziToast.success({
+        title: 'Success!',
+        message: 'changeMonth',
+        start,
+        end,
+        current
+      })
+      // console.log('changeMonth', start, end, current)
     },
     eventClick(event, jsEvent, pos) {
-      console.log('eventClick', event, jsEvent, pos)
+      this.$iziToast.success({
+        title: 'Success!',
+        message: 'eventClick',
+        event,
+        jsEvent,
+        pos
+      })
+      // console.log('eventClick', event, jsEvent, pos)
     },
     dayClick(day, jsEvent) {
-      console.log('dayClick', day, jsEvent)
+      this.$iziToast.success({
+        title: 'Success!',
+        message: 'dayClick',
+        day,
+        jsEvent
+      })
+      // console.log('dayClick', day, jsEvent)
     },
     moreClick(day, events, jsEvent) {
-      console.log('moreCLick', day, events, jsEvent)
+      this.$iziToast.success({
+        title: 'Success!',
+        message: 'moreCLick',
+        day,
+        events,
+        jsEvent
+      })
+      // console.log('moreCLick', day, events, jsEvent)
     }
   },
   filters: {

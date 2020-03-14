@@ -153,12 +153,17 @@
             <!--begin: Head -->
             <div
               class="kt-head kt-head--skin-dark kt-head--fit-x kt-head--fit-b"
-              style="background-image: url(./assets/media/misc/bg-1.jpg)"
+              :style="{
+                backgroundImage:
+                  'url(' +
+                  require('@/assets/images/bg' + backgroundId + '.jpg') +
+                  ')'
+              }"
             >
               <h3 class="kt-head__title">
                 User Notifications &nbsp;
                 <span class="btn btn-success btn-sm btn-bold btn-font-md"
-                  >23 new</span
+                  >3 new</span
                 >
               </h3>
               <ul
@@ -207,10 +212,10 @@
                     </div>
                     <div class="kt-notification__item-details">
                       <div class="kt-notification__item-title">
-                        New order has been received
+                        New patient just registered
                       </div>
                       <div class="kt-notification__item-time">
-                        2 hrs ago
+                        2 secs ago
                       </div>
                     </div>
                   </a>
@@ -220,10 +225,10 @@
                     </div>
                     <div class="kt-notification__item-details">
                       <div class="kt-notification__item-title">
-                        New customer is registered
+                        Patient sent for lab test
                       </div>
                       <div class="kt-notification__item-time">
-                        3 hrs ago
+                        2 mins ago
                       </div>
                     </div>
                   </a>
@@ -233,10 +238,10 @@
                     </div>
                     <div class="kt-notification__item-details">
                       <div class="kt-notification__item-title">
-                        Application has been approved
+                        Patient just made payment
                       </div>
                       <div class="kt-notification__item-time">
-                        3 hrs ago
+                        3 mins ago
                       </div>
                     </div>
                   </a>
@@ -268,8 +273,8 @@
       <!--end: Notifications -->
 
       <!--begin: Quick Actions -->
-      <div class="kt-header__topbar-item dropdown">
-        <div
+      <!-- <div class="kt-header__topbar-item dropdown"> -->
+      <!-- <div
           class="kt-header__topbar-wrapper"
           data-toggle="dropdown"
           data-offset="30px,0px"
@@ -327,13 +332,13 @@
               </g>
             </svg>
           </span>
-        </div>
-        <div
+        </div> -->
+      <!-- <div
           class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-top-unround dropdown-menu-xl"
-        >
-          <form>
-            <!--begin: Head -->
-            <div
+        > -->
+      <!-- <form> -->
+      <!--begin: Head -->
+      <!-- <div
               class="kt-head kt-head--skin-dark"
               style="background-image: url(./assets/media/misc/bg-1.jpg)"
             >
@@ -344,12 +349,12 @@
                   >23 tasks pending</span
                 >
               </h3>
-            </div>
+            </div> -->
 
-            <!--end: Head -->
+      <!--end: Head -->
 
-            <!--begin: Grid Nav -->
-            <div class="kt-grid-nav kt-grid-nav--skin-light">
+      <!--begin: Grid Nav -->
+      <!-- <div class="kt-grid-nav kt-grid-nav--skin-light">
               <div class="kt-grid-nav__row">
                 <a href="#" class="kt-grid-nav__item">
                   <span class="kt-grid-nav__icon">
@@ -496,12 +501,12 @@
                   <span class="kt-grid-nav__desc">Latest cases</span>
                 </a>
               </div>
-            </div>
+            </div> -->
 
-            <!--end: Grid Nav -->
-          </form>
+      <!--end: Grid Nav -->
+      <!-- </form>
         </div>
-      </div>
+      </div> -->
 
       <!--end: Quick Actions -->
 

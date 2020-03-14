@@ -30,6 +30,15 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
+  {
+    path: '/test-view',
+    name: 'test',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(/* webpackChunkName: "about" */ '../views/app/patients/Test.vue')
+  },
   // common routes
   {
     path: '/login',
@@ -295,6 +304,14 @@ const routes = [
     path: '/departments',
     name: 'departments',
     component: () => import('../views/app/model/Departments.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/health/plan',
+    name: 'plans',
+    component: () => import('../views/app/insurance/CreatePlan.vue'),
     meta: {
       requiresAuth: true
     }

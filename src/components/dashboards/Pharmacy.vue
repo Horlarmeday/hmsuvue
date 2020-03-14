@@ -264,10 +264,15 @@
                     <td>
                       {{ index + 1 }}
                     </td>
-                    <td>
+                    <td v-if="consultation.patient">
                       <router-link :to="consultation.url">
                         {{ consultation.patient.firstname }}
                         {{ consultation.patient.lastname }}
+                      </router-link>
+                    </td>
+                    <td v-else>
+                      <router-link to="#">
+                        {{ consultation.dependant.name }}
                       </router-link>
                     </td>
                     <td>{{ consultation.reasonforvisit }}</td>
@@ -275,7 +280,6 @@
 
                     <td v-if="consultation.drugs.length > 0">
                       <button
-                        :disabled="!consultation.drugpaid"
                         class="btn btn-brand"
                         data-toggle="modal"
                         data-target="#kt_modal_2"
@@ -825,7 +829,12 @@ export default {
           let consultations = this.consultations
           let ancs = this.ancs
           for (let i = 0; i < consultations.length; i++) {
-            consultations[i].url = '/patient/' + consultations[i].patient._id
+            if (consultations[i].patient) {
+              consultations[i].url = '/patient/' + consultations[i].patient._id
+            }
+            // if(consultations[i].dependant){
+            //   consultations[i].url = '/patient/' + consultations[i].patient._id
+            // }
           }
 
           for (let i = 0; i < ancs.length; i++) {

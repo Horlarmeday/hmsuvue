@@ -8,42 +8,26 @@
             <i class="kt-font-brand flaticon2-line-chart"></i>
           </span>
           <h3 class="kt-portlet__head-title">
-            Create
-            <span
-              style="font-weight: 700;font-size:15px"
-              class="kt-badge kt-badge--success kt-badge--inline"
-              >{{ insurancetype.name }}</span
-            >
-            HMO
-            <small>Create a new hmo</small>
+            Create Health Plans
+            <small>Create a new health plan</small>
           </h3>
         </div>
       </div>
       <div class="kt-portlet__body">
         <!--begin: Datatable -->
         <div class="row">
-          <div class="col-xl-6">
+          <div class="col-xl-12">
             <div class="form-group">
-              <label>HMO Name </label>
+              <label>Plan </label>
               <input
                 type="text"
                 class="form-control"
-                v-model="name"
-                placeholder="HMO Name"
+                v-model="plan"
+                placeholder="Plan"
               />
-              <span class="form-text text-muted">Please enter hmo name.</span>
-            </div>
-          </div>
-          <div class="col-xl-6">
-            <div class="form-group">
-              <label>HMO ID </label>
-              <input
-                type="text"
-                class="form-control"
-                v-model="hmoId"
-                placeholder="HMO ID"
-              />
-              <span class="form-text text-muted">Please enter hmo ID.</span>
+              <span class="form-text text-muted"
+                >Please input health plan.</span
+              >
             </div>
           </div>
         </div>
@@ -51,7 +35,7 @@
         <div>
           <button
             v-if="!loading"
-            @click="createHMO"
+            @click="createPlan"
             class="btn btn-brand btn-elevate float-right"
           >
             Create
@@ -147,7 +131,6 @@
                       type="text"
                       class="form-control"
                       placeholder="Search..."
-                      id="generalSearch"
                     />
                     <span class="kt-input-icon__icon kt-input-icon__icon--left">
                       <span><i class="la la-search"></i></span>
@@ -155,14 +138,6 @@
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="col-xl-4 order-1 order-xl-2 kt-align-right">
-              <a href="#" class="btn btn-default kt-hidden">
-                <i class="la la-cart-plus"></i> New Order
-              </a>
-              <div
-                class="kt-separator kt-separator--border-dashed kt-separator--space-lg d-xl-none"
-              ></div>
             </div>
           </div>
         </div>
@@ -172,59 +147,27 @@
       <div class="kt-portlet__body ">
         <!--begin: Datatable -->
         <div class="dt-responsive table-responsive">
-          <table class="table table-striped table-bordered nowrap">
+          <table id="mytable" class="table table-striped table-bordered nowrap">
             <thead>
               <tr>
                 <th>S/N</th>
-                <th>Name</th>
-                <th>HMO ID</th>
-                <th>Status</th>
+                <th>Plan</th>
                 <th>Date Created</th>
-                <th>Action</th>
+                <th>Created By</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-if="hmos.length == 0">
-                <td colspan="9" align="center">No HMOs</td>
+              <tr v-if="plans.length == 0">
+                <td colspan="9" align="center">No Health Plans</td>
               </tr>
-              <tr v-for="(hmo, index) in hmos" :key="hmo._id">
+              <tr v-for="(plan, index) in plans" :key="plan._id">
                 <td>
                   {{ index + 1 }}
                 </td>
-                <td>{{ hmo.name }}</td>
-                <td>{{ hmo.hmoId }}</td>
+                <td>{{ plan.plan }}</td>
+                <td>{{ plan.createdAt | moment('DD/MM/YYYY') }}</td>
                 <td>
-                  <span
-                    v-if="hmo.status"
-                    class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill"
-                    >Active</span
-                  >
-                  <span
-                    v-else
-                    class="kt-badge kt-badge--info kt-badge--inline kt-badge--pill"
-                    >Inactive</span
-                  >
-                </td>
-                <td>{{ hmo.createdAt | moment('DD/MM/YYYY') }}</td>
-                <td>
-                  <router-link class="btn btn-brand mr-3" :to="hmo.url"
-                    >Create/View Enrollees</router-link
-                  >
-                  <button
-                    v-if="!deletedata && hmo._id !== currentHmo._id"
-                    @click="deleteHmo(hmo)"
-                    class="btn btn-danger btn-md btn-elevate kt-login__btn-primary"
-                  >
-                    Delete
-                  </button>
-                  <button
-                    v-else
-                    class="btn btn-danger btn-md kt-spinner kt-spinner--right 
-                      kt-spinner--sm kt-spinner--light btn-elevate"
-                    disabled
-                  >
-                    Deleting...
-                  </button>
+                  {{ plan.creator.firstname }} {{ plan.creator.lastname }}
                 </td>
               </tr>
             </tbody>
@@ -241,7 +184,7 @@
 <script>
 import axios from '../../axios'
 export default {
-  name: 'hmo',
+  name: 'createhealthplan',
   props: {
     title: {
       type: String
@@ -249,21 +192,14 @@ export default {
   },
   data() {
     return {
-      name: '',
-      hmoId: '',
-      hmoname: '',
-      hmos: [],
-      currentHmo: '',
-      insurancetype: '',
-      hmoUrl: '/admin/hmo/',
-      currentInsuranceurl: '/admin/current/insurance/',
-      loading: false,
-      deletedata: false
+      plan: '',
+      plans: [],
+      planUrl: '/admin/plan',
+      loading: false
     }
   },
   mounted() {
-    this.getHmos()
-    this.getCurrentInsurance()
+    this.getPlans()
   },
   methods: {
     handleError(error) {
@@ -272,23 +208,17 @@ export default {
         message: error.response.data
       })
     },
-    createHMO() {
+    createPlan() {
       this.loading = true
       const data = {
-        name: this.name,
-        hmoId: this.hmoId
+        plan: this.plan
       }
       axios
-        .post(this.hmoUrl + this.$route.params.id, data)
+        .post(this.planUrl, data)
         .then(response => {
-          this.name = ''
-          this.hmoId = ''
+          this.plan = ''
           this.loading = false
-          this.hmos = response.data.data.reverse()
-          let hmos = this.hmos
-          for (let i = 0; i < hmos.length; i++) {
-            hmos[i].url = '/enrollee/' + hmos[i]._id
-          }
+          this.plans = response.data.data
           this.$iziToast.success({
             title: 'Success!',
             message: response.data.message
@@ -300,49 +230,13 @@ export default {
         })
     },
 
-    getHmos() {
+    getPlans() {
       axios
-        .get(this.hmoUrl + this.$route.params.id)
+        .get(this.planUrl)
         .then(response => {
-          this.hmos = response.data.data.reverse()
-          let hmos = this.hmos
-          for (let i = 0; i < hmos.length; i++) {
-            hmos[i].url = '/enrollee/' + hmos[i]._id
-          }
+          this.plans = response.data.data
         })
         .catch(error => {
-          this.handleError(error)
-        })
-    },
-
-    getCurrentInsurance() {
-      axios
-        .get(this.currentInsuranceurl + this.$route.params.id)
-        .then(response => {
-          this.insurancetype = response.data.data
-        })
-        .catch(error => {
-          this.handleError(error)
-        })
-    },
-
-    deleteHmo(hmo) {
-      this.deletedata = true
-      this.currentHmo = hmo
-      axios
-        .delete(this.hmoUrl + this.$route.params.id, {
-          data: { hmoId: hmo._id }
-        })
-        .then(response => {
-          this.deletedata = false
-          this.hmos = response.data.data
-          this.$iziToast.success({
-            title: 'Success!',
-            message: response.data.message
-          })
-        })
-        .catch(error => {
-          this.deletedata = false
           this.handleError(error)
         })
     }

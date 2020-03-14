@@ -53,7 +53,7 @@
                       Snap Photo</button
                     >&nbsp;
                     <button type="button" class="btn btn-success btn-sm">
-                      follow
+                      Allergy
                     </button>
                   </div>
                 </div>
@@ -1062,6 +1062,32 @@
                     <span class="kt-widget4__number">{{
                       patient.enrolleeId
                     }}</span>
+                  </div>
+                  <div class="kt-widget4__item">
+                    <span class="kt-widget4__icon">
+                      <i class="flaticon-pie-chart-1 kt-font-info"></i>
+                    </span>
+                    <a
+                      href="#"
+                      class="kt-widget4__title kt-widget4__title--light"
+                    >
+                      Hospital ID
+                    </a>
+                    <span class="kt-widget4__number">{{
+                      patient.hospitalId
+                    }}</span>
+                  </div>
+                  <div class="kt-widget4__item">
+                    <span class="kt-widget4__icon">
+                      <i class="flaticon-pie-chart-1 kt-font-info"></i>
+                    </span>
+                    <a
+                      href="#"
+                      class="kt-widget4__title kt-widget4__title--light"
+                    >
+                      Plan
+                    </a>
+                    <span class="kt-widget4__number">{{ patient.plan }}</span>
                   </div>
                 </div>
                 <br />

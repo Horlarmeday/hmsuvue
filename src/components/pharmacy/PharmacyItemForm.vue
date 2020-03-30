@@ -200,6 +200,74 @@
               >
             </div>
           </div>
+          <div class="col-xl-6">
+            <div class="form-group">
+              <label>Dosage Form</label>
+              <select v-model="input.dosageForm" class="form-control" required>
+                <option selected disabled>Select</option>
+                <option value="Capsule">Capsule</option>
+                <option value="Cream">Cream</option>
+                <option value="Injections">Injections</option>
+                <option value="Infusions">Infusions</option>
+                <option value="Ointment">Ointment</option>
+                <option value="Pessaries">Pessaries</option>
+                <option value="Suppository">Suppository</option>
+                <option value="Suspension">Suspension</option>
+                <option value="Tablet">Tablet</option>
+              </select>
+
+              <span class="form-text text-muted">Please select dosage.</span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xl-6">
+            <div class="form-group">
+              <label>Strength</label>
+              <select v-model="input.strength" class="form-control" required>
+                <option selected disabled>Select</option>
+                <option value="Milligram">Milligram</option>
+                <option value="Grams">Grams</option>
+                <option value="Microgram">Microgram</option>
+                <option value="International Unit">International Unit</option>
+              </select>
+              <span class="form-text text-muted">Please select strength.</span>
+            </div>
+          </div>
+          <div class="col-xl-6">
+            <div class="form-group">
+              <label>Volume</label>
+              <input
+                type="text"
+                v-model="input.volume"
+                class="form-control"
+                placeholder="Volume"
+              />
+              <span class="form-text text-muted">Please input volume.</span>
+            </div>
+          </div>
+          <div class="col-xl-6">
+            <div class="form-group">
+              <label>Capitated? </label>
+              <div class="col-3">
+                <span class="kt-switch kt-switch--outline kt-switch--primary">
+                  <label>
+                    <input
+                      ref="capitate"
+                      type="checkbox"
+                      checked="unchecked"
+                      v-model="input.isCapitated"
+                      required
+                    />
+                    <span></span>
+                  </label>
+                </span>
+              </div>
+              <span class="form-text text-muted"
+                >Please select appropriate side.</span
+              >
+            </div>
+          </div>
         </div>
         <h5 style="margin-bottom: 30px;color:#5d78ff;">QUANTITY</h5>
         <div class="row">
@@ -385,6 +453,8 @@ export default {
         batch: '',
         loss: '',
         remarks: '',
+        dosageForm: '',
+        strength: '',
         quantity: '',
         unit: '',
         purchasecost: '',
@@ -393,7 +463,8 @@ export default {
         datereceived: '',
         expiration: '',
         vendorId: '',
-        genericId: ''
+        genericId: '',
+        isCapitated: null
       },
 
       pharmacyitemUrl: '/pharmacy/pharmacy/item',
@@ -419,6 +490,9 @@ export default {
     },
     createItem() {
       this.loading = true
+      this.$refs.capitate.checked
+        ? (this.input.isCapitated = true)
+        : (this.input.isCapitated = false)
 
       axios
         .post(this.pharmacyitemUrl, this.input)

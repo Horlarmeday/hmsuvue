@@ -1321,12 +1321,16 @@ export default {
         .post(this.hmoUrl, data)
         .then(response => {
           this.hmos = response.data.data.hmos
-          // const insurance = response.data.data.insurance
+          const insurance = response.data.data.insurance
+
+          if (insurance.name === 'NHIS' || insurance.name === 'FHSS') {
+            return (this.plan = 'Social')
+          }
+          this.plan = ''
 
           // const choosenPlan = plans.filter(plan => {
-          //   if(insurance === )
+
           // })
-          // this.plan =
         })
         .catch(error => {
           this.handleError(error)

@@ -167,7 +167,7 @@
 
     <!--Begin::Section-->
     <div class="row">
-      <div class="col-xl-6">
+      <div class="col-xl-12">
         <!--begin:: Widgets/Tasks -->
         <div class="kt-portlet kt-portlet--tabs kt-portlet--height-fluid">
           <div class="kt-portlet__head">
@@ -223,8 +223,9 @@
                     <th>Photo</th>
                     <th>Patient ID</th>
                     <th>Patient Name</th>
-                    <th>Age</th>
+                    <th>Hospital Number</th>
                     <th>Phone Number</th>
+                    <th>Insurance Plan</th>
                     <th>Status</th>
                     <th>Date Registered</th>
                   </tr>
@@ -259,12 +260,21 @@
                       <router-link :to="patient.url">
                         {{ patient.firstname }} {{ patient.lastname }}
                       </router-link>
+                      <small
+                        v-if="patient.retainershipname"
+                        class="kt-badge kt-badge--success kt-badge--inline"
+                      >
+                        {{ patient.insurancetype.name }}
+                      </small>
                     </td>
                     <td>
-                      {{ patient.birthday | moment('from', 'now', true) }}
+                      {{ patient.hospitalId }}
                     </td>
                     <td>
                       {{ patient.phonenumber }}
+                    </td>
+                    <td>
+                      {{ patient.plan }}
                     </td>
                     <td>
                       <label
@@ -315,13 +325,13 @@
 
         <!--end:: Widgets/Tasks -->
       </div>
-      <div class="col-xl-6">
+      <div class="col-xl-12">
         <!--begin:: Widgets/New Users-->
         <div class="kt-portlet kt-portlet--tabs kt-portlet--height-fluid">
           <div class="kt-portlet__head">
             <div class="kt-portlet__head-label">
               <h3 class="kt-portlet__head-title">
-                Lab Tests
+                Laboratory Tests
               </h3>
             </div>
           </div>
@@ -334,7 +344,6 @@
                       <tr>
                         <th>S/N</th>
                         <th>Patient Name</th>
-                        <!-- <th>Reason for Visit</th> -->
                         <th>Lab Tests</th>
                         <th>Requested By</th>
                         <th>Payment Status</th>
@@ -348,11 +357,11 @@
                         </td>
                       </tr>
                     </tbody>
-                    <tbody>
-                      <tr
-                        v-for="(consultation, index) in consultations"
-                        :key="consultation._id"
-                      >
+                    <tbody
+                      v-for="(consultation, index) in consultations"
+                      :key="consultation._id"
+                    >
+                      <tr>
                         <td>
                           {{ index + 1 }}
                         </td>
@@ -372,34 +381,10 @@
                             >
                           </router-link>
                         </td>
-                        <!-- <td>
-                          {{ consultation.reasonforvisit }}
-                        </td> -->
                         <td>
-                          <label
-                            v-for="(test, index) in consultation.tests"
-                            :key="test._id"
-                            class="kt-checkbox"
-                          >
-                            <input
-                              name="testChecked"
-                              @change="checkTest(consultation, index)"
-                              type="checkbox"
-                            />
-                            {{ test.test.name }}
-
-                            <small
-                              v-if="!test.status"
-                              class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill"
-                              >pending</small
-                            >
-                            <small
-                              v-else
-                              class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill"
-                              >cleared</small
-                            >
-                            <span></span>
-                          </label>
+                          <p v-for="test in consultation.tests" :key="test._id">
+                            <span>{{ test.test.name }}</span>
+                          </p>
                         </td>
                         <td>
                           <router-link to="#">
@@ -419,29 +404,239 @@
                             >{{ consultation.labtestpaid }}</label
                           >
                           <label
-                            v-if="consultation.labtestpaid == 'Cleared by NHIS'"
+                            v-if="consultation.labtestpaid == 'Cleared'"
                             class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill"
                             >{{ consultation.labtestpaid }}</label
                           >
                         </td>
                         <td>
                           <button
-                            v-if="!loading"
+                            v-if="consultation.labtestpaid !== 'Cleared'"
                             class="btn btn-danger btn-sm"
-                            @click="clearPayment(consultation, index)"
+                            data-toggle="modal"
+                            data-target="#kt_modal_4"
+                            @click="getConsultationTests(consultation, index)"
                           >
                             Clear Payment
                           </button>
-                          <button
-                            v-if="
-                              loading &&
-                                consultation._id == currentConsultation._id
-                            "
-                            class="btn btn-brand btn-sm kt-spinner kt-spinner--right 
+                          <button v-else class="btn btn-sm kt-label-bg-color-2">
+                            Cleared
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <b-pagination
+                  class="float-right"
+                  v-model="currentPage"
+                  :per-page="10"
+                  :total-rows="drows"
+                  first-text="First"
+                  prev-text="Prev"
+                  next-text="Next"
+                  last-text="Last"
+                ></b-pagination>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--begin::Modal-->
+        <div
+          class="modal fade"
+          id="kt_modal_4"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                  Clear Lab Test Payment
+                </h5>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">
+                <div class="form-group row">
+                  <label class="col-2 col-form-label">Tests</label>
+                  <div class="col-10">
+                    <p v-for="(test, index) in tests" :key="test._id">
+                      <span>
+                        <input
+                          name="testChecked"
+                          @change="checkTest(index)"
+                          type="checkbox"
+                        />
+                        {{ test.test.name }}
+
+                        <small
+                          v-if="!test.status"
+                          class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill"
+                          >pending</small
+                        >
+                        <small
+                          v-else
+                          class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill"
+                          >cleared</small
+                        >
+                        <span></span>
+                      </span>
+                    </p>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-2 col-form-label">Price</label>
+                  <div class="col-10">
+                    <textarea
+                      v-model="code"
+                      class="form-control"
+                      cols="30"
+                      rows="10"
+                      placeholder="Authorization Code"
+                      required
+                    ></textarea>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    v-if="!loading"
+                    class="btn btn-danger btn-sm"
+                    data-toggle="modal"
+                    data-target="#kt_modal_4"
+                    @click="clearTestPayment"
+                  >
+                    Clear Payment
+                  </button>
+                  <button
+                    v-if="loading"
+                    class="btn btn-brand btn-sm kt-spinner kt-spinner--right 
                       kt-spinner--sm kt-spinner--light btn-elevate float-right"
-                            disabled
+                    disabled
+                  >
+                    Clearing...
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--end::Modal-->
+
+        <!--end:: Widgets/New Users-->
+      </div>
+      <div class="col-xl-12">
+        <!--begin:: Widgets/New Users-->
+        <div class="kt-portlet kt-portlet--tabs kt-portlet--height-fluid">
+          <div class="kt-portlet__head">
+            <div class="kt-portlet__head-label">
+              <h3 class="kt-portlet__head-title">
+                Drugs
+              </h3>
+            </div>
+          </div>
+          <div class="kt-portlet__body">
+            <div class="tab-content">
+              <div class="tab-pane active" id="kt_widget4_tab1_content">
+                <div class="dt-responsive table-responsive">
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>S/N</th>
+                        <th>Patient Name</th>
+                        <th>Drugs</th>
+                        <th>Requested By</th>
+                        <th>Payment Status</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody v-if="drugconsultations.length == 0">
+                      <tr>
+                        <td colspan="15" align="center">
+                          No Medication Requests
+                        </td>
+                      </tr>
+                    </tbody>
+                    <tbody
+                      v-for="(consultation, index) in drugconsultations"
+                      :key="consultation._id"
+                    >
+                      <tr>
+                        <td>
+                          {{ index + 1 }}
+                        </td>
+
+                        <td v-if="consultation.patient">
+                          <router-link to="#">
+                            {{ consultation.patient.firstname }}
+                            {{ consultation.patient.lastname }}
+                          </router-link>
+                        </td>
+                        <td v-if="consultation.dependant">
+                          <router-link to="#">
+                            {{ consultation.dependant.name }}
+                            <small
+                              class="kt-badge kt-badge--danger kt-badge--inline"
+                              >Dependant</small
+                            >
+                          </router-link>
+                        </td>
+                        <td>
+                          <p v-for="drug in consultation.drugs" :key="drug._id">
+                            <span>
+                              {{ drug.drug.name }}
+                            </span>
+                          </p>
+                        </td>
+                        <td>
+                          <router-link to="#">
+                            {{ consultation.examiner.firstname }}
+                            {{ consultation.examiner.lastname }}
+                          </router-link>
+                        </td>
+                        <td>
+                          <label
+                            v-if="consultation.drugpaid == 'Pending'"
+                            class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill"
+                            >{{ consultation.drugpaid }}</label
                           >
-                            Clearing...
+                          <label
+                            v-if="consultation.drugpaid == 'Paid'"
+                            class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill"
+                            >{{ consultation.drugpaid }}</label
+                          >
+                          <label
+                            v-if="consultation.drugpaid == 'Cleared'"
+                            class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill"
+                            >{{ consultation.drugpaid }}</label
+                          >
+                        </td>
+                        <td>
+                          <button
+                            v-if="consultation.drugpaid !== 'Cleared'"
+                            class="btn btn-danger btn-sm"
+                            data-toggle="modal"
+                            data-target="#kt_modal_3"
+                            @click="getConsultationDrugs(consultation, index)"
+                          >
+                            Clear Payment
+                          </button>
+                          <button v-else class="btn btn-sm kt-label-bg-color-2">
+                            Cleared
                           </button>
                         </td>
                       </tr>
@@ -464,6 +659,99 @@
         </div>
 
         <!--end:: Widgets/New Users-->
+
+        <!--begin::Modal-->
+        <div
+          class="modal fade"
+          id="kt_modal_3"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                  Clear Drugs Payment
+                </h5>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">
+                <div class="form-group row">
+                  <label class="col-2 col-form-label">Drugs</label>
+                  <div class="col-10">
+                    <p v-for="(drug, index) in drugs" :key="drug._id">
+                      <span>
+                        <input
+                          name="drugChecked"
+                          @change="checkDrug(index)"
+                          type="checkbox"
+                        />
+
+                        {{ drug.drug.name }}
+                        <small
+                          v-if="!drug.status"
+                          class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill"
+                          >pending</small
+                        >
+                        <small
+                          v-else
+                          class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill"
+                          >cleared</small
+                        >
+                        <span></span>
+                      </span>
+                    </p>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-2 col-form-label">Price</label>
+                  <div class="col-10">
+                    <textarea
+                      v-model="code"
+                      class="form-control"
+                      cols="30"
+                      rows="10"
+                      placeholder="Authorization Code"
+                      required
+                    ></textarea>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    v-if="!loading"
+                    class="btn btn-danger btn-sm"
+                    @click="clearDrugPayment"
+                  >
+                    Clear Payment
+                  </button>
+                  <button
+                    v-if="loading"
+                    class="btn btn-brand btn-sm kt-spinner kt-spinner--right 
+                      kt-spinner--sm kt-spinner--light btn-elevate float-right"
+                    disabled
+                  >
+                    Clearing...
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--end::Modal-->
       </div>
     </div>
     <!--End::Section-->
@@ -482,6 +770,9 @@ export default {
     return {
       patients: [],
       consultations: [],
+      drugconsultations: [],
+      drugs: [],
+      tests: [],
       totalPatients: '',
       triagesCount: '',
       nhisCount: '',
@@ -491,14 +782,24 @@ export default {
       loading: false,
       landingPageUrl: '/dashboard/nhis',
       clearpaymenturl: '/account/clear/labtest',
+      cleardrugpaymenturl: '/account/clear/drug',
+      getdrugsconsultationurl: '/ajax/noncapitated/drugs',
+      gettestsconsultationurl: '/ajax/noncapitated/tests',
       imageurl:
         process.env.VUE_APP_IMAGE_URL ||
         'http://localhost:3000/static/uploads/',
 
-      checktestUrl: '/ajax/change/test/status/true',
-      unchecktestUrl: '/ajax/change/test/status/false',
+      checktestUrl: '/ajax/change/noncapitated/test/status/true',
+      unchecktestUrl: '/ajax/change/noncapitated/test/status/false',
+
+      checkdrugUrl: '/ajax/change/noncapitated/drug/status/true',
+      uncheckdrugUrl: '/ajax/change/noncapitated/drug/status/false',
+
       input: '',
       photo: '',
+      consultation: '',
+      code: '',
+      index: '',
 
       currentPage: 1,
       pageCount: '',
@@ -524,6 +825,7 @@ export default {
         )
         .then(response => {
           this.consultations = response.data.data.consultations
+          this.drugconsultations = response.data.data.drugconsultations
           this.patients = response.data.data.patients
           this.totalPatients = response.data.data.patientCount
           this.triagesCount = response.data.data.triagesCount
@@ -546,18 +848,19 @@ export default {
           this.handleError(error)
         })
     },
-    checkTest(consultation, index) {
-      let isChecked = document.getElementsByName('testChecked')[index].checked
+    checkTest(index) {
+      let isTestChecked = document.getElementsByName('testChecked')[index]
+        .checked
       const data = {
-        consultationId: consultation._id,
+        consultationId: this.consultation._id,
         index: index
       }
 
-      if (isChecked === true) {
+      if (isTestChecked === true) {
         axios
           .post(this.checktestUrl, data)
           .then(response => {
-            consultation.tests[index].status = response.data.data
+            this.tests[index].status = response.data.data
           })
           .catch(error => {
             this.loading = false
@@ -567,7 +870,7 @@ export default {
         axios
           .post(this.unchecktestUrl, data)
           .then(response => {
-            consultation.tests[index].status = response.data.data
+            this.tests[index].status = response.data.data
           })
           .catch(error => {
             this.loading = false
@@ -575,9 +878,38 @@ export default {
           })
       }
     },
-    clearPayment(consultation, index) {
-      let isChecked = document.getElementsByName('testChecked')[index].checked
-      if (isChecked === false) {
+    checkDrug(index) {
+      let isChecked = document.getElementsByName('drugChecked')[index].checked
+      const data = {
+        consultationId: this.consultation._id,
+        index: index
+      }
+
+      if (isChecked === true) {
+        axios
+          .post(this.checkdrugUrl, data)
+          .then(response => {
+            this.drugs[index].status = response.data.data
+          })
+          .catch(error => {
+            this.loading = false
+            this.handleError(error)
+          })
+      } else {
+        axios
+          .post(this.uncheckdrugUrl, data)
+          .then(response => {
+            this.drugs[index].status = response.data.data
+          })
+          .catch(error => {
+            this.loading = false
+            this.handleError(error)
+          })
+      }
+    },
+    clearTestPayment() {
+      let isChecked = document.getElementsByName('testChecked').checked
+      if (isChecked === false || this.code === '') {
         this.$iziToast.error({
           title: 'Error!',
           message: 'Please tick all the checkbox'
@@ -585,19 +917,86 @@ export default {
         return
       }
       this.loading = true
-      this.currentConsultation = consultation
       const data = {
-        consultationId: consultation._id
+        consultationId: this.consultation._id,
+        code: this.code
       }
       axios
         .post(this.clearpaymenturl, data)
         .then(response => {
-          this.consultations = response.data.data
+          this.consultations[this.index].labtestpaid =
+            response.data.data.labtestpaid
+          this.code = ''
           this.loading = false
           this.$iziToast.success({
             title: 'Success!',
             message: response.data.message
           })
+        })
+        .catch(error => {
+          this.loading = false
+          this.handleError(error)
+        })
+    },
+    clearDrugPayment() {
+      let isChecked = document.getElementsByName('drugChecked').checked
+      if (isChecked === false || this.code === '') {
+        this.$iziToast.error({
+          title: 'Error!',
+          message: 'Please tick all the checkbox'
+        })
+        return
+      }
+      this.loading = true
+      const data = {
+        consultationId: this.consultation._id,
+        authCode: this.code
+      }
+      axios
+        .post(this.cleardrugpaymenturl, data)
+        .then(response => {
+          this.drugconsultations[this.index].drugpaid =
+            response.data.data.drugpaid
+          this.code = ''
+          this.loading = false
+          this.$iziToast.success({
+            title: 'Success!',
+            message: response.data.message
+          })
+        })
+        .catch(error => {
+          this.loading = false
+          this.handleError(error)
+        })
+    },
+
+    getConsultationDrugs(consultation, index) {
+      this.index = index
+      this.consultation = consultation
+      const data = {
+        consultationId: consultation._id
+      }
+      axios
+        .post(this.getdrugsconsultationurl, data)
+        .then(response => {
+          this.drugs = response.data.data
+        })
+        .catch(error => {
+          this.loading = false
+          this.handleError(error)
+        })
+    },
+
+    getConsultationTests(consultation, index) {
+      this.index = index
+      this.consultation = consultation
+      const data = {
+        consultationId: consultation._id
+      }
+      axios
+        .post(this.gettestsconsultationurl, data)
+        .then(response => {
+          this.tests = response.data.data
         })
         .catch(error => {
           this.loading = false

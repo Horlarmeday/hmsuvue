@@ -74,9 +74,12 @@
                 <th>Shelf</th>
                 <th>Unit</th>
                 <th>Expiry Date</th>
-                <th>Created By</th>
+                <th>Dosage Form</th>
+                <th>Strength</th>
                 <th>Date Received</th>
+                <th>Capitated</th>
                 <th>Dispense History</th>
+                <th>Created By</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -113,12 +116,22 @@
                 <td>{{ item.shelf }}{{ item.shelfno }}</td>
                 <td>{{ item.unit }}</td>
                 <td>{{ item.expiration | moment('DD/MM/YYYY') }}</td>
-                <td>
-                  <a href="#">
-                    {{ item.creator.firstname }} {{ item.creator.lastname }}
-                  </a>
-                </td>
+                <td>{{ item.dosageForm }}</td>
+                <td>{{ item.strength }}</td>
                 <td>{{ item.createdAt | moment('ddd, MMM Do YYYY') }}</td>
+                <td>
+                  <span
+                    v-if="item.capitated"
+                    class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill"
+                    >Yes</span
+                  >
+                  <span
+                    v-else
+                    class="kt-badge kt-badge--info kt-badge--inline kt-badge--pill"
+                    >No</span
+                  >
+                </td>
+
                 <td>
                   <a
                     href="#"
@@ -128,6 +141,11 @@
                     @click="getDispenseHistory(item)"
                     >View</a
                   >
+                </td>
+                <td>
+                  <a href="#">
+                    {{ item.creator.firstname }} {{ item.creator.lastname }}
+                  </a>
                 </td>
                 <td>
                   <a

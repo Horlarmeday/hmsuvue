@@ -56,6 +56,28 @@
               <span class="form-text text-muted">Please enter price.</span>
             </div>
           </div>
+          <div class="col-xl-12">
+            <div class="form-group">
+              <label>Capitated? </label>
+              <div class="col-3">
+                <span class="kt-switch kt-switch--outline kt-switch--primary">
+                  <label>
+                    <input
+                      ref="capitate"
+                      type="checkbox"
+                      checked="unchecked"
+                      v-model="isCapitated"
+                      required
+                    />
+                    <span></span>
+                  </label>
+                </span>
+              </div>
+              <span class="form-text text-muted"
+                >Please select appropriate side.</span
+              >
+            </div>
+          </div>
         </div>
 
         <div>
@@ -191,6 +213,7 @@
                 <th>Imaging</th>
                 <th>Status</th>
                 <th>Date Created</th>
+                <th>Capitated</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -222,6 +245,18 @@
                   >
                 </td>
                 <td>{{ investigation.createdAt | moment('DD/MM/YYYY') }}</td>
+                <td>
+                  <span
+                    v-if="investigation.isCapitated"
+                    class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill"
+                    >Yes</span
+                  >
+                  <span
+                    v-else
+                    class="kt-badge kt-badge--info kt-badge--inline kt-badge--pill"
+                    >No</span
+                  >
+                </td>
                 <td>
                   <button
                     v-if="
@@ -272,7 +307,8 @@ export default {
       currentInvestigation: '',
       investigationUrl: '/imaging/investigation/',
       loading: false,
-      deletedata: false
+      deletedata: false,
+      isCapitated: null
     }
   },
   mounted() {
@@ -287,10 +323,14 @@ export default {
     },
     createInvestigation() {
       this.loading = true
+      this.$refs.capitate.checked
+        ? (this.isCapitated = true)
+        : (this.isCapitated = false)
       const data = {
         name: this.name,
         description: this.description,
-        price: this.price
+        price: this.price,
+        isCapitated: this.isCapitated
       }
       axios
         .post(this.investigationUrl + this.$route.params.id, data)

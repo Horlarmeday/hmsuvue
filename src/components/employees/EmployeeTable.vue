@@ -98,7 +98,7 @@
                 <div class="col-md-4 kt-margin-b-20-tablet-and-mobile">
                   <div class="kt-form__group kt-form__group--inline">
                     <div class="kt-form__label">
-                      <label>Type:</label>
+                      <label>Status:</label>
                     </div>
                     <div class="kt-form__control">
                       <select
@@ -106,9 +106,9 @@
                         id="kt_form_type"
                       >
                         <option value="">All</option>
-                        <option value="1">Online</option>
-                        <option value="2">Retail</option>
-                        <option value="3">Direct</option>
+                        <option value="1">Active</option>
+                        <option value="2">Suspended</option>
+                        <option value="3">Ban</option>
                       </select>
                     </div>
                   </div>

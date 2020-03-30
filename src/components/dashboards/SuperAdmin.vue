@@ -222,7 +222,7 @@
           <div class="kt-portlet__head">
             <div class="kt-portlet__head-label">
               <h3 class="kt-portlet__head-title">
-                Recent Payments
+                Staff Login Record
               </h3>
             </div>
           </div>
@@ -234,80 +234,70 @@
                     <thead>
                       <tr>
                         <th>S/N</th>
-                        <th>Patient Name</th>
-                        <th>Amount Paid (&#8358;)</th>
-                        <th>Payment For</th>
-                        <th>Mode of Payment</th>
-                        <th>Payment Date</th>
+                        <th>Staff Name</th>
+                        <th>Role</th>
+                        <th>Date</th>
+                        <th>Time</th>
                         <th>Status</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-if="payments.length == 0">
-                        <td colspan="9" align="center">No Recent Payments</td>
+                      <tr v-if="logins.length == 0">
+                        <td colspan="9" align="center">No Staff Logins</td>
                       </tr>
-                      <tr
-                        v-for="(payment, index) in payments"
-                        :key="payment._id"
-                      >
+                      <tr v-for="(login, index) in logins" :key="login._id">
                         <td>
                           {{ index + 1 }}
                         </td>
                         <td>
                           <a href="#" class="kt-widget4__username">
-                            {{ payment.patient.firstname }}
-                            {{ payment.patient.lastname }}
+                            {{ login.staff.firstname }}
+                            {{ login.staff.lastname }}
                           </a>
                         </td>
-                        <td>{{ payment.amount }}</td>
-                        <td v-if="payment.drugs.length > 0">
-                          <p v-for="drug in payment.drugs" :key="drug._id">
-                            {{ drug.name }}
-                          </p>
+                        <td>{{ login.staff.role }}</td>
+
+                        <td>
+                          {{ login.login_time | moment('ddd, MMM Do YYYY') }}
                         </td>
-                        <td v-if="payment.tests.length > 0">
-                          <p v-for="test in payment.tests" :key="test._id">
-                            {{ test.name }}
-                          </p>
+                        <td>
+                          {{ login.login_time | moment('h:mma') }}
                         </td>
-                        <td v-if="payment.investigations.length > 0">
-                          <p
-                            v-for="image in payment.investigations"
-                            :key="image._id"
-                          >
-                            {{ image.name }}
-                          </p>
-                        </td>
-                        <td v-if="payment.services.length > 0">
-                          <p
-                            v-for="service in payment.services"
-                            :key="service._id"
-                          >
-                            {{ service.name }}
-                          </p>
-                        </td>
-                        <td v-if="payment.type">
-                          <p>
-                            {{ payment.type }}
-                          </p>
-                        </td>
-                        <td>{{ payment.modeofpayment }}</td>
-                        <td>{{ payment.createdAt | moment('DD/MM/YYYY') }}</td>
                         <td>
                           <span
-                            v-if="payment.paid"
+                            v-if="login.status"
                             class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill"
-                            >Paid</span
+                            >Active</span
                           >
                           <span
                             v-else
                             class="kt-badge kt-badge--info kt-badge--inline kt-badge--pill"
-                            >Not Paid</span
+                            >Inactive</span
                           >
                         </td>
                       </tr>
                     </tbody>
                   </table>
+                </div>
+                <div class="card-footer">
+                  <p class="float-left">
+                    Showing {{ pageSize }} of {{ rows }} entries
+                  </p>
+                  <button
+                    class="btn btn-outline-brand btn-sm ml-3 float-right"
+                    :disabled="isNextButtonDisabled"
+                    @click="pageChangeHandle('next')"
+                  >
+                    Next →
+                  </button>
+
+                  <button
+                    class="btn btn-outline-brand btn-sm float-right"
+                    :disabled="isPreviousButtonDisabled"
+                    @click="pageChangeHandle('previous')"
+                  >
+                    ← Prev
+                  </button>
                 </div>
               </div>
             </div>
@@ -376,15 +366,9 @@
                               <label
                                 v-if="patient.retainershipname"
                                 class="kt-badge kt-badge--success kt-badge--inline"
-                                >{{ patient.retainershipname.name }}</label
+                                >{{ patient.insurancetype.name }}</label
                               >
                             </a>
-                            <p
-                              style="color: #a7abc3;font-weight: 400;"
-                              class="kt-widget4__text"
-                            >
-                              {{ patient.state }}
-                            </p>
                           </div>
                         </td>
                         <td>{{ patient.phonenumber }}</td>
@@ -420,7 +404,7 @@ export default {
   data() {
     return {
       patients: [],
-      payments: [],
+      logins: [],
       totalPatients: '',
       triagesCount: '',
       totalAmount: '',
@@ -438,7 +422,13 @@ export default {
       patientoptions: {},
       paymentoptions: {},
       patientseries: [],
-      paymentseries: []
+      paymentseries: [],
+
+      currentPage: 1,
+      pageCount: '',
+      pageSize: '',
+      rows: '',
+      meta: ''
     }
   },
   mounted() {
@@ -458,7 +448,7 @@ export default {
         .get(this.landingPageUrl)
         .then(response => {
           this.patients = response.data.data.patients
-          this.payments = response.data.data.payments
+          this.logins = response.data.data.staffLogins
           this.totalPatients = response.data.data.patientCount
           this.triagesCount = response.data.data.triagesCount
           if (response.data.data.totalAmount === undefined) {
@@ -466,6 +456,12 @@ export default {
           }
           this.totalAmount = response.data.data.totalAmount
           this.appointmentCount = response.data.data.appointmentCount
+
+          this.meta = response.data.data.meta
+          this.rows = this.meta.count
+          this.pageSize = this.meta.pageSize
+          this.pageCount = this.meta.pageCount
+
           let patients = this.patients
           for (let i = 0; i < patients.length; i++) {
             patients[i].photourl = this.imageurl + patients[i].photo
@@ -587,6 +583,14 @@ export default {
       }
       var formatter = new Intl.NumberFormat('en-US').format(value)
       return formatter
+    }
+  },
+  computed: {
+    isPreviousButtonDisabled() {
+      return this.currentPage === 1
+    },
+    isNextButtonDisabled() {
+      return this.currentPage === this.pageCount
     }
   }
 }

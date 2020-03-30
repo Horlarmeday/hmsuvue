@@ -31,7 +31,7 @@
           <div class="col-xl-6">
             <div class="form-group">
               <label>Laboratory </label>
-              <select v-model="laboratoryId" class="form-control">
+              <select v-model="laboratoryId" class="form-control" required>
                 <option selected disabled>Select</option>
                 <option
                   v-for="laboratory in laboratories"
@@ -55,6 +55,7 @@
                 class="form-control"
                 v-model="price"
                 placeholder="Price"
+                required
               />
               <span class="form-text text-muted">Please enter price.</span>
             </div>
@@ -67,8 +68,31 @@
                 class="form-control"
                 v-model="code"
                 placeholder="Code"
+                required
               />
               <span class="form-text text-muted">Please enter code.</span>
+            </div>
+          </div>
+          <div class="col-xl-6">
+            <div class="form-group">
+              <label>Capitated? </label>
+              <div class="col-3">
+                <span class="kt-switch kt-switch--outline kt-switch--primary">
+                  <label>
+                    <input
+                      ref="capitate"
+                      type="checkbox"
+                      checked="unchecked"
+                      v-model="isCapitated"
+                      required
+                    />
+                    <span></span>
+                  </label>
+                </span>
+              </div>
+              <span class="form-text text-muted"
+                >Please select appropriate side.</span
+              >
             </div>
           </div>
         </div>
@@ -207,6 +231,7 @@
                 <th>Laboratory</th>
                 <th>Status</th>
                 <th>Date Created</th>
+                <th>Capitated</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -235,6 +260,18 @@
                   >
                 </td>
                 <td>{{ test.createdAt | moment('DD/MM/YYYY') }}</td>
+                <td>
+                  <span
+                    v-if="test.isCapitated"
+                    class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill"
+                    >Yes</span
+                  >
+                  <span
+                    v-else
+                    class="kt-badge kt-badge--info kt-badge--inline kt-badge--pill"
+                    >No</span
+                  >
+                </td>
                 <td>
                   <button
                     v-if="!deletedata && test._id !== currentTest._id"
@@ -285,7 +322,8 @@ export default {
       testUrl: '/laboratory/test',
       laboratoryUrl: '/admin/laboratory',
       loading: false,
-      deletedata: false
+      deletedata: false,
+      isCapitated: null
     }
   },
   mounted() {
@@ -301,11 +339,17 @@ export default {
     },
     createTest() {
       this.loading = true
+
+      this.$refs.capitate.checked
+        ? (this.isCapitated = true)
+        : (this.isCapitated = false)
+
       const data = {
         name: this.name,
         price: this.price,
         code: this.code,
-        laboratoryId: this.laboratoryId
+        laboratoryId: this.laboratoryId,
+        isCapitated: this.isCapitated
       }
       axios
         .post(this.testUrl, data)

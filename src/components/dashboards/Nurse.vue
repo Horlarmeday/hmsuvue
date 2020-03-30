@@ -240,6 +240,11 @@
                       <router-link :to="patient.url">
                         {{ patient.firstname }} {{ patient.lastname }}
                       </router-link>
+                      <small
+                        v-if="patient.retainershipname"
+                        class="kt-badge kt-badge--success kt-badge--inline"
+                        >{{ patient.insurancetype.name }}</small
+                      >
                     </td>
 
                     <td>

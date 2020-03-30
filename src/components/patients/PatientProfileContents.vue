@@ -901,7 +901,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-xl-6">
+          <div class="col-xl-12">
             <!--begin:: Widgets/Last Updates-->
             <div class="kt-portlet kt-portlet--height-fluid">
               <div class="kt-portlet__head">
@@ -980,7 +980,7 @@
 
             <!--end:: Widgets/Last Updates-->
           </div>
-          <div v-if="patient.insurancetype" class="col-xl-6">
+          <div v-if="patient.insurancetype" class="col-xl-12">
             <!--begin:: Widgets/Tasks -->
             <div class="kt-portlet kt-portlet--tabs kt-portlet--height-fluid">
               <div class="kt-portlet__head">
@@ -1104,8 +1104,10 @@
                           <tr>
                             <th>S/N</th>
                             <th>Photo</th>
+                            <th>Hospital ID</th>
                             <th>Name</th>
                             <th>Gender</th>
+                            <th>Date of Birth</th>
                             <th>Relationship</th>
                             <th>Date Created</th>
                             <th>Action</th>
@@ -1136,8 +1138,16 @@
                                 alt="dependant image"
                               />
                             </td>
+                            <td>{{ dependant.hospitalId }}</td>
                             <td>{{ dependant.name }}</td>
                             <td>{{ dependant.gender }}</td>
+                            <td>
+                              {{ dependant.dateofbirth | moment('DD/MM/YYYY') }}
+                              ({{
+                                dependant.dateofbirth
+                                  | moment('from', 'now', true)
+                              }})
+                            </td>
                             <td>{{ dependant.relationship }}</td>
                             <td>
                               {{ dependant.createdAt | moment('DD/MM/YYYY') }}

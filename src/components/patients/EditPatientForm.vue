@@ -513,6 +513,7 @@ export default {
       states: [],
       cities: [],
       patient: '',
+      insurance: '',
 
       loading: false,
 

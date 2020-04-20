@@ -38,6 +38,7 @@
                 class="form-control"
                 v-model="firstname"
                 placeholder="First Name"
+                @change="decideWhichHMOsToGet"
               />
               <span class="form-text text-muted"
                 >Please enter patient first name.</span
@@ -158,7 +159,7 @@
         <div class="row">
           <div class="col-xl-6">
             <div class="form-group">
-              <label>Country</label>
+              <label>Country of Residence</label>
               <select
                 v-model="country"
                 class="form-control"
@@ -174,7 +175,7 @@
           </div>
           <div class="col-xl-6">
             <div class="form-group">
-              <label>State</label>
+              <label>State of Residence</label>
               <select v-model="state" class="form-control" @change="getCities">
                 <option disabled>Select</option>
                 <option
@@ -231,6 +232,7 @@
                 <option disabled selected>Select Gender</option>
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
+                <option value="Other">Other</option>
               </select>
               <span class="form-text text-muted"
                 >Please select patient's gender.</span
@@ -263,7 +265,23 @@
                 placeholder="Occupation"
               />
               <span class="form-text text-muted"
-                >Please select patient's occupation.</span
+                >Please enter patient's occupation.</span
+              >
+            </div>
+          </div>
+          <div class="col-xl-6">
+            <div class="form-group">
+              <label>Alternate Phone Number</label>
+              <input
+                type="text"
+                class="form-control"
+                v-model="altphonenumber"
+                placeholder="Alternate Phone Number"
+                maxlength="11"
+                minlength="11"
+              />
+              <span class="form-text text-muted"
+                >Please enter patient's altternate phone number.</span
               >
             </div>
           </div>
@@ -386,6 +404,7 @@
             </div>
           </div>
         </div>
+
         <hr />
         <h6 v-if="cardtype === 'Family'">Dependants (if any)</h6>
         <small v-if="cardtype === 'Family'" style="color: red"
@@ -464,139 +483,151 @@
           </div>
         </div>
         <br />
-        <h5 style="margin-bottom: 30px;color:#5d78ff;">Health Insurance</h5>
-        <div class="row">
-          <div class="col-xl-6">
-            <div class="form-group">
-              <label>Health Insurance</label>
-              <select class="form-control" v-model="insurance">
-                <option disabled selected>Select</option>
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-              </select>
-              <span class="form-text text-muted"
-                >Please select if patient has insurance.</span
-              >
-            </div>
-          </div>
-          <div v-if="insurance === 'Yes'" class="col-xl-6">
-            <div class="form-group">
-              <label>Insurance Type</label>
-              <select
-                id="insurance"
-                class="form-control"
-                v-model="insurancetype"
-                @change="getHmos"
-              >
-                <option disabled>Select</option>
-                <option
-                  v-for="insurance in insurances"
-                  :key="insurance._id"
-                  :value="insurance._id"
-                  >{{ insurance.name }}
-                </option>
-              </select>
-              <span class="form-text text-muted"
-                >Please select patient insurance type.</span
-              >
-            </div>
-          </div>
-        </div>
-        <div v-if="insurance === 'Yes'" class="row">
-          <div class="col-xl-6">
-            <div class="form-group">
-              <label>Retainership/HMO Name</label>
-              <v-select
-                @input="getEnrollees"
-                v-model="retainershipname"
-                label="name"
-                :reduce="hmos => hmos._id"
-                :options="hmos"
-              ></v-select>
-              <span class="form-text text-muted"
-                >Please select retainership/HMO name.</span
-              >
-            </div>
-          </div>
-          <div class="col-xl-6">
-            <div class="form-group">
-              <label>Enrollees</label>
-              <v-select
-                @input="getEnrolleeId"
-                v-model="enrollees"
-                label="name"
-                :reduce="allenrollees => allenrollees._id"
-                :options="allenrollees"
-              ></v-select>
-              <span class="form-text text-muted">Please select enrollees.</span>
-            </div>
-          </div>
-        </div>
-        <div v-if="insurance === 'Yes'" class="row">
-          <div class="col-xl-6">
-            <div class="form-group">
-              <label>Enrollee Code</label>
-              <input
-                style="background: #f1f1f1"
-                type="text"
-                class="form-control"
-                v-model="enrolleeId"
-                placeholder="Enrollee ID"
-                readonly
-              />
-              <span class="form-text text-muted">Enrollee ID.</span>
-            </div>
-          </div>
-        </div>
-        <div v-if="insurance === 'Yes'" class="row">
-          <div class="col-xl-6">
-            <div class="form-group">
-              <label>Hospital ID</label>
-              <input
-                style="background: #f1f1f1"
-                type="text"
-                class="form-control"
-                v-model="hospitalId"
-                placeholder="Hospital ID"
-                readonly
-              />
-              <span class="form-text text-muted">Hospital ID.</span>
-            </div>
-          </div>
-          <div class="col-xl-6">
-            <div class="form-group">
-              <label>Plan</label>
-              <select class="form-control" v-model="plan">
-                <option disabled>Select</option>
-                <option
-                  v-for="plan in plans"
-                  :key="plan._id"
-                  :value="plan.plan"
-                  >{{ plan.plan }}</option
+
+        <!-- Health Insurance -->
+        <div v-if="patient_type !== 'Cash'">
+          <h5 style="margin-bottom: 30px;color:#5d78ff;">
+            Health Insurance
+          </h5>
+          <div class="row">
+            <!-- <div class="col-xl-6">
+              <div class="form-group">
+                <label>Health Insurance</label>
+                <select class="form-control" v-model="insurance">
+                  <option disabled selected>Select</option>
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                </select>
+                <span class="form-text text-muted"
+                  >Please select if patient has insurance.</span
                 >
-              </select>
-              <span class="form-text text-muted"
-                >Please select retainership plan.</span
-              >
+              </div>
+            </div> -->
+            <div class="col-xl-6">
+              <div class="form-group">
+                <label>Insurance Type</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  :value="patient_type"
+                  disabled
+                />
+                <!-- <select
+                  id="insurance"
+                  class="form-control"
+                  v-model="insurancetype"
+                  @change="getHmos"
+                >
+                  <option disabled>Select</option>
+                  <option
+                    v-for="insurance in insurances"
+                    :key="insurance._id"
+                    :value="insurance._id"
+                    >{{ insurance.name }}
+                  </option>
+                </select> -->
+                <span class="form-text text-muted"
+                  >Patient insurance type.</span
+                >
+              </div>
+            </div>
+            <div class="col-xl-6">
+              <div class="form-group">
+                <label>Retainership/HMOs</label>
+                <v-select
+                  @input="getEnrollees"
+                  v-model="retainershipname"
+                  label="name"
+                  :reduce="hmos => hmos._id"
+                  :options="hmos"
+                ></v-select>
+                <span class="form-text text-muted"
+                  >Please select retainership/HMO name.</span
+                >
+              </div>
             </div>
           </div>
-        </div>
-        <hr />
-        <h6 v-if="insurance === 'Yes'">Dependants (if any)</h6>
-        <small v-if="insurance === 'Yes'" style="color: red"
-          >Create as many dependants as possible</small
-        >
-        <br />
-        <div>
-          <button
-            data-toggle="modal"
-            data-target="#kt_modal_3"
-            v-if="insurance === 'Yes'"
-            class="btn btn-brand btn-elevate"
+          <div class="row">
+            <div class="col-xl-6">
+              <div class="form-group">
+                <label>Enrollees</label>
+                <v-select
+                  @input="getEnrolleeId"
+                  v-model="enrollees"
+                  label="name"
+                  :reduce="allenrollees => allenrollees._id"
+                  :options="allenrollees"
+                ></v-select>
+                <span class="form-text text-muted"
+                  >Please select enrollees.</span
+                >
+              </div>
+            </div>
+            <div class="col-xl-6">
+              <div class="form-group">
+                <label>Enrollee Code</label>
+                <input
+                  style="background: #f1f1f1"
+                  type="text"
+                  class="form-control"
+                  v-model="enrolleeId"
+                  placeholder="Enrollee ID"
+                  readonly
+                />
+                <span class="form-text text-muted">Enrollee ID.</span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xl-6">
+              <div class="form-group">
+                <label>Hospital ID</label>
+                <input
+                  style="background: #f1f1f1"
+                  type="text"
+                  class="form-control"
+                  v-model="hospitalId"
+                  placeholder="Hospital ID"
+                  readonly
+                />
+                <span class="form-text text-muted">Hospital ID.</span>
+              </div>
+            </div>
+            <div class="col-xl-6">
+              <div class="form-group">
+                <label>Plan</label>
+                <select class="form-control" v-model="plan">
+                  <option disabled>Select</option>
+                  <option
+                    v-for="plan in plans"
+                    :key="plan._id"
+                    :value="plan.plan"
+                    >{{ plan.plan }}</option
+                  >
+                </select>
+                <span class="form-text text-muted"
+                  >Please select retainership plan.</span
+                >
+              </div>
+            </div>
+          </div>
+          <hr />
+          <h6>Dependants (if any)</h6>
+          <small style="color: red"
+            >Create as many dependants as possible</small
           >
-            Create Dependants
-          </button>
+          <br />
+          <div>
+            <button
+              data-toggle="modal"
+              data-target="#kt_modal_3"
+              class="btn btn-brand btn-elevate"
+            >
+              Create Dependants
+            </button>
+          </div>
         </div>
+        <!-- End of health insurance -->
 
         <div>
           <button
@@ -845,69 +876,141 @@
           </div>
           <div class="modal-body">
             <div class="row">
-              <div class="col-xl-6">
-                <div class="form-group">
-                  <label>Name</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    v-model="nhisdependantname"
-                    placeholder="Dependant Name"
-                  />
-                  <span class="form-text text-muted"
-                    >Please enter dependant name.</span
-                  >
+              <div class="col-xl-8">
+                <div class="row">
+                  <div class="col-xl-6">
+                    <div class="form-group">
+                      <label>Name</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        v-model="nhisdependantname"
+                        placeholder="Dependant Name"
+                      />
+                      <span class="form-text text-muted"
+                        >Please enter dependant name.</span
+                      >
+                    </div>
+                  </div>
+                  <div class="col-xl-6">
+                    <div class="form-group">
+                      <label>Date of Birth</label>
+                      <datetime
+                        type="date"
+                        input-class="form-control"
+                        v-model="nhisdependantdob"
+                        placeholder="Date of Birth"
+                      ></datetime>
+                      <span class="form-text text-muted"
+                        >Please select dependant date of birth.</span
+                      >
+                    </div>
+                  </div>
+                  <div class="col-xl-6">
+                    <div class="form-group">
+                      <label>Gender</label>
+                      <select
+                        class="form-control"
+                        v-model="nhisdependantgender"
+                      >
+                        <option disabled selected>Select Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                      </select>
+                      <span class="form-text text-muted"
+                        >Please select dependant gender.</span
+                      >
+                    </div>
+                  </div>
+                  <div class="col-xl-6">
+                    <div class="form-group">
+                      <label>Relationship</label>
+                      <select
+                        v-model="nhisdependantrelationship"
+                        class="form-control"
+                      >
+                        <option selected disabled>Select</option>
+                        <option value="Brother">Brother</option>
+                        <option value="Sister">Sister</option>
+                        <option value="Father">Father</option>
+                        <option value="Mother">Mother</option>
+                        <option value="Wife">Wife</option>
+                        <option value="Husband">Husband</option>
+                        <option value="Son">Son</option>
+                        <option value="Daughter">Daughter</option>
+                        <option value="Uncle">Uncle</option>
+                        <option value="Aunt">Aunt</option>
+                      </select>
+                      <span class="form-text text-muted"
+                        >Please select dependant relationship.</span
+                      >
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div class="col-xl-6">
-                <div class="form-group">
-                  <label>Date of Birth</label>
-                  <datetime
-                    type="date"
-                    input-class="form-control"
-                    v-model="nhisdependantdob"
-                    placeholder="Date of Birth"
-                  ></datetime>
-                  <span class="form-text text-muted"
-                    >Please select dependant date of birth.</span
+              <div class="col-xl-4">
+                <img
+                  style="padding-top: 10px"
+                  v-if="!videoShowing && !image"
+                  v-on:click="startCamera()"
+                  src="../../assets/images/upload.png"
+                />
+                <video
+                  ref="video"
+                  id="video"
+                  v-show="!image && !photoSaved"
+                  style="height:1px;width:250px;margin-bottom:20px;"
+                  autoplay
+                ></video>
+                <canvas
+                  ref="canvas"
+                  id="canvas"
+                  width="250"
+                  height="187"
+                  v-show="image"
+                >
+                </canvas>
+                <button
+                  id="snap"
+                  v-if="!image && !photoSaved && !videoShowing"
+                  class="btn btn-success btn-sm"
+                  v-on:click="startCamera()"
+                >
+                  Take Photo Now
+                </button>
+
+                <button
+                  style="margin-left: 32%"
+                  id="snap"
+                  v-if="!image && !photoSaved && videoShowing"
+                  class="btn btn-success btn-sm"
+                  v-on:click="capture()"
+                >
+                  Snap Photo
+                </button>
+
+                <div class="row" v-if="!photoLoading" style="padding-top: 15px">
+                  <button
+                    style="margin-left: 32%"
+                    id="snap"
+                    v-if="image && !photoSaved"
+                    class="btn btn-success btn-sm"
+                    v-on:click="snapAgain()"
                   >
-                </div>
-              </div>
-              <div class="col-xl-6">
-                <div class="form-group">
-                  <label>Gender</label>
-                  <select class="form-control" v-model="nhisdependantgender">
-                    <option disabled selected>Select Gender</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                  </select>
-                  <span class="form-text text-muted"
-                    >Please select dependant gender.</span
-                  >
-                </div>
-              </div>
-              <div class="col-xl-6">
-                <div class="form-group">
-                  <label>Relationship</label>
-                  <select
-                    v-model="nhisdependantrelationship"
-                    class="form-control"
-                  >
-                    <option selected disabled>Select</option>
-                    <option value="Brother">Brother</option>
-                    <option value="Sister">Sister</option>
-                    <option value="Father">Father</option>
-                    <option value="Mother">Mother</option>
-                    <option value="Wife">Wife</option>
-                    <option value="Husband">Husband</option>
-                    <option value="Son">Son</option>
-                    <option value="Daughter">Daughter</option>
-                    <option value="Uncle">Uncle</option>
-                    <option value="Aunt">Aunt</option>
-                  </select>
-                  <span class="form-text text-muted"
-                    >Please select dependant relationship.</span
-                  >
+                    Snap Again
+                  </button>
+
+                  <!-- <div style="margin-left: 10px">
+                    <button
+                      id="save"
+                      v-if="image && !photoSaved"
+                      class="btn btn-primary orange"
+                      v-on:click="uploadPatientPic()"
+                    >
+                      Save Photo
+                    </button>
+                  </div> -->
                 </div>
               </div>
             </div>
@@ -984,6 +1087,7 @@ export default {
       nextofkinphone: '',
       relationship: '',
       occupation: '',
+      altphonenumber: '',
 
       cardtype: '',
       numberoffamily: '',
@@ -1039,12 +1143,14 @@ export default {
       insurances: [],
       hmos: [],
       allenrollees: [],
-      insurancename: ''
+      insurancename: '',
+      patient_type: ''
     }
   },
   mounted() {
     this.landingPage()
     this.getInsurance()
+    this.getPatientType()
     // this.getCountry()
   },
   methods: {
@@ -1087,7 +1193,8 @@ export default {
         nextofkinaddress: this.nextofkinaddress,
         nextofkinphone: this.nextofkinphone,
         relationship: this.relationship,
-        occupation: this.occupation
+        occupation: this.occupation,
+        altphonenumber: this.altphonenumber
       }
       axios
         .post(this.stepOneUrl, stepOnedata)
@@ -1100,6 +1207,7 @@ export default {
             title: 'Success!',
             message: response.data.message
           })
+          this.getHmos()
         })
         .catch(error => {
           this.loading = false
@@ -1133,6 +1241,18 @@ export default {
         })
     },
 
+    decideWhichHMOsToGet() {
+      const insuranceType = this.insurances.filter(insurance => {
+        return insurance.name === this.patient_type
+      })
+      if (insuranceType.length > 0) {
+        this.insurancetype = insuranceType[0]._id
+        localStorage.setItem('insurancetype', insuranceType[0]._id)
+      } else {
+        this.insurancetype = ''
+      }
+    },
+
     showAlert() {
       // Use sweetalert2
       this.$swal({
@@ -1158,7 +1278,8 @@ export default {
         patientId: this.patient,
         insuranceId: this.insurancetype,
         hmoId: this.retainershipname,
-        enrolleeId: this.enrollees
+        enrolleeId: this.enrollees,
+        base64: this.image
       }
       axios
         .post(this.dependantUrl, data)
@@ -1168,26 +1289,31 @@ export default {
           this.nhisdependantdob = ''
           this.nhisdependantgender = ''
           this.nhisdependantrelationship = ''
+          this.videoShowing = false
+          this.image = null
+          this.photoSaved = false
           this.$iziToast.success({
             title: 'Success!',
             message: response.data.message
           })
         })
         .catch(error => {
-          this.loading = false
+          this.dependantLoading = false
           this.handleError(error)
         })
     },
     stepTwo() {
       this.loading = true
       let stepTwodata = null
-      if (this.cardtype === 'Single' && this.insurance === 'No') {
+      if (this.cardtype === 'Single' && this.patient_type === 'Cash Patient') {
+        this.insurance = 'No'
         stepTwodata = {
           cardtype: this.cardtype,
           insurance: this.insurance,
           patientId: this.patient
         }
       } else {
+        this.insurance = 'Yes'
         stepTwodata = {
           cardtype: this.cardtype,
           numberoffamily: this.numberoffamily,
@@ -1201,6 +1327,7 @@ export default {
           hospitalId: this.hospitalId
         }
       }
+
       axios
         .put(this.stepTwoUrl, stepTwodata)
         .then(response => {
@@ -1278,7 +1405,7 @@ export default {
             title: 'Success! Patient Created',
             text: 'Do you want to create another patient?',
             showCancelButton: true,
-            confirmButtonText: `<a href="/create-patient" class="kt-shape-font-color-1">Ok, Yes!</a>`,
+            confirmButtonText: `<a href="/patient/account/type" class="kt-shape-font-color-1">Ok, Yes!</a>`,
             confirmButtonColor: '#007bff',
             cancelButtonText:
               '<a href="/patients" class="kt-shape-font-color-1">No, cancel!</a>',
@@ -1314,6 +1441,11 @@ export default {
     },
 
     getHmos() {
+      if (this.insurancetype === '') {
+        const reIssueInsuranceType = localStorage.getItem('insurancetype')
+        this.insurancetype = reIssueInsuranceType
+      }
+
       const data = {
         insuranceId: this.insurancetype
       }
@@ -1392,6 +1524,9 @@ export default {
     getCities() {
       const cities = sc.getCities(`${this.state}`)
       this.cities = cities
+    },
+    getPatientType() {
+      this.patient_type = localStorage.getItem('patienttype')
     }
   }
 }

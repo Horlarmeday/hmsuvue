@@ -891,6 +891,20 @@
                       patient.occupation
                     }}</span>
                   </div>
+                  <div class="kt-widget4__item">
+                    <span class="kt-widget4__icon">
+                      <i class="flaticon2-file kt-font-success"></i>
+                    </span>
+                    <a
+                      href="#"
+                      class="kt-widget4__title kt-widget4__title--light"
+                    >
+                      Alternate Phone Number
+                    </a>
+                    <span class="kt-widget4__number">{{
+                      patient.altphonenumber
+                    }}</span>
+                  </div>
                 </div>
 
                 <!--end::Widget 12-->

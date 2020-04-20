@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
@@ -11,14 +12,16 @@ export default new Vuex.Store({
     status: '',
     token: localStorage.getItem('user-token') || '',
     user: null,
-    isLoggedInUser: null
+    isLoggedInUser: null,
+    patienttype: null
   },
   getters: {
     isLoggedIn: state => !!state.token,
     authStatus: state => state.status,
     getUser: state => state.user,
 
-    getPushKitUser: state => state.isLoggedInUser
+    getPushKitUser: state => state.isLoggedInUser,
+    getPatientType: state => state.patienttype
   },
   mutations: {
     auth_request(state) {
@@ -32,6 +35,10 @@ export default new Vuex.Store({
     pushkit_success(state, pushkitUser) {
       state.status = 'success'
       state.isLoggedInUser = pushkitUser
+    },
+    patientype_success(state, patienttype) {
+      state.status = 'success'
+      state.patienttype = patienttype
     },
     auth_error(state) {
       state.status = 'error'
@@ -110,8 +117,14 @@ export default new Vuex.Store({
       })
     },
 
+    patienttype({ commit }, value) {
+      return new Promise((resolve, reject) => {
+        commit('patientype_success', value)
+        resolve()
+      })
+    },
+
     logout({ commit }) {
-      // eslint-disable-next-line no-unused-vars
       return new Promise((resolve, reject) => {
         commit('logout')
         localStorage.removeItem('user-token')

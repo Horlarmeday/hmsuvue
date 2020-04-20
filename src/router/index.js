@@ -113,6 +113,23 @@ const routes = [
     }
   },
   {
+    path: '/patient/account/type',
+    name: 'createpatientlandingpage',
+    component: () =>
+      import('../views/app/patients/CreatePatientLandingPage.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/consent/form/:id',
+    name: 'patientconsentform',
+    component: () => import('../components/patients/ConsentForm.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
     path: '/patient/:id',
     name: 'patientprofile',
     component: () => import('../views/app/patients/PatientProfile.vue'),
@@ -468,6 +485,14 @@ const routes = [
     path: '/create-insurance',
     name: 'createinsurance',
     component: () => import('../views/app/insurance/CreateInsurance.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/health/upload/list',
+    name: 'uploadinsurancelist',
+    component: () => import('../views/app/insurance/UploadEnrolleeList.vue'),
     meta: {
       requiresAuth: true
     }

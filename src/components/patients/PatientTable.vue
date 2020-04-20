@@ -65,7 +65,7 @@
               </div>
               &nbsp;
               <router-link
-                to="/create-patient"
+                to="/patient/account/type"
                 class="btn btn-brand btn-elevate btn-icon-sm"
               >
                 <i class="la la-plus"></i>
@@ -202,7 +202,7 @@
                   <label
                     v-if="patient.retainershipname"
                     class="kt-badge kt-badge--success kt-badge--inline"
-                    >{{ patient.retainershipname.name }}</label
+                    >{{ patient.insurancetype.name }}</label
                   >
                 </td>
                 <td>{{ patient.birthday | moment('DD/MM/YYYY') }}</td>

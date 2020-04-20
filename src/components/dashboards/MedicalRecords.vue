@@ -288,7 +288,7 @@
                       <label
                         v-if="patient.retainershipname"
                         class="kt-badge kt-badge--success kt-badge--inline"
-                        >{{ patient.retainershipname.name }}</label
+                        >{{ patient.insurancetype.name }}</label
                       >
                     </td>
                     <td>

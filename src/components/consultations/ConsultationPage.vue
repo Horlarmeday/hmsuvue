@@ -489,22 +489,34 @@
                   <div class="row align-items-center">
                     <div class="col-md-4 kt-margin-b-20-tablet-and-mobile">
                       <div class="kt-input-icon kt-input-icon--left">
-                        <button
-                          v-if="patient.insurance === 'Yes'"
-                          class="btn btn-brand"
-                          data-toggle="modal"
-                          data-target="#kt_modal_4"
-                        >
-                          NHIS Medication
-                        </button>
-                        <button
-                          v-else
-                          class="btn btn-brand"
-                          data-toggle="modal"
-                          data-target="#kt_modal_3"
-                        >
-                          Add Medication
-                        </button>
+                        <div v-if="patient.insurance === 'Yes'">
+                          <button
+                            v-if="patient.insurancetype.name !== 'Private'"
+                            class="btn btn-brand"
+                            data-toggle="modal"
+                            data-target="#kt_modal_4"
+                          >
+                            NHIS Drugs
+                          </button>
+                          <button
+                            v-else
+                            class="btn btn-brand"
+                            data-toggle="modal"
+                            data-target="#kt_modal_3"
+                          >
+                            Add Medication
+                          </button>
+                        </div>
+                        <div v-else>
+                          <button
+                            class="btn btn-brand"
+                            data-toggle="modal"
+                            data-target="#kt_modal_3"
+                          >
+                            Add Medication
+                          </button>
+                        </div>
+
                         <span
                           class="kt-input-icon__icon kt-input-icon__icon--left"
                         >
@@ -515,22 +527,28 @@
                   </div>
                 </div>
                 <div class="col-xl-4 order-1 order-xl-2 kt-align-right">
-                  <button
-                    v-if="patient.insurance === 'Yes'"
-                    class="btn btn-dark"
-                    data-toggle="modal"
-                    data-target="#kt_modal_3"
-                  >
-                    <i class="la la-cart-plus"></i>Add Medication
-                  </button>
-                  <button
-                    v-else
-                    class="btn btn-dark"
-                    data-toggle="modal"
-                    data-target="#kt_modal_4"
-                  >
-                    <i class="la la-cart-plus"></i>NHIS Medication
-                  </button>
+                  <div v-if="patient.insurance === 'Yes'">
+                    <button
+                      v-if="
+                        patient.insurancetype.name !== 'Private' &&
+                          !consultation.consent
+                      "
+                      class="btn btn-warning"
+                      data-toggle="modal"
+                      data-target="#kt_modal_5"
+                    >
+                      Consent
+                    </button>
+                    <button
+                      v-else
+                      class="btn btn-dark"
+                      data-toggle="modal"
+                      data-target="#kt_modal_3"
+                    >
+                      <i class="la la-cart-plus"></i>Uncovered Drugs
+                    </button>
+                  </div>
+
                   <div
                     class="kt-separator kt-separator--border-dashed kt-separator--space-lg d-xl-none"
                   ></div>
@@ -558,8 +576,9 @@
                     <th>Price (₦)</th>
                     <th>PrescribedBy</th>
                     <th>Notes</th>
+                    <th>Status</th>
                     <th>Date Prescribed</th>
-                    <th>Action</th>
+                    <!-- <th>Action</th> -->
                   </tr>
                 </thead>
                 <tbody>
@@ -588,7 +607,7 @@
                     <td>{{ drug.duration }}</td>
                     <td>{{ drug.quantity }}</td>
                     <td>{{ drug.quantitytodispense }}</td>
-                    <td v-if="drug.drug.name.includes('NHIS')">
+                    <td v-if="drug.drug.isCapitated">
                       {{ drug.totalprice * 0.1 }}
                     </td>
                     <td v-else>
@@ -602,11 +621,23 @@
                     </td>
                     <td>{{ drug.notes }}</td>
                     <td>
+                      <label
+                        v-if="drug.drug.isCapitated"
+                        class="kt-badge kt-badge--success kt-badge--inline"
+                        >Capitated</label
+                      >
+                      <label
+                        v-else
+                        class="kt-badge kt-badge--danger kt-badge--inline"
+                        >Non-Capitated</label
+                      >
+                    </td>
+                    <td>
                       {{
                         drug.datePrescribed | moment('ddd, MMM Do YYYY, h:mm a')
                       }}
                     </td>
-                    <td>
+                    <!-- <td>
                       <button
                         v-if="!deletedrugloading"
                         @click="deletedrug(index)"
@@ -622,7 +653,7 @@
                       >
                         Deleting...
                       </button>
-                    </td>
+                    </td> -->
                   </tr>
                 </tbody>
               </table>
@@ -1073,6 +1104,197 @@
         </div>
         <!--end::Modal-->
 
+        <!--begin::Modal-->
+        <div
+          class="modal fade"
+          id="kt_modal_5"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content" style="width: 150%">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Consent Form</h5>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div class="kt-portlet">
+                      <div class="kt-portlet__body kt-portlet__body--fit">
+                        <div class="kt-invoice-2">
+                          <div class="kt-invoice__wrapper">
+                            <div class="kt-invoice__head">
+                              <div
+                                class="kt-invoice__container kt-invoice__container--centered"
+                              >
+                                <div class="kt-invoice__logo">
+                                  <a href="#">
+                                    <h1>Medical Consent Form</h1>
+                                  </a>
+                                  <a href="#">
+                                    <img width="50" src="../../assets/ms.png" />
+                                  </a>
+                                </div>
+                                <span class="kt-invoice__desc">
+                                  <span
+                                    >Daughter of Charity,<br />
+                                    St. Vincent Specialist Hospital Kubwa,
+                                    Abuja</span
+                                  >
+                                  <span>+234-8134-848-878</span>
+                                </span>
+                                <h3>Patient Information</h3>
+                                <div class="kt-invoice__items">
+                                  <div class="kt-invoice__item">
+                                    <span class="kt-invoice__subtitle"
+                                      >FULLNAME</span
+                                    >
+                                    <span class="kt-invoice__text"
+                                      >{{ patient.firstname }}
+                                      {{ patient.lastname }}</span
+                                    >
+                                  </div>
+                                  <div class="kt-invoice__item">
+                                    <span class="kt-invoice__subtitle"
+                                      >ENROLLEE ID</span
+                                    >
+                                    <span class="kt-invoice__text">
+                                      {{ patient.enrolleeId }}</span
+                                    >
+                                  </div>
+                                  <div class="kt-invoice__item">
+                                    <span class="kt-invoice__subtitle"
+                                      >HEALTH INSURANCE TYPE</span
+                                    >
+                                    <span class="kt-invoice__text">{{
+                                      patient.insurancetype.name
+                                    }}</span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <!-- Urine -->
+                            <div>
+                              <div
+                                class="kt-invoice__body kt-invoice__body--centered"
+                              >
+                                <h3>Health Care Authorization and Release</h3>
+                                <hr style="padding: 0 10px" />
+                                <p
+                                  style="font-size: 15px"
+                                  class="kt-invoice__text"
+                                >
+                                  I,
+                                  <span style="font-weight: 700">
+                                    {{ patient.firstname }}
+                                    {{ patient.lastname }}
+                                  </span>
+                                  give my consent to St. Vincent Specialist
+                                  Hospital to provide medical treatment that are
+                                  uncovered by my health insurance scheme. I
+                                  understand that I assume financial
+                                  responsibility for any treatment administered
+                                  to me or my dependant.
+                                </p>
+                                <hr style="padding: 0 10px" />
+                              </div>
+                            </div>
+
+                            <div class="kt-invoice__footer">
+                              <div
+                                class="kt-invoice__table  kt-invoice__table--centered table-responsive"
+                              >
+                                <table class="table">
+                                  <thead>
+                                    <tr>
+                                      <th>Signature of Patient/Guardian</th>
+                                      <th>DATE ISSUED</th>
+                                      <th>Signature of Physician</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      <td>----------------------------</td>
+                                      <td>
+                                        {{
+                                          todayDate
+                                            | moment('ddd, MMM Do YYYY, h:mm a')
+                                        }}
+                                      </td>
+                                      <td style="font-size: 11px">
+                                        ------------------------------
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                              <br />
+                              <hr style="padding: 0 10px" />
+                              <div class="text-center">
+                                <button @click="print" class="btn btn-success">
+                                  Print
+                                </button>
+                                <button
+                                  v-if="!consentloading"
+                                  @click="saveConsent"
+                                  class="btn btn-primary ml-3"
+                                >
+                                  Save
+                                </button>
+                                <button
+                                  v-else
+                                  class="btn btn-brand kt-spinner kt-spinner--right 
+                      kt-spinner--sm kt-spinner--light btn-elevate float-right"
+                                  disabled
+                                >
+                                  Saving...
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    v-if="!consentloading"
+                    type="button"
+                    class="btn btn-brand"
+                  >
+                    Save
+                  </button>
+                  <button
+                    v-else
+                    class="btn btn-brand kt-spinner kt-spinner--right 
+                      kt-spinner--sm kt-spinner--light btn-elevate float-right"
+                    disabled
+                  >
+                    Saving...
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--end::Modal-->
+
         <!--begin::Portlet-->
         <div class="kt-portlet kt-portlet--responsive-tablet-and-mobile">
           <div class="kt-portlet__head">
@@ -1131,8 +1353,9 @@
                     <th>Test</th>
                     <th>Laboratory</th>
                     <th>Price (₦)</th>
+                    <th>Status</th>
                     <th>Date Created</th>
-                    <th>Action</th>
+                    <!-- <th>Action</th> -->
                   </tr>
                 </thead>
                 <tbody>
@@ -1156,11 +1379,23 @@
                       {{ test.test.price }}
                     </td>
                     <td>
+                      <label
+                        v-if="test.test.isCapitated"
+                        class="kt-badge kt-badge--success kt-badge--inline"
+                        >Capitated</label
+                      >
+                      <label
+                        v-else
+                        class="kt-badge kt-badge--danger kt-badge--inline"
+                        >Non-Capitated</label
+                      >
+                    </td>
+                    <td>
                       {{
                         test.dateRequested | moment('ddd, MMM Do YYYY, h:mm a')
                       }}
                     </td>
-                    <td>
+                    <!-- <td>
                       <button
                         v-if="!deletetestloading"
                         @click="deleteLabTest(index)"
@@ -1176,7 +1411,7 @@
                       >
                         Deleting...
                       </button>
-                    </td>
+                    </td> -->
                   </tr>
                 </tbody>
               </table>
@@ -1186,6 +1421,7 @@
           </div>
         </div>
         <!--end::Portlet-->
+
         <!--begin::Modal-->
         <div
           class="modal fade"
@@ -1198,7 +1434,18 @@
           <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Select Test</h5>
+                <h5
+                  v-if="patient.insurance !== 'Yes'"
+                  class="modal-title"
+                  id="exampleModalLabel"
+                >
+                  Select Test
+                </h5>
+                <div v-else class="modal-title">
+                  <p>Insurance: {{ patient.insurancetype.name }}</p>
+                  <p>HMO: {{ patient.retainershipname.name }}</p>
+                  <p>Plan: {{ patient.plan }}</p>
+                </div>
                 <button
                   type="button"
                   class="close"
@@ -1207,6 +1454,32 @@
                 ></button>
               </div>
               <div class="modal-body">
+                <div v-if="patient.insurance === 'Yes'" class="form-group row">
+                  <label class="col-2 col-form-label">Tick</label>
+                  <div class="kt-radio-inline col-10">
+                    <label class="kt-radio kt-radio--brand">
+                      <input
+                        type="radio"
+                        name="coveredtest"
+                        v-model="teststatus"
+                        :value="1"
+                        checked="checked"
+                      />
+                      Covered Tests
+                      <span></span>
+                    </label>
+                    <label class="kt-radio kt-radio--brand">
+                      <input
+                        type="radio"
+                        name="coveredtest"
+                        v-model="teststatus"
+                        :value="0"
+                      />
+                      Uncovered Tests
+                      <span></span>
+                    </label>
+                  </div>
+                </div>
                 <div class="form-group row">
                   <label class="col-2 col-form-label">Select Lab</label>
                   <div class="col-10">
@@ -1297,6 +1570,32 @@
             </div>
           </div>
           <div class="kt-portlet__body">
+            <div v-if="patient.insurance === 'Yes'" class="form-group row">
+              <label class="col-2 col-form-label">Tick</label>
+              <div class="kt-radio-inline col-10">
+                <label class="kt-radio kt-radio--brand">
+                  <input
+                    type="radio"
+                    name="coveredimaging"
+                    v-model="imagingstatus"
+                    :value="1"
+                    checked="checked"
+                  />
+                  Covered Investigations
+                  <span></span>
+                </label>
+                <label class="kt-radio kt-radio--brand">
+                  <input
+                    type="radio"
+                    name="coveredimaging"
+                    v-model="imagingstatus"
+                    :value="0"
+                  />
+                  Uncovered Investigations
+                  <span></span>
+                </label>
+              </div>
+            </div>
             <!--begin: Search Form -->
             <div class="form-group row">
               <label class="col-2 col-form-label">Medical Imaging</label>
@@ -1376,8 +1675,9 @@
                     <th>S/N</th>
                     <th>Investigations</th>
                     <th>Price (₦)</th>
+                    <th>Status</th>
                     <th>Date Created</th>
-                    <th>Action</th>
+                    <!-- <th>Action</th> -->
                   </tr>
                 </thead>
                 <tbody>
@@ -1400,12 +1700,24 @@
                       {{ imaging.investigation.price }}
                     </td>
                     <td>
+                      <label
+                        v-if="imaging.investigation.isCapitated"
+                        class="kt-badge kt-badge--success kt-badge--inline"
+                        >Capitated</label
+                      >
+                      <label
+                        v-else
+                        class="kt-badge kt-badge--danger kt-badge--inline"
+                        >Non-Capitated</label
+                      >
+                    </td>
+                    <td>
                       {{
                         imaging.dateRequested
                           | moment('ddd, MMM Do YYYY, h:mm a')
                       }}
                     </td>
-                    <td>
+                    <!-- <td>
                       <button
                         v-if="!deleteimagingloading"
                         @click="deleteImagingTest(index)"
@@ -1421,7 +1733,7 @@
                       >
                         Deleting...
                       </button>
-                    </td>
+                    </td> -->
                   </tr>
                 </tbody>
               </table>
@@ -1484,6 +1796,8 @@ export default {
       },
       investigationprice: '',
       investigations: [],
+      teststatus: 0,
+      imagingstatus: 0,
 
       //   Lab tests
       test: {
@@ -1492,6 +1806,7 @@ export default {
       price: '',
       labId: '',
       labs: [],
+      todayDate: new Date(),
 
       loading: false,
       imagingloading: false,
@@ -1513,7 +1828,8 @@ export default {
       getTestsUrl: '/ajax/tests',
       gettestspriceUrl: '/ajax/test/price',
       getDrugsPriceUrl: '/ajax/drugs/price',
-      getNhisDrugsPriceUrl: '/ajax/nhisdrugs/price'
+      getNhisDrugsPriceUrl: '/ajax/nhisdrugs/price',
+      saveConsentUrl: '/consultation/consent/'
     }
   },
   mounted() {
@@ -1559,6 +1875,23 @@ export default {
           this.handleError(error)
         })
     },
+    saveConsent() {
+      const data = {
+        consultationId: this.consultation._id
+      }
+      axios
+        .post(this.saveConsentUrl + this.$route.params.id, data)
+        .then(response => {
+          this.consultation = response.data.data
+          this.$iziToast.success({
+            title: 'Success!',
+            message: response.data.message
+          })
+        })
+        .catch(error => {
+          this.handleError(error)
+        })
+    },
     updateConsultation() {
       this.loading = true
       axios
@@ -1596,7 +1929,19 @@ export default {
       axios
         .post(this.getInvestigationsUrl, data)
         .then(response => {
-          this.investigations = response.data.data
+          const imagings = response.data.data
+
+          if (this.imagingstatus === 1) {
+            const capitatedInvestigations = imagings.filter(
+              image => image.isCapitated === true
+            )
+            this.investigations = capitatedInvestigations
+          } else {
+            const nonCapitatedInvestigations = imagings.filter(
+              image => image.isCapitated === false
+            )
+            this.investigations = nonCapitatedInvestigations
+          }
         })
         .catch(error => {
           this.handleError(error)
@@ -1655,6 +2000,7 @@ export default {
     },
 
     // Lab Tests
+
     getTests() {
       const data = {
         labId: this.labId
@@ -1662,7 +2008,19 @@ export default {
       axios
         .post(this.getTestsUrl, data)
         .then(response => {
-          this.tests = response.data.data
+          const tests = response.data.data
+
+          if (this.teststatus === 1) {
+            const capitatedTests = tests.filter(
+              test => test.isCapitated === true
+            )
+            this.tests = capitatedTests
+          } else {
+            const NonCapitatedTests = tests.filter(
+              test => test.isCapitated === false
+            )
+            this.tests = NonCapitatedTests
+          }
         })
         .catch(error => {
           this.handleError(error)
@@ -1799,8 +2157,9 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .form-control[readonly] {
   background: rgb(224, 224, 224) !important;
 }
+@import url('../../assets/css/labtest.css');
 </style>

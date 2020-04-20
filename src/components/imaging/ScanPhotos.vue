@@ -50,9 +50,7 @@ export default {
       dependant: '',
       images: [],
       imagingUrl: '/imaging/scanned/images/',
-      scanurl:
-        process.env.VUE_APP_SCAN_URL ||
-        'http://localhost:3000/static/scanphotos/'
+      scanurl: '/static/scanphotos/'
     }
   },
   mounted() {

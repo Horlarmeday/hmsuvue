@@ -877,9 +877,7 @@ export default {
       checkimagingUrl: '/ajax/change/imaging/status/true',
       uncheckimagingUrl: '/ajax/change/imaging/status/false',
 
-      invoiceurl:
-        process.env.VUE_APP_INVOICE_URL ||
-        'http://localhost:3000/static/invoices/',
+      invoiceurl: '/static/invoices/',
       input: '',
 
       currentPage: 1,

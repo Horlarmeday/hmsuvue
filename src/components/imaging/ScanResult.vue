@@ -941,9 +941,7 @@ export default {
       currentStatus: null,
       uploadFieldName: 'photos',
       uploadscanphotos: '/imaging/upload/scan/photo/',
-      scanurl:
-        process.env.VUE_APP_SCAN_URL ||
-        'http://localhost:3000/static/scanphotos/'
+      scanurl: '/static/scanphotos/'
     }
   },
   mounted() {

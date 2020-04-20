@@ -49,6 +49,7 @@
                           required
                           v-model="username"
                           autocomplete="off"
+                          autofocus
                         />
                         <div class="invalid-feedback">{{ errors[0] }}</div>
                       </div>

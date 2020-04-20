@@ -2134,9 +2134,8 @@ export default {
       drugs: [],
       tests: [],
       imagings: [],
-      imageurl:
-        process.env.VUE_APP_IMAGE_URL ||
-        'http://localhost:3000/static/uploads/',
+      imageurl: '/static/uploads/patients/',
+      dependantimageurl: '/static/uploads/dependants/',
       dependantUrl: '/edit-dependant/',
       historyurl: '/consultation/patient/consultation/',
       medicationurl: '/consultation/patient/drugs/',
@@ -2340,7 +2339,8 @@ export default {
           this.dependants = response.data.data
           let dependants = this.dependants
           for (let i = 0; i < dependants.length; i++) {
-            dependants[i].photourl = this.imageurl + dependants[i].photo
+            dependants[i].photourl =
+              this.dependantimageurl + dependants[i].photo
             dependants[i].url = this.dependantUrl + dependants[i]._id
             dependants[i].triageurl =
               '/create-dependant-triage/' + dependants[i]._id

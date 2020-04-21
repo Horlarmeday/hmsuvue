@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import iziToast from '../src/assets/js/izitoast'
+
 // App Styles
 import '../node_modules/nprogress/nprogress.css'
 import './assets/css/style.css'

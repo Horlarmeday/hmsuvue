@@ -49,7 +49,12 @@
                     </h6>
                   </div>
                   <div class="kt-widget__action">
-                    <button type="button" class="btn btn-info btn-sm">
+                    <button
+                      type="button"
+                      class="btn btn-info btn-sm"
+                      data-toggle="modal"
+                      data-target="#kt_modal_3"
+                    >
                       Snap Photo</button
                     >&nbsp;
                     <button type="button" class="btn btn-success btn-sm">
@@ -2113,6 +2118,119 @@
         </div>
       </div>
       <!--End:: App Content-->
+      <!--begin::Modal-->
+      <div
+        class="modal fade"
+        id="kt_modal_3"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">
+                Take photo
+              </h5>
+              <br />
+
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-xl-12">
+                  <div style="margin: 0 38%">
+                    <img
+                      style="padding-top: 10px"
+                      v-if="!videoShowing && !image"
+                      v-on:click="startCamera()"
+                      src="../../assets/images/upload.png"
+                    />
+                    <video
+                      ref="video"
+                      id="video"
+                      v-show="!image && !photoSaved"
+                      style="height:1px;width:250px;margin-bottom:20px;"
+                      autoplay
+                    ></video>
+                    <canvas
+                      ref="canvas"
+                      id="canvas"
+                      width="250"
+                      height="187"
+                      v-show="image"
+                    >
+                    </canvas>
+                  </div>
+
+                  <button
+                    style="margin: 0 39%"
+                    id="snap"
+                    v-if="!image && !photoSaved && !videoShowing"
+                    class="btn btn-success btn-sm"
+                    v-on:click="startCamera()"
+                  >
+                    Take Photo Now
+                  </button>
+
+                  <button
+                    style="margin-left: 43%"
+                    id="snap"
+                    v-if="!image && !photoSaved && videoShowing"
+                    class="btn btn-success btn-sm"
+                    v-on:click="capture()"
+                  >
+                    Snap Photo
+                  </button>
+
+                  <div
+                    class="row"
+                    v-if="!photoLoading"
+                    style="padding-top: 15px"
+                  >
+                    <button
+                      style="margin-left: 42%"
+                      id="snap"
+                      v-if="image && !photoSaved"
+                      class="btn btn-success btn-sm"
+                      v-on:click="snapAgain()"
+                    >
+                      Snap Again
+                    </button>
+                    <div style="margin-left: 10px">
+                      <button
+                        id="save"
+                        v-if="image && !photoSaved"
+                        class="btn btn-primary orange"
+                        v-on:click="uploadPatientPic()"
+                      >
+                        Save Photo
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--end::Modal-->
     </div>
   </div>
 </template>
@@ -2144,6 +2262,7 @@ export default {
       patientpaymentUrl: '/account/patient/',
       appointmentUrl: '/appointment/patient/',
       triageUrl: '/triage/patient/',
+      patientUploadUrl: '/patient/upload/',
       patientditsshow: true,
       historydits: false,
       paymentsdits: false,
@@ -2153,7 +2272,17 @@ export default {
       testdits: false,
       imagingdits: false,
 
-      activeClass: 'kt-widget__item--active'
+      activeClass: 'kt-widget__item--active',
+
+      // Image
+      showFinish: false,
+      videoShowing: false,
+      photoSaved: false,
+      photoLoading: false,
+      uploading: false,
+      video: {},
+      canvas: {},
+      image: ''
     }
   },
   mounted() {
@@ -2349,6 +2478,51 @@ export default {
         .catch(error => {
           this.handleError(error)
         })
+    },
+    startCamera() {
+      this.toggleVideoShowing()
+      this.video = this.$refs.video
+      this.video.style = 'display:block;width:250px;margin-bottom:20px;'
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
+          this.video.srcObject = stream
+          this.video.play()
+        })
+      }
+    },
+
+    uploadPatientPic() {
+      this.photoLoading = true
+      const stepThreedata = {
+        base64: this.image,
+        patientId: this.patient._id
+      }
+      axios
+        .post(this.patientUploadUrl, stepThreedata)
+        .then(response => {
+          this.photoLoading = false
+          this.photoSaved = true
+          this.photo = this.imageurl + response.data.data.patient.photo
+          this.$iziToast.success({
+            title: 'Success!',
+            message: response.data.message
+          })
+        })
+        .catch(error => {
+          this.photoLoading = false
+          this.handleError(error)
+        })
+    },
+    capture() {
+      this.canvas = this.$refs.canvas
+      this.canvas.getContext('2d').drawImage(this.video, 0, 0, 250, 187)
+      this.image = this.canvas.toDataURL()
+    },
+    snapAgain() {
+      this.image = null
+    },
+    toggleVideoShowing() {
+      this.videoShowing = !this.videoShowing
     }
   }
 }

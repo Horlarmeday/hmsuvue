@@ -149,7 +149,7 @@ export default {
           this.loading = false
           this.$iziToast.error({
             title: 'Error!',
-            message: error.response.data
+            message: error.response.data || 'Network Error'
           })
         })
     }

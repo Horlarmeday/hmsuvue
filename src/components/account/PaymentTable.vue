@@ -135,25 +135,19 @@
                   </router-link>
                 </td>
                 <td>{{ payment.amount }}</td>
-                <td v-if="payment.drugs.length > 0">
-                  <p v-for="drug in payment.drugs" :key="drug._id">
-                    {{ drug.name }}
-                  </p>
-                </td>
-                <td v-if="payment.tests.length > 0">
-                  <p v-for="test in payment.tests" :key="test._id">
-                    {{ test.name }}
-                  </p>
-                </td>
-                <td v-if="payment.investigations.length > 0">
-                  <p v-for="image in payment.investigations" :key="image._id">
-                    {{ image.name }}
-                  </p>
-                </td>
-                <td v-if="payment.services.length > 0">
-                  <p v-for="service in payment.services" :key="service._id">
-                    {{ service.name }}
-                  </p>
+                <td>
+                  <span v-if="payment.tests">
+                    {{ payment.tests.name }}
+                  </span>
+                  <span v-if="payment.investigations">
+                    {{ payment.investigations.name }}
+                  </span>
+                  <span v-if="payment.services">
+                    {{ payment.services.name }}
+                  </span>
+                  <span v-if="payment.drugs">
+                    {{ payment.drugs.name }}
+                  </span>
                 </td>
                 <td v-if="payment.type">
                   <p>
@@ -166,15 +160,11 @@
                 </td>
 
                 <td>
-                  <label
-                    v-if="payment.paid"
-                    class="kt-badge kt-badge--success kt-badge--inline"
-                    >Paid</label
+                  <span style="color: green" v-if="data.paid == 'Paid'"
+                    >Paid</span
                   >
-                  <label
-                    v-if="!payment.paid"
-                    class="kt-badge kt-badge--danger kt-badge--inline"
-                    >Unpaid</label
+                  <span style="color: red" v-if="data.paid == 'Cleared'"
+                    >Cleared</span
                   >
                 </td>
                 <td>

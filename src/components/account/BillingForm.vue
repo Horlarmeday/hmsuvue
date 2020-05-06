@@ -272,19 +272,19 @@
                   </router-link>
                 </td>
                 <td>
-                  <p v-for="service in billing.services" :key="service._id">
-                    {{ service.name }}
+                  <p>
+                    {{ billing.services.name }}
                   </p>
                 </td>
                 <td>{{ billing.amount }}</td>
                 <td>
                   <label
-                    v-if="!billing.paid"
+                    v-if="billing.paid == 'Pending'"
                     class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill"
                     >Pending</label
                   >
                   <label
-                    v-else
+                    v-if="billing.paid == 'Paid'"
                     class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill"
                     >Paid</label
                   >
@@ -293,20 +293,20 @@
                 <td>{{ billing.createdAt | moment('DD/MM/YYYY, h:ma') }}</td>
                 <td>
                   <button
-                    v-if="!billing.paid"
+                    v-if="billing.paid == 'Pending'"
                     @click="approveBilling(billing)"
                     class="btn btn-brand btn-elevate"
                   >
                     Approve
                   </button>
-                  <a
+                  <!-- <a
                     target="_blank"
                     v-else
                     :href="billing.invoiceurl"
                     class="btn btn-success btn-elevate"
                   >
                     Invoice
-                  </a>
+                  </a> -->
                 </td>
               </tr>
             </tbody>

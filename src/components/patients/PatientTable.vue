@@ -307,7 +307,7 @@ export default {
     handleError(error) {
       this.$iziToast.error({
         title: 'Error!',
-        message: error.response.data
+        message: error.response.data || 'Network Error'
       })
     },
     getPatients() {

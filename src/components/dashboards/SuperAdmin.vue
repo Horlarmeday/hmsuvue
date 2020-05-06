@@ -412,9 +412,7 @@ export default {
       landingPageUrl: '/dashboard/superadmin',
       patientchartUrl: '/dashboard/patient/aggregation',
       paymentchartUrl: '/dashboard/payment/aggregation',
-      imageurl:
-        process.env.VUE_APP_IMAGE_URL ||
-        'http://localhost:3000/static/uploads/',
+      imageurl: '/static/uploads/patients/',
       patientCategories: '',
       paymentCategories: '',
       patientXaxis: '',

@@ -167,165 +167,7 @@
 
     <!--Begin::Section-->
     <div class="row">
-      <div class="col-xl-6">
-        <!--begin:: Widgets/Tasks -->
-        <div class="kt-portlet kt-portlet--tabs kt-portlet--height-fluid">
-          <div class="kt-portlet__head">
-            <div class="kt-portlet__head-label">
-              <h3 class="kt-portlet__head-title">
-                Registration & Consultation
-              </h3>
-            </div>
-          </div>
-          <div class="kt-portlet__body">
-            <!--begin: Search Form -->
-            <div class="kt-form kt-form--label-right">
-              <div class="row align-items-center">
-                <div class="col-xl-8 order-2 order-xl-1">
-                  <div class="row align-items-center">
-                    <div class="col-md-4 kt-margin-b-20-tablet-and-mobile">
-                      <div class="kt-input-icon kt-input-icon--left">
-                        <input
-                          type="text"
-                          class="form-control"
-                          placeholder="Search..."
-                          v-model="input"
-                          @keyup="dashboard"
-                        />
-                        <span
-                          class="kt-input-icon__icon kt-input-icon__icon--left"
-                        >
-                          <span><i class="la la-search"></i></span>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-xl-4 order-1 order-xl-2 kt-align-right">
-                  <a href="#" class="btn btn-default kt-hidden">
-                    <i class="la la-cart-plus"></i> New Order
-                  </a>
-                  <div
-                    class="kt-separator kt-separator--border-dashed kt-separator--space-lg d-xl-none"
-                  ></div>
-                </div>
-              </div>
-            </div>
-
-            <!--end: Search Form -->
-          </div>
-          <div class="kt-portlet__body">
-            <div class="dt-responsive table-responsive">
-              <table class="table table-striped table-bordered nowrap">
-                <thead>
-                  <tr>
-                    <th>S/N</th>
-                    <th>Patient Name</th>
-                    <th>Payments</th>
-                    <th>Amount</th>
-                    <th>Status</th>
-                    <th>Mode of Payment</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-if="patients.length == 0">
-                    <td colspan="9" align="center">No Registered Patients</td>
-                  </tr>
-                </tbody>
-                <tbody v-for="(patient, index) in patients" :key="patient._id">
-                  <tr>
-                    <td>
-                      {{ index + 1 }}
-                    </td>
-
-                    <td>
-                      <router-link :to="patient.url">
-                        {{ patient.firstname }} {{ patient.lastname }}
-                      </router-link>
-                    </td>
-                    <td>
-                      <p>{{ patient.registration }}</p>
-                      <p>{{ patient.consultation }}</p>
-                    </td>
-                    <td>
-                      <p name="amount">
-                        {{ patient.registration + patient.consultation }}
-                      </p>
-                    </td>
-                    <td>
-                      <label
-                        v-if="!patient.paid"
-                        class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill"
-                        >Pending</label
-                      >
-                      <label
-                        v-if="patient.paid"
-                        class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill"
-                        >Paid</label
-                      >
-                    </td>
-                    <td>
-                      <select
-                        v-if="!patient.paid"
-                        v-model="registration.modeofpayment"
-                        class="form-control"
-                      >
-                        <option disabled>Select</option>
-                        <option>Cash</option>
-                        <option>Transfer</option>
-                        <option>POS</option>
-                        <option>Bank Deposit</option>
-                      </select>
-                    </td>
-                    <td>
-                      <button
-                        v-if="!patient.paid"
-                        class="btn btn-brand btn-elevate"
-                        @click="approvePayment(patient, index)"
-                      >
-                        Approve
-                      </button>
-
-                      <a
-                        target="_blank"
-                        v-else
-                        :href="patient.invoiceurl"
-                        class="btn btn-success btn-elevate"
-                      >
-                        Invoice
-                      </a>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="card-footer">
-              <p class="float-left">
-                Showing {{ pageSize }} of {{ rows }} entries
-              </p>
-              <button
-                class="btn btn-outline-brand btn-sm ml-3 float-right"
-                :disabled="isNextButtonDisabled"
-                @click="pageChangeHandle('next')"
-              >
-                Next →
-              </button>
-
-              <button
-                class="btn btn-outline-brand btn-sm float-right"
-                :disabled="isPreviousButtonDisabled"
-                @click="pageChangeHandle('previous')"
-              >
-                ← Prev
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!--end:: Widgets/Tasks -->
-      </div>
-      <div class="col-xl-6">
+      <div class="col-xl-12">
         <!--begin:: Widgets/New Users-->
         <div class="kt-portlet kt-portlet--tabs kt-portlet--height-fluid">
           <div class="kt-portlet__head">
@@ -347,12 +189,11 @@
                         <th>Tests</th>
                         <th>Unit Amount</th>
                         <th>Total Amount</th>
-                        <th>Status</th>
                         <th>ModeofPayment</th>
                         <th>Action</th>
                       </tr>
                     </thead>
-                    <tbody v-if="consultations.length == 0">
+                    <tbody v-if="testConsultations.length == 0">
                       <tr>
                         <td colspan="9" align="center">
                           No Lab Tests
@@ -360,18 +201,15 @@
                       </tr>
                     </tbody>
                     <tbody
-                      v-for="(consultation, index) in consultations"
+                      v-for="(consultation, index) in testConsultations"
                       :key="consultation._id"
                     >
-                      <tr v-if="consultation.tests.length > 0">
+                      <tr>
                         <td>
                           {{ index + 1 }}
                         </td>
                         <td v-if="consultation.patient">
-                          <router-link
-                            :to="consultation.url"
-                            class="kt-widget4__username"
-                          >
+                          <router-link to="#" class="kt-widget4__username">
                             {{ consultation.patient.firstname }}
                             {{ consultation.patient.lastname }}
                           </router-link>
@@ -385,10 +223,9 @@
                           >
                         </td>
                         <td>
-                          <label
+                          <p
                             v-for="(test, index) in consultation.tests"
                             :key="test._id"
-                            class="kt-checkbox"
                           >
                             <input
                               name="testChecked"
@@ -398,17 +235,22 @@
                             {{ test.test.name }}
 
                             <small
-                              v-if="!test.status"
+                              v-if="test.paymentstatus == 'Pending'"
                               class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill"
-                              >pending</small
+                              >Pending</small
                             >
                             <small
-                              v-else
+                              v-if="test.paymentstatus == 'Cleared'"
+                              class="kt-badge kt-badge--brand kt-badge--inline kt-badge--pill"
+                              >Cleared</small
+                            >
+                            <small
+                              v-if="test.paymentstatus == 'Paid'"
                               class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill"
-                              >paid</small
+                              >Paid</small
                             >
                             <span></span>
-                          </label>
+                          </p>
                         </td>
                         <td>
                           <p v-for="test in consultation.tests" :key="test._id">
@@ -418,29 +260,12 @@
                         <td>
                           <p name="testAmount">{{ consultation.testSum }}</p>
                         </td>
-                        <td>
-                          <small
-                            v-if="consultation.labtestpaid === 'Pending'"
-                            class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill"
-                            >Pending</small
-                          >
-                          <small
-                            v-if="consultation.labtestpaid === 'Paid'"
-                            class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill"
-                            >Paid</small
-                          >
-                          <small
-                            v-if="
-                              consultation.labtestpaid === 'Cleared by NHIS'
-                            "
-                            style="font-style: 5px"
-                            class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill"
-                            >Cleared</small
-                          >
-                        </td>
+
                         <td>
                           <select
-                            v-if="!consultation.testpaid"
+                            v-if="
+                              consultation.capitatedTestStatus === 'Pending'
+                            "
                             v-model="test.modeofpayment"
                             class="form-control"
                           >
@@ -453,21 +278,23 @@
                         </td>
                         <td>
                           <button
-                            v-if="consultation.labtestpaid === 'Pending'"
+                            v-if="
+                              consultation.capitatedTestStatus === 'Pending'
+                            "
                             class="btn btn-brand btn-elevate"
                             @click="approveTestPayment(consultation, index)"
                           >
                             Approve
                           </button>
 
-                          <a
+                          <!-- <a
                             target="_blank"
                             v-else
                             :href="consultation.testinvoiceurl"
                             class="btn btn-success btn-elevate"
                           >
                             Invoice
-                          </a>
+                          </a> -->
                         </td>
                       </tr>
                     </tbody>
@@ -496,7 +323,7 @@
 
     <!--Begin::Section-->
     <div class="row">
-      <div class="col-xl-6">
+      <div class="col-xl-12">
         <!--begin:: Widgets/New Users-->
         <div class="kt-portlet kt-portlet--tabs kt-portlet--height-fluid">
           <div class="kt-portlet__head">
@@ -518,12 +345,11 @@
                         <th>Drugs</th>
                         <th>Amount</th>
                         <th>Total</th>
-                        <th>Status</th>
                         <th>ModeofPayment</th>
                         <th>Action</th>
                       </tr>
                     </thead>
-                    <tbody v-if="consultations.length == 0">
+                    <tbody v-if="drugConsultations.length == 0">
                       <tr>
                         <td colspan="9" align="center">
                           No Drugs
@@ -531,7 +357,7 @@
                       </tr>
                     </tbody>
                     <tbody
-                      v-for="(consultation, index) in consultations"
+                      v-for="(consultation, index) in drugConsultations"
                       :key="consultation._id"
                     >
                       <tr v-if="consultation.drugs.length > 0">
@@ -539,10 +365,7 @@
                           {{ index + 1 }}
                         </td>
                         <td v-if="consultation.patient">
-                          <router-link
-                            :to="consultation.url"
-                            class="kt-widget4__username"
-                          >
+                          <router-link to="#" class="kt-widget4__username">
                             {{ consultation.patient.firstname }}
                             {{ consultation.patient.lastname }}
                           </router-link>
@@ -556,10 +379,9 @@
                           >
                         </td>
                         <td>
-                          <label
+                          <p
                             v-for="(drug, index) in consultation.drugs"
                             :key="drug._id"
-                            class="kt-checkbox"
                           >
                             <input
                               name="drugChecked"
@@ -568,24 +390,26 @@
                             />
                             {{ drug.drug.name }}
                             <small
-                              v-if="!drug.status"
+                              v-if="drug.paymentstatus == 'Pending'"
                               class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill"
-                              >pending</small
+                              >Pending</small
                             >
                             <small
-                              v-else
+                              v-if="drug.paymentstatus == 'Cleared'"
+                              class="kt-badge kt-badge--brand kt-badge--inline kt-badge--pill"
+                              >Cleared</small
+                            >
+                            <small
+                              v-if="drug.paymentstatus == 'Paid'"
                               class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill"
-                              >paid</small
+                              >Paid</small
                             >
                             <span></span>
-                          </label>
+                          </p>
                         </td>
                         <td>
                           <p v-for="drug in consultation.drugs" :key="drug._id">
-                            <span v-if="drug.drug.name.includes('NHIS')">
-                              {{ drug.totalprice * 0.1 }}
-                            </span>
-                            <span v-else>
+                            <span>
                               {{ drug.totalprice }}
                             </span>
                           </p>
@@ -593,21 +417,12 @@
                         <td>
                           <p name="drugAmount">{{ consultation.drugSum }}</p>
                         </td>
-                        <td>
-                          <label
-                            v-if="!consultation.drugpaid"
-                            class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill"
-                            >Pending</label
-                          >
-                          <label
-                            v-if="consultation.drugpaid"
-                            class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill"
-                            >Paid</label
-                          >
-                        </td>
+
                         <td>
                           <select
-                            v-if="!consultation.drugpaid"
+                            v-if="
+                              consultation.capitatedDrugStatus === 'Pending'
+                            "
                             v-model="drug.modeofpayment"
                             class="form-control"
                           >
@@ -620,21 +435,21 @@
                         </td>
                         <td>
                           <button
-                            v-if="!consultation.drugpaid"
+                            v-if="consultation.capitatedDrugStatus == 'Pending'"
                             class="btn btn-brand btn-elevate"
                             @click="approveDrugPayment(consultation, index)"
                           >
                             Approve
                           </button>
 
-                          <a
+                          <!-- <a
                             target="_blank"
                             v-else
                             :href="consultation.druginvoiceurl"
                             class="btn btn-success btn-elevate"
                           >
                             Invoice
-                          </a>
+                          </a> -->
                         </td>
                       </tr>
                     </tbody>
@@ -660,7 +475,7 @@
 
         <!--end:: Widgets/New Users-->
       </div>
-      <div class="col-xl-6">
+      <div class="col-xl-12">
         <!--begin:: Widgets/New Users-->
         <div class="kt-portlet kt-portlet--tabs kt-portlet--height-fluid">
           <div class="kt-portlet__head">
@@ -682,12 +497,11 @@
                         <th>Investigations</th>
                         <th>Unit Amount</th>
                         <th>Total Amount</th>
-                        <th>Status</th>
                         <th>ModeofPayment</th>
                         <th>Action</th>
                       </tr>
                     </thead>
-                    <tbody v-if="consultations.length == 0">
+                    <tbody v-if="imagingConsultations.length == 0">
                       <tr>
                         <td colspan="9" align="center">
                           No Investigations
@@ -695,7 +509,7 @@
                       </tr>
                     </tbody>
                     <tbody
-                      v-for="(consultation, index) in consultations"
+                      v-for="(consultation, index) in imagingConsultations"
                       :key="consultation._id"
                     >
                       <tr v-if="consultation.imagings.length > 0">
@@ -703,10 +517,7 @@
                           {{ index + 1 }}
                         </td>
                         <td v-if="consultation.patient">
-                          <router-link
-                            :to="consultation.url"
-                            class="kt-widget4__username"
-                          >
+                          <router-link to="#" class="kt-widget4__username">
                             {{ consultation.patient.firstname }}
                             {{ consultation.patient.lastname }}
                           </router-link>
@@ -720,10 +531,9 @@
                           >
                         </td>
                         <td>
-                          <label
+                          <p
                             v-for="(imaging, index) in consultation.imagings"
                             :key="imaging._id"
-                            class="kt-checkbox"
                           >
                             <input
                               name="imagingChecked"
@@ -732,17 +542,22 @@
                             />
                             {{ imaging.investigation.name }}
                             <small
-                              v-if="!imaging.status"
+                              v-if="imaging.paymentstatus == 'Pending'"
                               class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill"
-                              >pending</small
+                              >Pending</small
                             >
                             <small
-                              v-else
+                              v-if="imaging.paymentstatus == 'Cleared'"
+                              class="kt-badge kt-badge--brand kt-badge--inline kt-badge--pill"
+                              >Cleared</small
+                            >
+                            <small
+                              v-if="imaging.paymentstatus == 'Paid'"
                               class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill"
-                              >paid</small
+                              >Paid</small
                             >
                             <span></span>
-                          </label>
+                          </p>
                         </td>
                         <td>
                           <p
@@ -757,18 +572,7 @@
                             {{ consultation.imagingSum }}
                           </p>
                         </td>
-                        <td>
-                          <label
-                            v-if="!consultation.imagingpaid"
-                            class="kt-badge kt-badge--warning kt-badge--inline kt-badge--pill"
-                            >Pending</label
-                          >
-                          <label
-                            v-if="consultation.imagingpaid"
-                            class="kt-badge kt-badge--success kt-badge--inline kt-badge--pill"
-                            >Paid</label
-                          >
-                        </td>
+
                         <td>
                           <select
                             v-if="!consultation.imagingpaid"
@@ -784,21 +588,23 @@
                         </td>
                         <td>
                           <button
-                            v-if="!consultation.imagingpaid"
+                            v-if="
+                              consultation.capitatedImagingStatus === 'Pending'
+                            "
                             class="btn btn-brand btn-elevate"
                             @click="approveImagingPayment(consultation, index)"
                           >
                             Approve
                           </button>
 
-                          <a
+                          <!-- <a
                             target="_blank"
                             v-else
                             :href="consultation.imaginginvoiceurl"
                             class="btn btn-success btn-elevate"
                           >
                             Invoice
-                          </a>
+                          </a> -->
                         </td>
                       </tr>
                     </tbody>
@@ -839,7 +645,9 @@ export default {
   data() {
     return {
       patients: [],
-      consultations: [],
+      testConsultations: [],
+      drugConsultations: [],
+      imagingConsultations: [],
       totalPatients: '',
       triagesCount: '',
       accountCount: '',
@@ -905,7 +713,9 @@ export default {
         )
         .then(response => {
           this.patients = response.data.data.patients
-          this.consultations = response.data.data.consultations
+          this.drugConsultations = response.data.data.drugconsultations
+          this.testConsultations = response.data.data.testconsultations
+          this.imagingConsultations = response.data.data.imagingconsultations
           this.totalPatients = response.data.data.patientCount
           this.triagesCount = response.data.data.triagesCount
           this.accountCount = response.data.data.accountCount
@@ -917,26 +727,75 @@ export default {
           this.pageCount = this.meta.pageCount
 
           let patients = this.patients
-          let consultations = this.consultations
+          let testConsultations = this.testConsultations
+          let drugConsultations = this.drugConsultations
+          let imagingConsultations = this.imagingConsultations
+
           for (let i = 0; i < patients.length; i++) {
             patients[i].url = '/patient/' + patients[i]._id
             patients[i].invoiceurl = this.invoiceurl + patients[i].invoice
           }
 
-          for (let i = 0; i < consultations.length; i++) {
-            if (consultations[i].patient) {
-              consultations[i].url = '/patient/' + consultations[i].patient._id
-              //  Lab test invoice
-              consultations[i].testinvoiceurl =
-                this.invoiceurl + consultations[i].testinvoice
-              // Drug Invoice
-              consultations[i].druginvoiceurl =
-                this.invoiceurl + consultations[i].druginvoice
+          for (let i = 0; i < testConsultations.length; i++) {
+            if (testConsultations[i].patient) {
+              testConsultations[i].url = '/patient/' + patients[i]._id
+              //Lab test invoice
+              testConsultations[i].testinvoiceurl =
+                this.invoiceurl + testConsultations[i].testinvoice
+              //Drug Invoice
+              testConsultations[i].druginvoiceurl =
+                this.invoiceurl + testConsultations[i].druginvoice
               // Imaging invoice
-              consultations[i].imaginginvoiceurl =
-                this.invoiceurl + consultations[i].imaginginvoice
+              testConsultations[i].imaginginvoiceurl =
+                this.invoiceurl + testConsultations[i].imaginginvoice
+            }
+            console.log(testConsultations[i].url)
+          }
+
+          for (let i = 0; i < drugConsultations.length; i++) {
+            if (drugConsultations[i].patient) {
+              drugConsultations[i].url = '/patient/' + patients[i]._id
+              //Lab test invoice
+              drugConsultations[i].testinvoiceurl =
+                this.invoiceurl + drugConsultations[i].testinvoice
+              //Drug Invoice
+              drugConsultations[i].druginvoiceurl =
+                this.invoiceurl + drugConsultations[i].druginvoice
+              // Imaging invoice
+              drugConsultations[i].imaginginvoiceurl =
+                this.invoiceurl + drugConsultations[i].imaginginvoice
             }
           }
+
+          for (let i = 0; i < imagingConsultations.length; i++) {
+            if (imagingConsultations[i].patient) {
+              imagingConsultations[i].url = '/patient/' + patients[i]._id
+              //Lab test invoice
+              imagingConsultations[i].testinvoiceurl =
+                this.invoiceurl + imagingConsultations[i].testinvoice
+              //Drug Invoice
+              imagingConsultations[i].druginvoiceurl =
+                this.invoiceurl + imagingConsultations[i].druginvoice
+              // Imaging invoice
+              imagingConsultations[i].imaginginvoiceurl =
+                this.invoiceurl + imagingConsultations[i].imaginginvoice
+            }
+          }
+
+          // for (let i = 0; i < consultations.length; i++) {
+          //   if (consultations[i].patient) {
+          //     consultations[i].url = '/patient/' + consultations[i].patient._id
+          //     //  Lab test invoice
+          //     consultations[i].testinvoiceurl =
+          //       this.invoiceurl + consultations[i].testinvoice
+          //     // Drug Invoice
+          //     consultations[i].druginvoiceurl =
+          //       this.invoiceurl + consultations[i].druginvoice
+          //     // Imaging invoice
+          //     consultations[i].imaginginvoiceurl =
+          //       this.invoiceurl + consultations[i].imaginginvoice
+          //   }
+          // }
         })
         .catch(error => {
           this.handleError(error)
@@ -972,9 +831,11 @@ export default {
           this.handleError(error)
         })
     },
+
+    //TESTS
     approveTestPayment(consultation, index) {
-      let isChecked = document.getElementsByName('testChecked')[index].checked
-      if (this.test.modeofpayment == '' || isChecked === false) {
+      //let isChecked = document.getElementsByName('testChecked')[index].checked
+      if (this.test.modeofpayment == '') {
         this.$iziToast.error({
           title: 'Error!',
           message: 'Please choose mode of payment & check the checkbox'
@@ -991,9 +852,9 @@ export default {
       axios
         .post(this.testUrl, data)
         .then(response => {
-          this.consultations = response.data.data
+          this.testConsultations = response.data.data
           this.loading = false
-          let consultations = this.consultations
+          let consultations = this.testConsultations
 
           for (let i = 0; i < consultations.length; i++) {
             if (consultations[i].patient) {
@@ -1023,7 +884,8 @@ export default {
         axios
           .post(this.checktestUrl, data)
           .then(response => {
-            consultation.tests[index].status = response.data.data
+            consultation.tests[index].paymentstatus = response.data.data.status
+            consultation.testSum = response.data.data.amount
           })
           .catch(error => {
             this.loading = false
@@ -1033,7 +895,8 @@ export default {
         axios
           .post(this.unchecktestUrl, data)
           .then(response => {
-            consultation.tests[index].status = response.data.data
+            consultation.tests[index].paymentstatus = response.data.data.status
+            consultation.testSum = response.data.data.amount
           })
           .catch(error => {
             this.loading = false
@@ -1042,18 +905,15 @@ export default {
       }
     },
 
+    // DRUGS
     approveDrugPayment(consultation, index) {
-      let isChecked = document.getElementsByName('drugChecked')[index].checked
-      if (
-        this.drug.modeofpayment === '' ||
-        this.drug.modeofpayment === null ||
-        isChecked === false
-      ) {
+      //let isChecked = document.getElementsByName('drugChecked')[index].checked
+      if (this.drug.modeofpayment === '') {
         this.$iziToast.error({
           title: 'Error!',
           message: 'Please choose mode of payment & check the checkbox'
         })
-        return false
+        return
       }
       this.loading = true
       let input = document.getElementsByName('drugAmount')[index].textContent
@@ -1065,9 +925,9 @@ export default {
       axios
         .post(this.drugUrl, data)
         .then(response => {
-          this.consultations = response.data.data
+          this.drugConsultations = response.data.data
           this.loading = false
-          let consultations = this.consultations
+          let consultations = this.drugConsultations
 
           for (let i = 0; i < consultations.length; i++) {
             if (consultations[i].patient) {
@@ -1098,7 +958,8 @@ export default {
         axios
           .post(this.checkdrugUrl, data)
           .then(response => {
-            consultation.drugs[index].status = response.data.data
+            consultation.drugs[index].paymentstatus = response.data.data.status
+            consultation.drugSum = response.data.data.amount
           })
           .catch(error => {
             this.loading = false
@@ -1108,7 +969,8 @@ export default {
         axios
           .post(this.uncheckdrugUrl, data)
           .then(response => {
-            consultation.drugs[index].status = response.data.data
+            consultation.drugs[index].paymentstatus = response.data.data.status
+            consultation.drugSum = response.data.data.amount
           })
           .catch(error => {
             this.loading = false
@@ -1117,19 +979,16 @@ export default {
       }
     },
 
+    //IMAGING
     approveImagingPayment(consultation, index) {
-      let isChecked = document.getElementsByName('imagingChecked')[index]
-        .checked
-      if (
-        this.imaging.modeofpayment === '' ||
-        this.imaging.modeofpayment === null ||
-        isChecked === false
-      ) {
+      //let isChecked = document.getElementsByName('imagingChecked')[index]
+      //.checked
+      if (this.imaging.modeofpayment === '') {
         this.$iziToast.error({
           title: 'Error!',
           message: 'Please choose mode of payment & check the checkbox'
         })
-        return false
+        return
       }
       this.loading = true
       let input = document.getElementsByName('imagingAmount')[index].textContent
@@ -1175,7 +1034,9 @@ export default {
         axios
           .post(this.checkimagingUrl, data)
           .then(response => {
-            consultation.imagings[index].status = response.data.data
+            consultation.imagings[index].paymentstatus =
+              response.data.data.status
+            consultation.imagingSum = response.data.data.amount
           })
           .catch(error => {
             this.loading = false
@@ -1185,7 +1046,9 @@ export default {
         axios
           .post(this.uncheckimagingUrl, data)
           .then(response => {
-            consultation.imagings[index].status = response.data.data
+            consultation.imagings[index].paymentstatus =
+              response.data.data.status
+            consultation.imagingSum = response.data.data.amount
           })
           .catch(error => {
             this.loading = false

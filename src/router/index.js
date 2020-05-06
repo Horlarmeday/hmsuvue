@@ -929,6 +929,23 @@ const routes = [
     meta: {
       requiresAuth: true
     }
+  },
+  //REPORTS
+  {
+    path: '/daily-collection-report',
+    name: 'dailycollectionreport',
+    component: () => import('../views/app/reports/DailyCollectionReport.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/total-revenue-report',
+    name: 'totalrevenuereport',
+    component: () => import('../views/app/reports/TotalRevenueReport.vue'),
+    meta: {
+      requiresAuth: true
+    }
   }
 ]
 

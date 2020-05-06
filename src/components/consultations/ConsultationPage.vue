@@ -1796,8 +1796,8 @@ export default {
       },
       investigationprice: '',
       investigations: [],
-      teststatus: 0,
-      imagingstatus: 0,
+      teststatus: 1,
+      imagingstatus: 1,
 
       //   Lab tests
       test: {
@@ -1810,6 +1810,7 @@ export default {
 
       loading: false,
       imagingloading: false,
+      consentloading: false,
       deleteimagingloading: false,
       testloading: false,
       deletetestloading: false,
@@ -2152,6 +2153,9 @@ export default {
           this.deletedrugloading = false
           this.handleError(error)
         })
+    },
+    print() {
+      window.print()
     }
   }
 }
